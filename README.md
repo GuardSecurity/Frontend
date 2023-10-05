@@ -1,3 +1,0 @@
-# Front End 
-CAPSTONE PROJECT  
-GROUP : (ZONE7)
