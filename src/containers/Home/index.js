@@ -251,6 +251,38 @@ function Home() {
               />
             </div>
           </div>
+
+          <div class='min-w-full pb-10 px-20 pt-20 bg-zinc-100 flex-col justify-start items-center gap-12 inline-flex'>
+            <div class='self-stretch flex-col justify-start items-center text-center text-black text-5xl font-bold'>
+              What our customers say
+            </div>
+          </div>
+          <div class='min-w-full px-24 py-20 bg-zinc-100 flex-col justify-start items-center gap-16 inline-flex'>
+            <div class='justify-end items-center'>
+              <div class='inline-flex'>
+                <CustomCard
+                  content="“The security team provided by Guard was incredibly professional and attentive. They gave us peace of mind during our event, and we couldn't be happier with their service.”"
+                  customerAvatar={sontungAvatar}
+                  customerName='Son tung M-TP'
+                  customerPosition='SingerSinger'
+                />
+                <CustomCard
+                  classExtend='mx-10'
+                  content='“I didn’t have the time or expertise to undertake marketing. Kalungi has a very well thought out approach… and the fact that you can get their team on a fractional basis is unbelievable.”'
+                  customerAvatar={stijnAvatar}
+                  customerName='Stijn Hendrikse'
+                  customerPosition='Co-founder, Kalungi'
+                />
+                <CustomCard
+                  content='“I didn’t have the time or expertise to undertake marketing. Kalungi has a very well thought out approach… and the fact that you can get their team on a fractional basis is unbelievable.”'
+                  customerAvatar={stijnAvatar}
+                  customerName='Stijn Hendrikse'
+                  customerPosition='Co-founder, Kalungi'
+                />
+              </div>
+            </div>
+          </div>
+          
         </main>
       </div>
     </>
