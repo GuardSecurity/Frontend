@@ -2,7 +2,7 @@ import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from '../../assets/logo.png';
-import BaseButton from './Button';
+import BaseButton from '../Button/Button';
 
 const Navbar = () => {
   const navigation = [

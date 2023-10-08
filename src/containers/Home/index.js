@@ -20,7 +20,7 @@ import quote from '../../assets/quote.png';
 import sontungAvatar from '../../assets/sontungAvatar.png';
 import stijnAvatar from '../../assets/stijnAvatar.png';
 import BodyguardServicesSydney from '../../assets/BodyguardServicesSydney.png';
-import Navbar from '../../components/Button/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import BaseButton from '../../components/Button/Button';
 
 function classNames(...classes) {
