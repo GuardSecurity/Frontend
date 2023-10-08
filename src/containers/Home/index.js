@@ -143,6 +143,31 @@ function Home() {
               </div>
             </div>
           </div>
+
+          <div class='min-w-full h-48 px-24 py-20 bg-zinc-100 flex-col justify-start items-center gap-16 inline-flex'>
+            <div class='justify-end items-center gap-28'>
+              <div class='inline-flex'>
+                <div>
+                  <img class='object-cover' src={slackLogo} alt='slackLogo' />
+                </div>
+                <div class='ml-10'>
+                  <img class='object-cover' src={figmaLogo} alt='figmaLogo' />
+                </div>
+                <div class='ml-10'>
+                  <img class='object-cover' src={microsoftLogo} alt='microsoftLogo' />
+                </div>
+                <div class='ml-10'>
+                  <img class='object-cover' src={hupspotLogo} alt='hupspotLogo' />
+                </div>
+                <div class='ml-10'>
+                  <img class='object-cover' src={outreachLogo} alt='outreachLogo' />
+                </div>
+                <div class='ml-10'>
+                  <img class='object-cover' src={googleLogo} alt='googleLogo' />
+                </div>
+              </div>
+            </div>
+          </div>
           
         </main>
       </div>
