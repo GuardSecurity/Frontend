@@ -185,6 +185,45 @@ function Home() {
               </div>
             </div>
           </div>
+
+          <div class='min-w-full px-24 py-20 bg-white flex-col justify-start items-center gap-16 inline-flex'>
+            <div class='flex-col justify-start items-start gap-12 flex'>
+              <div class='self-stretch h-14 flex-col justify-start items-center gap-2 flex'>
+                <div class='self-stretch text-center text-zinc-800 text-5xl font-bold leading-10'>
+                  The My Security Advantage
+                </div>
+              </div>
+            </div>
+            <div class='justify-start items-start gap-24 inline-flex'>
+              <SecurityAdvantageCard
+                srcImg={padlock}
+                title='Security Solutions'
+                description='One size fits all simply isn’t good enough when it comes to securing your most valued assets. MySecurity has the security solutions that are tailored to meet your unique needs. We always strive to ensure peace of mind and high level security for every situation'
+              />
+              <SecurityAdvantageCard
+                srcImg={star}
+                title='Client Satisfaction'
+                description='We strive to amaze our customers. The opportunity to secure your most valued assets is a privilege, and we don’t take this privilege lightly. Putting our best foot forward is what we do for each project to ensure you are happy and your assets are kept safe and secure'
+              />
+            </div>
+            <div class='justify-start items-start gap-24 inline-flex'>
+              <SecurityAdvantageCard
+                srcImg={users}
+                title='Experience'
+                description='Our managers have over 15 years of experience in security as well as hospitality, law, business and finance. Whether you’re looking for security for construction sites, property, business or events, we understand and can deliver what you need to keep your assets safe'
+              />
+              <SecurityAdvantageCard
+                srcImg={periscope}
+                title='Client Satisfaction'
+                description='Our security services are available in all suburbs across Sydney, Brisbane and ACT. Wherever you are, we’ll provide a security solution. Do you have construction sites in multiple states? We can take care of your manpowered and electronic security across all locations'
+              />
+            </div>
+            <BaseButton
+              className='w-60 h-14 px-3 py-4 mt-6 items-center text-xs font-bold bg-[#C7923E]'
+              content={'GET STARTED'}
+            />
+          </div>
+          
         </main>
       </div>
     </>
