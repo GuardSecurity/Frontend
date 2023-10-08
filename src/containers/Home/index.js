@@ -131,6 +131,19 @@ function Home() {
               </div>
             </div>
           </div>
+
+          <div class='min-w-full h-52 px-20 pt-20 bg-zinc-100 flex-col justify-start items-center gap-12 inline-flex'>
+            <div class='self-stretch h-32 flex-col justify-start items-start gap-12 flex'>
+              <div class='self-stretch h-16 flex-col justify-start items-center gap-2 flex'>
+                <div class='self-stretch text-center text-black text-5xl font-bold'>Companies we’ve worked with</div>
+              </div>
+              <div class='self-stretch text-center text-black text-lg font-medium'>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
+                dolore magna.{' '}
+              </div>
+            </div>
+          </div>
+          
         </main>
       </div>
     </>
