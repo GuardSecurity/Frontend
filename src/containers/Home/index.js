@@ -1,4 +1,5 @@
 import BaseButton from '../../components/Button/Button';
+import quote from '../../assets/quote.png';
 
 import securityBanner from '../../assets/securityBanner.jfif';
 import rectangle from '../../assets/rectangle.png';
@@ -20,6 +21,26 @@ const SecurityAdvantageCard = ({ srcImg, title, description }) => {
         </div>
         <div class='self-stretch text-center text-zinc-800 text-opacity-70 text-lg font-normal leading-relaxed'>
           {description || ''}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CustomCard = ({ content, customerAvatar, customerPosition, customerName, classExtend }) => {
+  return (
+    <div
+      class={`w-80 px-8 py-8 bg-white rounded-lg shadow border border-blue-400 flex-col justify-start items-start gap-2.5 inline-flex ${classExtend}`}
+    >
+      <div class='self-stretch h-64 flex-col justify-start items-start gap-5 flex'>
+        <img src={quote} alt='Quote' />
+        <span class='text-black text-base font-normal leading-snug'>{content || ''}</span>
+        <div class='self-stretch justify-start items-center gap-4 inline-flex'>
+          <img src={customerAvatar} alt='Customer avatar' />
+          <div class='grow shrink basis-0 flex-col justify-center items-start gap-0.5 inline-flex'>
+            <div class='w-56 text-[#C7923E] text-xs font-bold uppercase '>{customerPosition || ''}</div>
+            <div class='w-56 text-black text-base font-bold'>{customerName || ''}</div>
+          </div>
         </div>
       </div>
     </div>
