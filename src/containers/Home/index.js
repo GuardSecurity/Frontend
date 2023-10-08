@@ -1,9 +1,27 @@
-import BaseButton from '../../components/Button/Button';
-import quote from '../../assets/quote.png';
+import { Disclosure } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
+import BaseButton from '../../components/Button';
+
+import logo from '../../assets/logo.png';
 import securityBanner from '../../assets/securityBanner.jfif';
 import rectangle from '../../assets/rectangle.png';
-import contruction from '../../assets/contruction.png';
+import construction from '../../assets/construction.png';
+import slackLogo from '../../assets/slackLogo.png';
+import figmaLogo from '../../assets/figmaLogo.png';
+import microsoftLogo from '../../assets/microsoftLogo.png';
+import hupspotLogo from '../../assets/hupspotLogo.png';
+import outreachLogo from '../../assets/outreachLogo.png';
+import googleLogo from '../../assets/googleLogo.png';
+import padlock from '../../assets/padlock.png';
+import star from '../../assets/star.png';
+import users from '../../assets/users.png';
+import periscope from '../../assets/periscope.png';
+import tryStaffBanner from '../../assets/tryStaffBanner.png';
+import quote from '../../assets/quote.png';
+import sontungAvatar from '../../assets/sontungAvatar.png';
+import stijnAvatar from '../../assets/stijnAvatar.png';
+import BodyguardServicesSydney from '../../assets/BodyguardServicesSydney.png';
 import Navbar from '../../components/Button/Navbar';
 
 function classNames(...classes) {
@@ -46,7 +64,6 @@ const CustomCard = ({ content, customerAvatar, customerPosition, customerName, c
     </div>
   );
 };
-
 
 function Home() {
   return (
@@ -168,7 +185,6 @@ function Home() {
               </div>
             </div>
           </div>
-          
         </main>
       </div>
     </>
