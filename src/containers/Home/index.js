@@ -223,7 +223,34 @@ function Home() {
               content={'GET STARTED'}
             />
           </div>
-          
+
+          <div className='mx-auto relative'>
+            <img className='w-screen h-auto mt-3' src={tryStaffBanner} alt='Banner' />
+            <div className='w-102 h-48 absolute top-16 left-24 px-12 py-2'>
+              <div class='w-96 h-36 text-white text-6xl font-bold '>Try Staff With Us</div>
+              <div class='w-96 h-16 text-neutral-400 text-base font-medium leading-10'>
+                Earn extra just by renting your property...
+              </div>
+              <BaseButton
+                className='w-60 h-14 px-3 py-4 mt-6 items-center inline-flex bg-[#C7923E]'
+                content={
+                  <>
+                    <p>GET STARTED</p>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={3}
+                      stroke='currentColor'
+                      className='w-4 h-4'
+                    >
+                      <path strokeLinecap='round' strokeLinejoin='round' d='M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3' />
+                    </svg>
+                  </>
+                }
+              />
+            </div>
+          </div>
         </main>
       </div>
     </>
