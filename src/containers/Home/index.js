@@ -282,7 +282,86 @@ function Home() {
               </div>
             </div>
           </div>
-          
+
+          <div class='min-w-full px-24 py-16 bg-white justify-between items-center inline-flex'>
+            <div class='py-8 flex-col justify-start items-start gap-10 inline-flex'>
+              <div class='flex-col justify-start items-start flex'>
+                <div class='w-96 pb-10 text-slate-900 text-4xl font-bold leading-10 '>
+                  Bodyguard Services in VietNam
+                </div>
+                <div class='mr-10 text-zinc-800 text-lg font-normal'>
+                  <span>
+                    Bodyguards aren’t just for the rich and famous. There are numerous reasons why you might need to
+                    hire a professional bodyguard. Your professional or social possition could be putting you at risk.
+                    Our bodyguards can help protect:
+                  </span>
+                  <ul class='list-disc ml-4'>
+                    <li>High-profile professionals</li>
+                    <li>Celebrities</li>
+                    <li>Activists</li>
+                    <li>Politicians</li>
+                  </ul>
+                </div>
+              </div>
+              <BaseButton
+                className='w-60 h-14 px-3 py-4 mt-6 items-center text-xs font-bold bg-[#C7923E]'
+                content={'GET STARTED'}
+              />
+            </div>
+            <img class='object-cover' src={BodyguardServicesSydney} alt='BodyguardServicesSydney' />
+          </div>
+          <div class='min-w-full px-24 py-16 bg-white justify-between items-center inline-flex'>
+            <img class='object-cover' src={BodyguardServicesSydney} alt='BodyguardServicesSydney' />
+            <div class='py-8 ml-10 flex-col justify-start items-start gap-10 inline-flex'>
+              <div class='flex-col justify-start items-start flex'>
+                <div class='w-96 pb-10 text-slate-900 text-4xl font-bold leading-10 '>
+                  Bodyguard Services in VietNam
+                </div>
+                <div class='mr-10 text-zinc-800 text-lg font-normal'>
+                  <span>
+                    Bodyguards aren’t just for the rich and famous. There are numerous reasons why you might need to
+                    hire a professional bodyguard. Your professional or social possition could be putting you at risk.
+                    Our bodyguards can help protect:
+                  </span>
+                  <ul class='list-disc ml-4'>
+                    <li>High-profile professionals</li>
+                    <li>Celebrities</li>
+                    <li>Activists</li>
+                    <li>Politicians</li>
+                  </ul>
+                </div>
+              </div>
+              <BaseButton
+                className='w-60 h-14 px-3 py-4 mt-6 items-center text-xs font-bold bg-[#C7923E]'
+                content={'GET STARTED'}
+              />
+            </div>
+          </div>
+          <div class='min-w-full px-24 py-16 bg-white justify-between items-center inline-flex'>
+            <div class='py-8 flex-col justify-start items-start gap-10 inline-flex'>
+              <div class='flex-col justify-start items-start flex'>
+                <div class='pb-10 text-slate-900 text-4xl font-bold leading-10 '>Bodyguard Services in VietNam</div>
+                <div class='mr-10 text-zinc-800 text-lg font-normal'>
+                  <span>
+                    Bodyguards aren’t just for the rich and famous. There are numerous reasons why you might need to
+                    hire a professional bodyguard. Your professional or social possition could be putting you at risk.
+                    Our bodyguards can help protect:
+                  </span>
+                  <ul class='list-disc ml-4'>
+                    <li>High-profile professionals</li>
+                    <li>Celebrities</li>
+                    <li>Activists</li>
+                    <li>Politicians</li>
+                  </ul>
+                </div>
+              </div>
+              <BaseButton
+                className='w-60 h-14 px-3 py-4 mt-6 items-center text-xs font-bold bg-[#C7923E]'
+                content={'GET STARTED'}
+              />
+            </div>
+            <img class='object-cover' src={BodyguardServicesSydney} alt='BodyguardServicesSydney' />
+          </div>
         </main>
       </div>
     </>
