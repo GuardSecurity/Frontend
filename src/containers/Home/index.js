@@ -5,6 +5,28 @@ import rectangle from '../../assets/rectangle.png';
 import contruction from '../../assets/contruction.png';
 import Navbar from '../../components/Button/Navbar';
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+const SecurityAdvantageCard = ({ srcImg, title, description }) => {
+  return (
+    <div class='grow shrink basis-0 px-4 flex-col justify-start items-center gap-4 inline-flex'>
+      <div class='self-stretch flex-col justify-start items-center gap-6 flex'>
+        <img class='object-cover' src={srcImg} alt='Security Advantage' />
+        <div class='self-stretch h-6 text-center text-black text-2xl font-extrabold leading-loose'>
+          {title || ''}
+          <br />
+        </div>
+        <div class='self-stretch text-center text-zinc-800 text-opacity-70 text-lg font-normal leading-relaxed'>
+          {description || ''}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 function Home() {
   return (
     <>
