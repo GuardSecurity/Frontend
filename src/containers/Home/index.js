@@ -1,8 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import BaseButton from '../../components/Button';
-
 import logo from '../../assets/logo.png';
 import securityBanner from '../../assets/securityBanner.jfif';
 import rectangle from '../../assets/rectangle.png';
@@ -23,6 +21,7 @@ import sontungAvatar from '../../assets/sontungAvatar.png';
 import stijnAvatar from '../../assets/stijnAvatar.png';
 import BodyguardServicesSydney from '../../assets/BodyguardServicesSydney.png';
 import Navbar from '../../components/Button/Navbar';
+import BaseButton from '../../components/Button/Button';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -33,11 +32,11 @@ const SecurityAdvantageCard = ({ srcImg, title, description }) => {
     <div class='grow shrink basis-0 px-4 flex-col justify-start items-center gap-4 inline-flex'>
       <div class='self-stretch flex-col justify-start items-center gap-6 flex'>
         <img class='object-cover' src={srcImg} alt='Security Advantage' />
-        <div class='self-stretch h-6 text-center text-black text-2xl font-extrabold leading-loose'>
+        <div class='self-stretch h-6 text-center text-black text-xl font-extrabold leading-loose'>
           {title || ''}
           <br />
         </div>
-        <div class='self-stretch text-center text-zinc-800 text-opacity-70 text-lg font-normal leading-relaxed'>
+        <div class='self-stretch text-center text-zinc-800 text-opacity-70 text-sm font-normal leading-relaxed'>
           {description || ''}
         </div>
       </div>
@@ -161,7 +160,7 @@ function Home() {
             </div>
           </div>
 
-          <div class='min-w-full h-48 px-24 py-20 bg-zinc-100 flex-col justify-start items-center gap-16 inline-flex'>
+          <div class='min-w-full h-38 px-24 py-20 bg-zinc-100 flex-col justify-start items-center gap-16 inline-flex'>
             <div class='justify-end items-center gap-28'>
               <div class='inline-flex'>
                 <div>
@@ -189,7 +188,7 @@ function Home() {
           <div class='min-w-full px-24 py-20 bg-white flex-col justify-start items-center gap-16 inline-flex'>
             <div class='flex-col justify-start items-start gap-12 flex'>
               <div class='self-stretch h-14 flex-col justify-start items-center gap-2 flex'>
-                <div class='self-stretch text-center text-zinc-800 text-5xl font-bold leading-10'>
+                <div class='self-stretch text-center text-zinc-800 text-4xl font-bold leading-10'>
                   The My Security Advantage
                 </div>
               </div>
