@@ -1,5 +1,4 @@
-import logo from '../../assets/logo.png';
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../src/components/Navbar/Navbar';
 import securityBanner from '../../assets/securityBanner.jfif';
 import rectangle from '../../assets/rectangle.png';
 import construction from '../../assets/construction.png';
