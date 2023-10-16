@@ -1,7 +1,5 @@
-
-import BaseButton from '../../components/Button/Button';
-
-
+import logo from '../../assets/logo.png';
+import Navbar from '../../components/Navbar/Navbar';
 import securityBanner from '../../assets/securityBanner.jfif';
 import rectangle from '../../assets/rectangle.png';
 import construction from '../../assets/construction.png';
@@ -22,17 +20,10 @@ import stijnAvatar from '../../assets/stijnAvatar.png';
 import BodyguardServicesSydney from '../../assets/BodyguardServicesSydney.png';
 import lightLogo from '../../assets/lightLogo.png';
 import sendIcon from '../../assets/send.png';
-import Navbar from '../../components/Navbar/Navbar';
+import BaseButton from '../../components/Button/Button.js';
 
-// const navigation = [
-//   { name: 'About', href: '#', current: true },
-//   { name: 'Booking', href: '#', current: false },
-//   { name: 'Contact', href: '#', current: false },
-// ];
 
-// function classNames(...classes) {
-//   return classes.filter(Boolean).join(' ');
-// }
+
 
 const SecurityAdvantageCard = ({ srcImg, title, description }) => {
   return (
@@ -58,7 +49,7 @@ const CustomCard = ({ content, customerAvatar, customerPosition, customerName, c
     >
       <div class='self-stretch h-64 flex-col justify-start items-start gap-5 flex'>
         <img src={quote} alt='Quote' />
-        <span class='text-black text-base font-normal leading-snug'>{content || ''}</span>
+        <span class='text-black  leading-snug'>{content || ''}</span>
         <div class='self-stretch justify-start items-center gap-4 inline-flex'>
           <img src={customerAvatar} alt='Customer avatar' />
           <div class='grow shrink basis-0 flex-col justify-center items-start gap-0.5 inline-flex'>
@@ -73,8 +64,8 @@ const CustomCard = ({ content, customerAvatar, customerPosition, customerName, c
 
 function Home() {
   return (
-    <div className='w-full mx-auto'>
-      <Navbar/>
+    <div className='w-full mx-auto max-w-screen-xl'>
+      <Navbar />
       <main class='mb-20'>
         <div className='mx-auto relative'>
           <img className='w-screen h-auto mt-3' src={securityBanner} alt='Security banner' />
@@ -259,28 +250,27 @@ function Home() {
         </div>
 
         <div class='min-w-full px-24 py-20 bg-zinc-100 flex-col justify-start items-center gap-16 inline-flex'>
-          <div class='justify-end items-center'>
-            <div class='inline-flex'>
-              <CustomCard
-                content="“The security team provided by Guard was incredibly professional and attentive. They gave us peace of mind during our event, and we couldn't be happier with their service.”"
-                customerAvatar={sontungAvatar}
-                customerName='Son tung M-TP'
-                customerPosition='SingerSinger'
-              />
-              <CustomCard
-                classExtend='mx-10'
-                content='“I didn’t have the time or expertise to undertake marketing. Kalungi has a very well thought out approach… and the fact that you can get their team on a fractional basis is unbelievable.”'
-                customerAvatar={stijnAvatar}
-                customerName='Stijn Hendrikse'
-                customerPosition='Co-founder, Kalungi'
-              />
-              <CustomCard
-                content='“I didn’t have the time or expertise to undertake marketing. Kalungi has a very well thought out approach… and the fact that you can get their team on a fractional basis is unbelievable.”'
-                customerAvatar={stijnAvatar}
-                customerName='Stijn Hendrikse'
-                customerPosition='Co-founder, Kalungi'
-              />
-            </div>
+          <div class='justify-end items-center flex flex-col sm:flex-row ever'>
+            <CustomCard
+              content="“The security team provided by Guard was incredibly professional and attentive. They gave us peace of mind during our event, and we couldn't be happier with their service.”"
+              customerAvatar={sontungAvatar}
+              customerName='Son tung M-TP'
+              customerPosition='SingerSinger'
+            />
+            <CustomCard
+              classExtend='mx-10 mt-6 sm:mt-0'
+              content='“I didn’t have the time or expertise to undertake marketing. Kalungi has a very well thought out approach… and the fact that you can get their team on a fractional basis is unbelievable.”'
+              customerAvatar={stijnAvatar}
+              customerName='Stijn Hendrikse'
+              customerPosition='Co-founder, Kalungi'
+            />
+            <CustomCard
+              classExtend='mt-6 sm:mt-0'
+              content='“I didn’t have the time or expertise to undertake marketing. Kalungi has a very well thought out approach… and the fact that you can get their team on a fractional basis is unbelievable.”'
+              customerAvatar={stijnAvatar}
+              customerName='Stijn Hendrikse'
+              customerPosition='Co-founder, Kalungi'
+            />
           </div>
         </div>
 
@@ -379,19 +369,17 @@ function Home() {
               <img src={sendIcon} alt='Send icon' />
             </button>
           </div>
-          <div class='w-96 text-white text-base font-normal leading-tight tracking-tight'>
-            Copyright GuardGuard Studio
-          </div>
+          <div class='w-96 text-white  leading-tight tracking-tight'>Copyright GuardGuard Studio</div>
         </div>
         <div class='bg-[#1A242D] w-full sm:w-1/2 p-12 flex flex-col justify-between h-106 md:h-96'>
           <div className='flex flex-row items-center'>
             <img className='w-7 h-7' src={lightLogo} alt='Light logo' />
             <div className='w-24 ml-5 text-[#9A9AB0] text-3xl font-bold'>Guard</div>
           </div>
-          <div class='text-white text-base font-normal leading-tight tracking-tight mt-4 '>
+          <div class='text-white  leading-tight tracking-tight mt-4 '>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           </div>
-          <div class=' text-white text-base font-normal leading-tight tracking-tight mt-4'>
+          <div class=' text-white  leading-tight tracking-tight mt-4'>
             <div class='grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-6'>
               <div>Home</div>
               <div>About Us</div>
