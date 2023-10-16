@@ -2,10 +2,10 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import Layout from "./pages/Layout";
 
-import Home from "../Home";
-import Login from "./containers/Login";
+import Home from "./containers/Home/index";
+import Login from "./containers/Login/index";
 import SignUp from "./containers/SignUp/SignUp";
-import ResetPassword from "./containers/ResetPassword";
+import ResetPassword from "./containers/ResetPassword/index";
 
 function App() {
   return (
