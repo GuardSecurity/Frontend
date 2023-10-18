@@ -1,8 +1,28 @@
 import "./App.css";
-import Home from "./containers/Home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import Layout from "./pages/Layout";
+
+import Home from "./containers/Home/index";
+import Login from "./containers/Login/index";
+import SignUp from "./containers/SignUp/SignUp";
+import ResetPassword from "./containers/ResetPassword/index";
 
 function App() {
-  return <Home />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          //  element={<Layout />}
+        >
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
