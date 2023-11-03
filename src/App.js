@@ -1,26 +1,37 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Layout from "./pages/Layout";
 
-import Home from "./containers/Home/index";
-import Login from "./containers/Login/index";
-import SignUp from "./containers/SignUp/SignUp";
-import ResetPassword from "./containers/ResetPassword/index";
+import containerLayout from "./components/Layout";
+import Home from "./containers/Home";
+import Login from "./containers/Login";
+import SignUp from "./containers/SignUp";
+import ResetPassword from "./containers/ResetPassword";
+import UserAbout from "./containers/UserAbout/UserAbout";
+import { ProtectRoutes } from "./hooks/ProtectRoutes";
+import AppProvider from "./hooks";
+import MyCalendar from "./components/MyCalendar";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          //  element={<Layout />}
-        >
-          <Route index element={<Home />} />
+      <AppProvider>
+        <Routes>
+          <Route index element={containerLayout(<Home />)} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="reset-password" element={<ResetPassword />} />
-        </Route>
-      </Routes>
+          <Route element={<ProtectRoutes />}>
+            <Route
+              path="/user-about"
+              element={containerLayout(<UserAbout />)}
+            />
+            <Route
+              path="/user-my-calendar"
+              element={containerLayout(<MyCalendar />)}
+            />
+          </Route>
+        </Routes>
+      </AppProvider>
     </BrowserRouter>
   );
 }
