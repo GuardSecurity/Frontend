@@ -15,3 +15,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.rbc-allday-cell {
+  display: none;
+}
+.rbc-time-view .rbc-header {
+  border-bottom: none;
+}
