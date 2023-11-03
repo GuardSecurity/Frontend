@@ -1,11 +1,22 @@
-function BaseInput({ label, type, classExtend, classInput }) {
+function BaseInput({
+  required,
+  label,
+  type,
+  classExtend,
+  classInput,
+  error,
+  ...other
+}) {
   return (
-    <div class={classExtend}>
-      <div class="text-gray-400  leading-7 mb-2">{label}</div>
+    <div className={classExtend}>
+      <div className="text-gray-400 leading-7 mb-2">{label}</div>
       <input
         type={type || "text"}
-        class={`h-11 px-4 py-2 bg-white rounded border border-orange-400 ${classInput}`}
+        className={`h-11 px-4 py-2 bg-white rounded border border-orange-400 ${classInput}`}
+        {...(required && required)}
+        {...other}
       ></input>
+      {error && <div className="text-red-400 mt-2">{error}</div>}
     </div>
   );
 }
