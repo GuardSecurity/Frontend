@@ -24,7 +24,7 @@ function SignUp() {
   const [salary, setSalary] = useState("7");
   const [error, setError] = useState("");
   const [isSignUpSuccess, setSignUpSuccess] = useState(false);
-
+  
   const handleSignUp = () => {
     if (
       passwd.length > 0 &&
@@ -87,8 +87,8 @@ function SignUp() {
           <div className="text-black text-3xl font-semibold leading-10">
             Sign Up
           </div>
-          <div className="text-gray-400  leading-7 mt-4">
-            {error ? error : "Create your Hope UI account"}
+          <div className="text-red-500 leading-7 mt-4">
+            {error ? error : ""}
           </div>
           <div className="mt-6 flex">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
@@ -160,7 +160,7 @@ function SignUp() {
                   I agree with the terms of use
                 </p>
               }
-            />
+                          />
           </div>
           <BaseButton
             disabled={
