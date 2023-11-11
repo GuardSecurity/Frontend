@@ -25,7 +25,6 @@ function SignUp() {
   const [error, setError] = useState('');
   const [isSignUpSuccess, setSignUpSuccess] = useState(false);
   const [isCheck, setCheck] = useState(false);
-
   const handleSignUp = () => {
     if (passwd.length > 0 && confirmpasswd.length > 0 && passwd !== confirmpasswd) {
       setErrorMatchPasswd('Password do not match!');
