@@ -4,7 +4,6 @@ import Header from "../Header";
 export default function containerLayout(children) {
   return (
     <>
-      <Header />
       <main>{children}</main>
       <Footer />
     </>

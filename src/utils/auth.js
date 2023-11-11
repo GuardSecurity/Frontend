@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = 'http://localhost:3000';
 
 const configuration = (method, path, data) => ({
   method: method,
@@ -8,19 +8,10 @@ const configuration = (method, path, data) => ({
   data: data,
 });
 
-const signUp = ({
-  username,
-  passwd,
-  confirmpasswd,
-  role,
-  salary,
-  firstname,
-  lastname,
-  phone,
-}) => {
+const signUp = ({ email, passwd, confirmpasswd, role, salary, firstname, lastname, phone }) => {
   return axios(
-    configuration("post", "/auth/signup", {
-      username,
+    configuration('post', '/auth/signup', {
+      email,
       passwd,
       confirmpasswd,
       role,
@@ -34,8 +25,8 @@ const signUp = ({
     .catch((error) => error);
 };
 
-const login = (username, passwd) => {
-  return axios(configuration("post", "/auth/login", { username, passwd }))
+const login = (email, passwd) => {
+  return axios(configuration('post', '/auth/login', { email, passwd }))
     .then((result) => result.data)
     .catch((error) => error);
 };

@@ -1,16 +1,12 @@
 import helloAdmin from "../../assets/helloAdmin.png";
 
-const HEADER_TABLE = [
-  "",
-  "Image",
-  "Name",
-  "Date",
-  "Amount",
-  "Status",
-  "Action",
-];
+const HEADER_TABLE = ["Image", "Name", "Date", "Amount", "Status", "Action"];
 
-const HeaderTable = <div></div>;
+const HeaderTable = HEADER_TABLE.map((header) => (
+  <th className="border-b border-gray-300 bg-slate-200 py-3">
+    <div className="flex">{header}</div>
+  </th>
+));
 
 function User() {
   return (
@@ -20,31 +16,19 @@ function User() {
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-300">
             <thead>
-              <tr className="border border-gray-300">
-                {HEADER_TABLE.map((header) => (
-                  <th className="border-b border-gray-300 bg-slate-200 py-3">
-                    <div className="flex">{header}</div>
-                  </th>
-                ))}
-              </tr>
+              <tr className="border border-gray-300 ">{HeaderTable}</tr>
             </thead>
             <tbody>
               <tr>
-                <td className="py-3 pl-3 border-b border-gray-300">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox h-5 w-5 text-indigo-600"
-                  />
-                </td>
-                <td className="py-3 border-b border-gray-300">
+                <td className="py-3 border-b border-gray-300 ml-4">
                   <img
                     src="https://source.unsplash.com/random"
                     alt="User Avatar"
                     className="h-10 w-10 rounded-full"
                   />
                 </td>
-                <td className="py-3  border-b border-gray-300">John Doe</td>
-                <td className="py-3  border-b border-gray-300">
+                <td className="py-3 border-b border-gray-300">John Doe</td>
+                <td className="py-3 border-b border-gray-300">
                   September 9, 2013
                 </td>
                 <td className="py-3  border-b border-gray-300">4.000.000</td>
