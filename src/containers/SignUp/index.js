@@ -24,7 +24,7 @@ function SignUp() {
   const [salary, setSalary] = useState('7');
   const [error, setError] = useState('');
   const [isSignUpSuccess, setSignUpSuccess] = useState(false);
-  const [isCheck, setCheck] = useState(true);
+  const [isCheck, setCheck] = useState(false);
 
   const handleSignUp = () => {
     if (passwd.length > 0 && confirmpasswd.length > 0 && passwd !== confirmpasswd) {
@@ -132,7 +132,7 @@ function SignUp() {
             />
           </div>
           <BaseButton
-            disabled={email.length === 0 || passwd.length === 0 || confirmpasswd.length === 0}
+            disabled={email.length === 0 || passwd.length === 0 || confirmpasswd.length === 0 || !isCheck}
             className='bg-[#3A57E8] w-48 h-11 mt-6 rounded'
             content='Sign up'
             onClick={handleSignUp}
