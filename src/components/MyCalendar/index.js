@@ -1,13 +1,28 @@
+import BaseButton from "../Button";
 import CalendarComponent from "./Calendar";
+import { useNavigate } from "react-router-dom";
 
 const MyCalendar = () => {
+  const navigate = useNavigate();
+  const handleNewBooking = () => {
+    navigate("new-booking");
+  };
+
   return (
     <div className="px-[42px] grid grid-rows-1 grid-flow-col my-20">
       <div className="col-span-10">
         <div className="text-slate-900 text-[62px] font-bold leading-[74.40px] tracking-tight">
-          My Canlendar
+          My Calendar
         </div>
-        <div className="my-12">
+        <div className="mt-8 mb-10">
+          <div className="w-full flex justify-end">
+            <BaseButton
+              className="bg-[#C7923E] w-32 h-11 mt-6 rounded"
+              content="Add new"
+              onClick={handleNewBooking}
+            />
+          </div>
+
           <CalendarComponent view="week" style={{ height: "590px" }} />
         </div>
       </div>

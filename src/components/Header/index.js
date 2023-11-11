@@ -1,6 +1,6 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Routes, useLocation } from "react-router-dom";
 
 import BaseButton from "../Button";
 import logo from "../../assets/logo.png";
@@ -17,11 +17,6 @@ const privateNavigation = [
   { name: "About", path: "user-about" },
   { name: "My Calendar", path: "user-my-calendar" },
   { name: "Send Application", path: "user-send-application" },
-];
-
-const userNavigation = [
-  { name: "My profile", path: "my-profile" },
-  { name: "Logout", href: "#" },
 ];
 
 const Header = () => {
@@ -50,6 +45,10 @@ const Header = () => {
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
+  }
+
+  if (!cookies) {
+    return;
   }
 
   return (
@@ -108,6 +107,7 @@ const Header = () => {
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
+                                to="my-profile"
                               >
                                 My profile
                               </Link>
@@ -176,6 +176,8 @@ const Header = () => {
               </div>
             </div>
           </Disclosure.Panel>
+
+          <Routes />
         </>
       )}
     </Disclosure>

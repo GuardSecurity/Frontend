@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import User from "./User";
+import User from "./Guards";
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("guards");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -25,11 +25,11 @@ const Admin = () => {
           </li>
           <li
             className={`p-4 cursor-pointer ${
-              activeTab === "messages" ? "bg-[#C7923E] text-white" : ""
+              activeTab === "guards" ? "bg-[#C7923E] text-white" : ""
             }`}
-            onClick={() => handleTabClick("messages")}
+            onClick={() => handleTabClick("guards")}
           >
-            Users
+            Guards
           </li>
           <li
             className={`p-4 cursor-pointer ${
@@ -43,7 +43,7 @@ const Admin = () => {
       </div>
       <div className="flex-1 bg-gray-100">
         {activeTab === "dashboard" && <p>Dash</p>}
-        {activeTab === "messages" && <User />}
+        {activeTab === "guards" && <User />}
         {activeTab === "settings" && (
           <div className="p-6">
             <h2 className="text-2xl font-bold">Settings Content</h2>
