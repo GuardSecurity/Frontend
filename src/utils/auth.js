@@ -1,32 +1,50 @@
-import axios from 'axios';
+import axios from "axios";
+import configuration from "./config";
 
-const BASE_URL = 'http://localhost:3000';
-
-const configuration = (method, path, data) => ({
-  method: method,
-  url: `${BASE_URL}${path}`,
-  data: data,
-});
-
-const signUp = ({ email, passwd, confirmpasswd, role, salary, firstname, lastname, phone }) => {
+const signUp = ({
+  email,
+  address,
+  dob,
+  phone,
+  gender,
+  passwd,
+  confirmpasswd,
+  role,
+  salary,
+  firstname,
+  lastname,
+}) => {
   return axios(
-    configuration('post', '/auth/signup', {
-      email,
-      passwd,
-      confirmpasswd,
-      role,
-      salary,
-      firstname,
-      lastname,
-      phone,
+    configuration({
+      method: "post",
+      path: "/auth/signup",
+      data: {
+        email,
+        address,
+        dob,
+        gender,
+        passwd,
+        confirmpasswd,
+        role,
+        salary,
+        firstname,
+        lastname,
+        phone,
+      },
     })
   )
     .then((result) => result)
     .catch((error) => error);
 };
 
-const login = (email, passwd) => {
-  return axios(configuration('post', '/auth/login', { email, passwd }))
+const login = (username, passwd) => {
+  return axios(
+    configuration({
+      method: "post",
+      path: "/auth/login",
+      data: { username, passwd },
+    })
+  )
     .then((result) => result.data)
     .catch((error) => error);
 };

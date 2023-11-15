@@ -9,10 +9,10 @@ function BaseInput({
 }) {
   return (
     <div className={classExtend}>
-      <div className="text-gray-400 leading-7 mb-2">{label}</div>
+      <div className="text-gray-400 leading-7 mb-1">{label}</div>
       <input
         type={type || "text"}
-        className={`h-11 px-4 py-2 bg-white rounded border border-orange-400 ${classInput}`}
+        className={`h-11 px-4 py-2 bg-white rounded border border-orange-400 w-full ${classInput}`}
         {...(required && required)}
         {...other}
       ></input>
