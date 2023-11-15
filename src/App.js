@@ -14,7 +14,7 @@ import MyProfile from "./containers/MyProfile";
 import Admin from "./containers/Admin";
 import Header from "./components/Header";
 import EventDetail from "./containers/EventDetail";
-import NewEvent from "./components/New Event";
+import NewBooking from "./components/NewBooking";
 
 function App() {
   return (
@@ -38,7 +38,7 @@ function App() {
             />
             <Route
               path="user-my-calendar/new-booking"
-              element={containerLayout(<NewEvent />)}
+              element={containerLayout(<NewBooking />)}
             />
             <Route path="my-profile" element={containerLayout(<MyProfile />)} />
             <Route path="admin" element={<Admin />} />

@@ -2,7 +2,7 @@ import lightLogo from "../../assets/lightLogo.png";
 import sendIcon from "../../assets/send.png";
 
 const Footer = () => (
-  <div className="w-full flex flex-col sm:flex-row items-center">
+  <div className="w-full flex flex-col sm:flex-row items-center mt-20">
     <div className="bg-[#27343F] w-full sm:w-1/2 p-12 flex flex-col justify-between h-96">
       <div className="w-auto text-white text-4xl font-bold tracking-tight">
         If you have any question, Let us help you!

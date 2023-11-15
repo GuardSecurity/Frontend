@@ -103,7 +103,7 @@ function Home() {
               }
             />
             <BaseButton
-              className="w-auto h-14 px-3 py-4 mt-2 ml-4 items-center inline-flex bg-[#6C757D] whitespace-nowrap overflow-hidden"
+              className="w-36 h-14 px-3 py-4 mt-2 ml-4 items-center inline-flex bg-[#6C757D]"
               content={"LEARN MORE"}
             />
           </div>

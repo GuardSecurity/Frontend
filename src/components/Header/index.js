@@ -6,6 +6,7 @@ import BaseButton from "../Button";
 import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/Auth";
 import { Fragment } from "react";
+import AUTH_PATH_NAME from "./AuthPathName";
 
 const navigation = [
   { name: "About", path: "" },
@@ -31,25 +32,34 @@ const Header = () => {
   const navs = cookies.token ? privateNavigation : navigation;
 
   const NavigationBar = () =>
-    navs.map((item) => (
-      <Link
-        key={`key${item.path}`}
-        className={`font-medium w-32 flex justify-center ${
-          splitLocation === item.path && "text-[#C7923E]"
-        } ${item.name === "Send Application" ? "ml-12" : "ml-6"}`}
-        to={`/${item.path}`}
-      >
-        {item.name}
-      </Link>
-    ));
+    navs.map(
+      (item) =>
+        !AUTH_PATH_NAME.includes(pathname) && (
+          <Link
+            key={`key${item.path}`}
+            className={`font-medium w-32 flex justify-center ${
+              splitLocation === item.path && "text-[#C7923E]"
+            } ${item.name === "Send Application" ? "ml-12" : "ml-6"}`}
+            to={`/${item.path}`}
+          >
+            {item.name}
+          </Link>
+        )
+    );
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
 
-  if (!cookies) {
-    return;
-  }
+  const LoginButton = () =>
+    !AUTH_PATH_NAME.includes(pathname) && (
+      <Link to="/login">
+        <BaseButton
+          className="mt-2 flex justify-center items-center bg-[#C7923E]"
+          content={"Login"}
+        />
+      </Link>
+    );
 
   return (
     <Disclosure as="nav" className="bg-white">
@@ -58,12 +68,15 @@ const Header = () => {
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mt-2">
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
-                <div className="flex flex-row items-center justify-between">
+                <Link
+                  to="/"
+                  className="flex flex-row items-center justify-between"
+                >
                   <img className="w-7 h-7" src={logo} alt="Your Company" />
                   <div className="w-24 ml-5 text-gray-400 text-3xl font-bold">
                     Guard
                   </div>
-                </div>
+                </Link>
                 <div className="hidden md:block">
                   <div className="ml-8 flex justify-center items-baseline">
                     <NavigationBar />
@@ -130,12 +143,7 @@ const Header = () => {
                       </Transition>
                     </Menu>
                   ) : (
-                    <Link to="/login">
-                      <BaseButton
-                        className="mt-2 flex justify-center items-center bg-[#C7923E]"
-                        content={"Login"}
-                      />
-                    </Link>
+                    <LoginButton />
                   )}
                 </div>
               </div>
@@ -164,14 +172,10 @@ const Header = () => {
                   <BaseButton
                     className="mt-2 flex justify-center items-center bg-[#C7923E]"
                     content={"Logout"}
+                    onClick={logout}
                   />
                 ) : (
-                  <Link to="/login">
-                    <BaseButton
-                      className="mt-2 flex justify-center items-center bg-[#C7923E]"
-                      content={"Login"}
-                    />
-                  </Link>
+                  <LoginButton />
                 )}
               </div>
             </div>

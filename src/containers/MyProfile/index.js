@@ -1,9 +1,95 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 import BaseButton from "../../components/Button";
 
+import { getInfo, updateInfo } from "../../utils/profile";
+import DateTimePicker from "../../components/DateTimePicker";
+import moment from "moment";
+import BaseInput from "../../components/Input/Input";
+import SweetAlert2 from "react-sweetalert2";
+
 function MyProfile() {
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
+  const [address, setAddress] = useState("");
+  const [gender, setGender] = useState("");
+
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
+  const [file, setFile] = useState();
+
+  const [swal, setSwal] = useState({});
+
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const { userId } = userData;
+
+  useEffect(() => {
+    getInfo({ userId })
+      .then((res) => {
+        if (res.data) {
+          const { address, firstname, lastname, dob, gender, phone } = res.data;
+          setFirstName(firstname);
+          setLastName(lastname);
+          setDob(moment(dob).format("DD-MM-YYYY"));
+          setAddress(address);
+          setGender(gender);
+          setPhone(phone);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  // Get image file
+  const handleChangeAvatar = (e) => setFile(e.target.files[0]);
+
+  // POST image
+  const handleUploadAvatar = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const result = await axios.post(
+      `customer/changeinfor/${userId}`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+  };
+
+  const handleUpdateProfile = () => {
+    const data = {
+      address,
+      firstname,
+      lastname,
+      dob,
+      gender,
+      phone,
+      // img: "",
+    };
+
+    updateInfo({ userId, data })
+      .then((res) =>
+        setSwal({
+          ...swal,
+          show: true,
+          text: res.data.message || "",
+          icon: "success",
+          // didClose: () => navigate("../user-my-calendar"),
+        })
+      )
+      .catch((err) =>
+        setSwal({
+          ...swal,
+          show: true,
+          text: err.response.data.message || "",
+          icon: "error",
+        })
+      );
+  };
 
   const UpdateForm = () => {
     return (
@@ -13,45 +99,93 @@ function MyProfile() {
             <div className="w-full md:w-3/5 px-8 bg-white lg:ml-4">
               <div className="rounded shadow p-6">
                 <div className="pb-4">
-                  <label className="font-semibold text-gray-700 block pb-1">
+                  <div className="font-semibold text-gray-700 block pb-1">
                     First Name
-                  </label>
-                  <div className="flex border-2 rounded-r px-4 py-2 w-full">
-                    <input disabled type="text" value="Truong" />
                   </div>
+                  <input
+                    type="text"
+                    className="border rounded-r px-4 py-2  rounded border-orange-400 w-full"
+                    defaultValue={firstname}
+                    onBlur={(e) => {
+                      setFirstName(e.target.value);
+                    }}
+                  />
                 </div>
+
                 <div className="pb-4">
                   <label className="font-semibold text-gray-700 block pb-1">
                     Last Name
                   </label>
-                  <div className="flex border-2 rounded-r px-4 py-2 w-full">
-                    <input disabled type="text" value="Tan Duy" />
-                  </div>
+                  <input
+                    type="text"
+                    className="border rounded-r px-4 py-2  rounded border-orange-400 w-full"
+                    defaultValue={lastname}
+                    onBlur={(e) => setLastName(e.target.value)}
+                  />
                 </div>
+
+                <div className="pb-4">
+                  <label className="font-semibold text-gray-700 block pb-1">
+                    Gender
+                  </label>
+                  <select
+                    id="gender"
+                    name="gender"
+                    className="border rounded-r px-4 py-2  rounded border-orange-400 w-full"
+                    onChange={(e) => setGender(e.target.value)}
+                    defaultValue={gender}
+                  >
+                    <option value={true}>Male</option>
+                    <option value={false}>Female</option>
+                  </select>
+                </div>
+
                 <div className="pb-4">
                   <label className="font-semibold text-gray-700 block pb-1">
                     Phone
                   </label>
-                  <div className="flex border-2 rounded-r px-4 py-2 w-full">
-                    <input disabled type="text" value="0327012688" />
-                  </div>
+                  <input
+                    type="text"
+                    className="border rounded-r px-4 py-2  rounded border-orange-400 w-full"
+                    defaultValue={phone}
+                    onBlur={(e) => setPhone(e.target.value)}
+                  />
                 </div>
+
                 <div className="pb-4">
                   <label className="font-semibold text-gray-700 block pb-1">
                     Address
                   </label>
-                  <div className="flex border-2 rounded-r px-4 py-2 w-full">
-                    <input disabled type="text" value="Ngu Hanh Son" />
-                  </div>
+                  <input
+                    type="text"
+                    className="border rounded-r px-4 py-2  rounded border-orange-400 w-full"
+                    defaultValue={address}
+                    onBlur={(e) => setAddress(e.target.value)}
+                  />
                 </div>
+
+                <DateTimePicker
+                  label="Date of Birth"
+                  placeholder="DD-MM-YYYY"
+                  dateFormat="DD-MM-YYYY"
+                  timeFormat={false}
+                  initialValue={dob}
+                  onChange={(dateOfBirth) => setDob(dateOfBirth)}
+                />
+
                 <BaseButton
-                  className="mt-2 flex pb-4 bg-[#C7923E]"
+                  className="mt-4 flex pb-4 bg-[#C7923E]"
                   content={"Submit"}
+                  onClick={handleUpdateProfile}
                 />
               </div>
             </div>
           </div>
         </div>
+        <SweetAlert2
+          didClose={() => setSwal({ ...swal, show: false })}
+          {...swal}
+        />
       </div>
     );
   };
@@ -59,10 +193,31 @@ function MyProfile() {
   return (
     <div className="w-1/2 mx-10 my-10 h-[608px] relative">
       <div className="w-[279px] h-[566px] left-[16px] top-[10px] absolute bg-gray-100 rounded-lg"></div>
-      <div className="w-[163px] h-[163px] pl-[10.19px] pr-[10.29px] py-[10.18px] left-[74px] top-[50px] absolute justify-center items-center inline-flex"></div>
-      <div className="w-32 h-[22px] left-[92px] top-[218px] absolute text-zinc-700 text-base font-semibold">
-        Upload a Photo
+      <div className="w-[163px] h-[163px] pl-[10.19px] pr-[10.29px] py-[10.18px] left-[74px] top-[50px] absolute justify-center items-center inline-flex">
+        <img src={file && URL.createObjectURL(file)} />
       </div>
+
+      <div className="w-42 h-[22px] left-[50px] top-[218px] absolute text-zinc-700 text-base font-semibold">
+        <label for="upload-photo" className={`ml-[${file ? 50 : 0}px]`}>
+          Upload photo
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          name="photo"
+          onChange={handleChangeAvatar}
+          id="upload-photo"
+          className="hidden"
+        />
+        {file && (
+          <BaseButton
+            content="Submit"
+            className="mt-2 flex justify-center items-center bg-[#C7923E] ml-4"
+            onClick={handleUploadAvatar}
+          />
+        )}
+      </div>
+
       <div className="w-[201px] h-11 left-[41px] top-[421px] absolute text-zinc-700 text-[22px] font-bold">
         John Doe - Host
       </div>
@@ -75,11 +230,8 @@ function MyProfile() {
           Edit Profile
         </div>
       </button>
-      <div className="h-5 left-[339px] top-[14px] text-2xl absolute ">
-        Truong Tan Duy
-      </div>
-      <div className="w-[111px] h-5 left-[339px] top-[56px] absolute text-neutral-400 text-sm font-medium">
-        Joined in 2021
+      <div className="h-5 left-[339px] top-[14px] text-2xl absolute w-full ">
+        {firstname} {lastname}
       </div>
       <div className="w-[178px] left-[39px] top-[462px] absolute">
         <div className="w-[149px] h-[22px] left-[29px] top-[1px] absolute text-neutral-400 text-[15px] font-medium">
