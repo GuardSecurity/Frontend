@@ -7,6 +7,7 @@ import BaseButton from "../Button";
 import BaseInput from "../Input/Input";
 import DateTimePicker from "../DateTimePicker";
 import { createNewBooking } from "../../utils/booking";
+import { amountFormatting } from "../../utils/formatHelper";
 
 function NewBooking() {
   const navigate = useNavigate();
@@ -29,6 +30,11 @@ function NewBooking() {
 
   const numberOfDayWorking =
     new Date(timeEnd).getDate() - new Date(timeStart).getDate();
+
+  useEffect(() => {
+    setTimeStart(new Date());
+    setTimeEnd(moment(new Date()).add(23 - new Date().getHours(), "hours"));
+  }, []);
 
   useEffect(() => {
     if (isValid && quantity) {
@@ -144,12 +150,17 @@ function NewBooking() {
               <DateTimePicker
                 label="Time Start"
                 classExtend="w-[190px]"
+                initialValue={new Date()}
                 onChange={(time) => setTimeStart(time)}
               />
 
               <DateTimePicker
                 label="Time End"
                 classExtend="w-[190px]"
+                initialValue={moment(new Date()).add(
+                  23 - new Date().getHours(),
+                  "hours"
+                )}
                 onChange={(time) => setTimeEnd(time)}
               />
             </div>
@@ -162,7 +173,7 @@ function NewBooking() {
 
             {totalAmount && (
               <div className="mt-6 ml-2 font-medium">
-                Total amount: {new Intl.NumberFormat().format(totalAmount)}
+                Total amount: {amountFormatting(totalAmount)}
               </div>
             )}
 

@@ -1,4 +1,4 @@
-function BaseButton({ content, className, onClick, disabled, ...other }) {
+function BaseButton({ content, onClick, className, disabled, ...other }) {
   return (
     <button
       disabled={disabled}

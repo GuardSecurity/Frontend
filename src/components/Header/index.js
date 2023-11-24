@@ -61,6 +61,10 @@ const Header = () => {
       </Link>
     );
 
+  if (pathname === "/admin") {
+    return null;
+  }
+
   return (
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
