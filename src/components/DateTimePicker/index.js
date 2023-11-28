@@ -8,6 +8,7 @@ function DateTimePicker({
   placeholder,
   timeFormat,
   dateFormat,
+  initialValue,
   onChange,
   ...rest
 }) {
@@ -23,6 +24,7 @@ function DateTimePicker({
         timeFormat={timeFormat && timeFormat}
         dateFormat={dateFormat && dateFormat}
         inputProps={inputProps}
+        initialValue={initialValue && initialValue}
         onChange={(moment) => onChange(moment.format(dateFormat && dateFormat))}
         {...rest}
       />

@@ -52,7 +52,7 @@ function MyProfile() {
     formData.append("image", file);
 
     const result = await axios.post(
-      `customer/changeinfor/${userId}`,
+      `http://localhost:3000/customer/changeimg/${userId}`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -68,7 +68,6 @@ function MyProfile() {
       dob,
       gender,
       phone,
-      // img: "",
     };
 
     updateInfo({ userId, data })

@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3000";
@@ -15,7 +15,13 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const [cookies, setCookies, removeCookie] = useCookies();
+
+  if (!cookies) {
+    localStorage.removeItem("userData");
+  }
 
   const login = ({ email, passwd }) => {
     return axios(configuration("post", "/auth/login", { email, passwd }))
@@ -23,6 +29,8 @@ export const UserProvider = ({ children }) => {
         if (res.data?.token) {
           removeCookie("token");
           setCookies("token", res.data?.token.toString());
+
+          localStorage.removeItem("userData");
 
           localStorage.setItem(
             "userData",
@@ -34,7 +42,10 @@ export const UserProvider = ({ children }) => {
             })
           );
 
-          navigate("/user-about");
+          if (res.data.role === 1) navigate("admin");
+
+          if (res.data.role === 2 || res.data.role === 3)
+            navigate("user-about");
 
           return res.data;
         }
@@ -44,6 +55,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("userData");
+
     ["token", "name"].forEach((obj) => removeCookie(obj)); // remove data save in cookies
     navigate("/login");
   };
