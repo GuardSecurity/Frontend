@@ -9,6 +9,8 @@ import DateTimePicker from "../DateTimePicker";
 import { createNewBooking } from "../../utils/booking";
 import { amountFormatting } from "../../utils/formatHelper";
 
+import { SERVICES } from "../../utils/constants";
+
 function NewBooking() {
   const navigate = useNavigate();
 
@@ -18,23 +20,21 @@ function NewBooking() {
   const [swal, setSwal] = useState({});
 
   const [companyName, setCompanyName] = useState("");
-  const [service, setService] = useState("");
+  const [service, setService] = useState("Design");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
-  const [quantity, setQuantity] = useState();
+  const [quantity, setQuantity] = useState(1);
   const [totalAmount, setTotalAmount] = useState("");
-  const [timeStart, setTimeStart] = useState("");
-  const [timeEnd, setTimeEnd] = useState("");
+  const [timeStart, setTimeStart] = useState(new Date());
+  const [timeEnd, setTimeEnd] = useState(
+    moment(new Date()).add(23 - new Date().getHours(), "hours")
+  );
 
-  const isValid = timeStart && timeEnd && timeStart < timeEnd;
+  const isValid =
+    timeStart && timeEnd && moment(timeEnd).isAfter(moment(timeStart));
 
   const numberOfDayWorking =
     new Date(timeEnd).getDate() - new Date(timeStart).getDate();
-
-  useEffect(() => {
-    setTimeStart(new Date());
-    setTimeEnd(moment(new Date()).add(23 - new Date().getHours(), "hours"));
-  }, []);
 
   useEffect(() => {
     if (isValid && quantity) {
@@ -97,7 +97,7 @@ function NewBooking() {
           show: true,
           text: res.data.message || "",
           icon: "success",
-          didClose: () => navigate("../user-my-calendar"),
+          didClose: () => navigate(`payment/${companyName}`),
         });
       } catch (err) {
         setSwal({
@@ -121,11 +121,19 @@ function NewBooking() {
               onChange={(e) => setCompanyName(e.target.value)}
             />
 
-            <BaseInput
-              label="Service"
-              classExtend="w-full mt-3"
-              onChange={(e) => setService(e.target.value)}
-            />
+            <div>
+              <div className="text-gray-400 leading-7 mb-2">Service</div>
+              <select
+                id="service"
+                name="service"
+                className="h-11 w-full px-4 bg-white rounded border border-orange-400"
+                onChange={(e) => setService(e.target.value)}
+              >
+                {SERVICES.map((service) => (
+                  <option>{service.label}</option>
+                ))}
+              </select>
+            </div>
 
             <BaseInput
               label="Address"
@@ -143,14 +151,20 @@ function NewBooking() {
               label="Quantity"
               classExtend="w-full mt-3"
               type="number"
+              value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             />
+
+            {quantity < 1 && <p className="text-red-500">More than!</p>}
 
             <div className="flex justify-between mt-3">
               <DateTimePicker
                 label="Time Start"
                 classExtend="w-[190px]"
                 initialValue={new Date()}
+                isValidDate={(currentDate, selectedDate) => {
+                  return currentDate.isAfter(moment(selectedDate));
+                }}
                 onChange={(time) => setTimeStart(time)}
               />
 
@@ -161,17 +175,20 @@ function NewBooking() {
                   23 - new Date().getHours(),
                   "hours"
                 )}
+                isValidDate={(currentDate, selectedDate) => {
+                  return currentDate.isAfter(moment(selectedDate));
+                }}
                 onChange={(time) => setTimeEnd(time)}
               />
             </div>
 
-            {!isValid && timeStart && timeEnd && (
+            {!isValid && (
               <div className="text-red-500">
                 "Start time must be earlier than end time"
               </div>
             )}
 
-            {totalAmount && (
+            {totalAmount && quantity > 0 && (
               <div className="mt-6 ml-2 font-medium">
                 Total amount: {amountFormatting(totalAmount)}
               </div>
@@ -179,7 +196,7 @@ function NewBooking() {
 
             <BaseButton
               className="mt-8 flex pb-4 bg-[#C7923E]"
-              disabled={!isValid}
+              disabled={!isValid || quantity < 1}
               onClick={handleCreateNewBooking}
               content={"Submit"}
             />
@@ -210,30 +227,24 @@ const formatDataBooking = (numberOfDayWorking, timeStart, timeEnd) => {
   return arr.map((e, index) => {
     if (index === 0) {
       return {
-        time_start: moment(timeStart)
-          .add(index, "days")
-          .format("YYYY-MM-DD HH:mm:ss"),
+        time_start: moment(timeStart).format("YYYY-MM-DD HH:mm:ss"),
         time_end: moment(timeEnd)
           .subtract(numberOfDayWorking, "days")
-          .set({ hour: 23, minute: 59, second: 59 })
           .format("YYYY-MM-DD HH:mm:ss"),
       };
     } else if (index > 0 && index < numberOfDayWorking) {
       return {
         time_start: moment(timeStart)
           .add(index, "days")
-          .set({ hour: 0, minute: 0, second: 0 })
           .format("YYYY-MM-DD HH:mm:ss"),
         time_end: moment(timeEnd)
           .subtract(numberOfDayWorking - index, "days")
-          .set({ hour: 23, minute: 59, second: 59 })
           .format("YYYY-MM-DD HH:mm:ss"),
       };
     } else if (index === numberOfDayWorking) {
       return {
         time_start: moment(timeStart)
           .add(index, "days")
-          .set({ hour: 0, minute: 0, second: 0 })
           .format("YYYY-MM-DD HH:mm:ss"),
         time_end: moment(timeEnd).format("YYYY-MM-DD HH:mm:ss"),
       };

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { stringToRGB } from "../../utils/formatHelper";
 
 moment.locale("vi");
 const localizer = momentLocalizer(moment);
@@ -16,6 +17,7 @@ const Task = (props, view) => {
   const timeBooking = (end.getHours() - start.getHours()) * 40;
   const formatTimeTwoDigit = (time) => (time < 10 ? "0" : "") + time;
 
+  // old
   const handleSelectEvent = () => {
     localStorage.setItem("companyName", companyname);
     localStorage.setItem("start", start);
@@ -50,7 +52,7 @@ const Task = (props, view) => {
 
   return (
     <div
-      className="relative bg-indigo-50 "
+      className=" bg-indigo-50 w-1/3"
       style={{ height: timeBooking }}
       onClick={handleSelectEvent}
     >
@@ -80,7 +82,35 @@ export default function CalendarComponent({
   view = "month",
   style,
   eventsData,
+  rolePosition,
 }) {
+  const navigate = useNavigate();
+
+  const handleSelect = (props) => {
+    const { companyname, start, end } = props;
+
+    if (rolePosition === "guard")
+      localStorage.setItem("customerIdOfBooking", props?.customerId);
+
+    localStorage.setItem("companyName", companyname);
+    localStorage.setItem("start", start);
+    localStorage.setItem("end", end);
+
+    navigate("/event-detail");
+  };
+
+  const eventStyleGetter = (event) => {
+    const colorByCompanyName = stringToRGB(event.companyname);
+    var backgroundColor = "#" + colorByCompanyName;
+
+    return {
+      style: {
+        backgroundColor: backgroundColor,
+        opacity: 0.8,
+      },
+    };
+  };
+
   return (
     <div className="App">
       <Calendar
@@ -91,11 +121,13 @@ export default function CalendarComponent({
         defaultDate={new Date()}
         events={eventsData}
         style={style}
-        onSelectEvent={(event) => console.log("--")}
-        // onSelectSlot={handleSelect}
-        components={{
-          eventWrapper: (props) => Task(props, view),
-        }}
+        onSelectEvent={handleSelect}
+        dayLayoutAlgorithm={"no-overlap"}
+        scrollToTime={new Date()}
+        eventPropGetter={eventStyleGetter}
+        // components={{
+        //   eventWrapper: (props) => Task(props, view),
+        // }}
       />
     </div>
   );

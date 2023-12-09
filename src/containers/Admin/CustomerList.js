@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 
 import helloAdmin from "../../assets/helloAdmin.png";
 import moment from "moment";
-import { getCustomerList } from "../../utils/admin";
+import { getCustomerById, getCustomerList } from "../../utils/admin";
+import Popup from "reactjs-popup";
+import CustomerDetail from "./Detail/CustomerDetail";
 
 const HEADER_TABLE = [
   "Image",
@@ -21,6 +23,8 @@ const HeaderTable = HEADER_TABLE.map((header) => (
 
 function CustomerList() {
   const [customerList, setCustomerList] = useState([]);
+  const [isDisplayPopup, setDisplayPopup] = useState(false);
+  const [customerDetail, setCustomerDetail] = useState({});
 
   useEffect(() => {
     getCustomerList()
@@ -30,14 +34,26 @@ function CustomerList() {
       .catch((err) => console.error("ERROR: ", err));
   }, []);
 
+  const handleDisplayDetail = async (customerId) => {
+    try {
+      const res = await getCustomerById({ customerId });
+      setCustomerDetail(res.data);
+    } catch (error) {
+      console.error(console.error());
+    }
+    setDisplayPopup(true);
+  };
+
   const BodyTable = () =>
     customerList.map((customer) => (
       <BodyTableRow
         key={customer.customer_id}
+        customerId={customer.customer_id}
         name={customer.firstname + " " + customer.firstname}
         gender={customer.gender}
         phone={customer.phone}
         dob={moment(customer.dob).format("DD-MM-YYY")}
+        handleDisplayDetail={handleDisplayDetail}
       />
     ));
 
@@ -54,11 +70,41 @@ function CustomerList() {
           </table>
         </div>
       </div>
+
+      <Popup
+        open={isDisplayPopup}
+        onClose={() => isDisplayPopup && setDisplayPopup(false)}
+        modal
+        {...{
+          contentStyle: { width: "80%", borderRadius: 4, padding: 20 },
+        }}
+      >
+        <div>
+          <div className="content">
+            <CustomerDetail details={customerDetail} />
+          </div>
+          <div className="w-full flex justify-center mt-4">
+            <button
+              className="bg-blue-500 text-white px-4 py-1 rounded-sm"
+              onClick={() => setDisplayPopup(false)}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </Popup>
     </div>
   );
 }
 
-const BodyTableRow = ({ name, gender, phone, dob }) => {
+const BodyTableRow = ({
+  customerId,
+  name,
+  gender,
+  phone,
+  dob,
+  handleDisplayDetail,
+}) => {
   return (
     <tbody>
       <tr>
@@ -75,36 +121,23 @@ const BodyTableRow = ({ name, gender, phone, dob }) => {
         </td>
         <td className="py-3  border-b border-gray-300">{phone}</td>
         <td className="py-3 border-b border-gray-300">{dob}</td>
-        <td className="py-3 border-b border-gray-300">
-          <button className="bg-yellow-500 hover:bg-yellow-300 text-white py-1 px-2 rounded-full text-xs">
+        <td
+          className="py-3 border-b border-gray-300"
+          onClick={() => handleDisplayDetail(customerId)}
+        >
+          <button className="hover:bg-blue-100 text-blue-700 rounded-full text-xs ml-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-4 h-5"
+              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-              />
-            </svg>
-          </button>
-          <button className="bg-red-500 hover:bg-red-300 text-white py-1 px-2 rounded-full text-xs ml-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-4 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </button>

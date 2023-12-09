@@ -59,6 +59,30 @@ const UpdateAllocateGuard = ({ bookingName, data }) =>
     })
   );
 
+const getSalaryGuard = ({ guardId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/GetSalaryGuard/${guardId}`,
+    })
+  );
+
+const getGuardById = ({ guardId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getGuardById/${guardId}`,
+    })
+  );
+
+const getCustomerById = ({ customerId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getCustomerById/${customerId}`,
+    })
+  );
+
 export {
   getCustomerList,
   getGuardList,
@@ -67,4 +91,7 @@ export {
   getListGuardFree,
   postAllocateGuard,
   UpdateAllocateGuard,
+  getSalaryGuard,
+  getGuardById,
+  getCustomerById,
 };

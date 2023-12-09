@@ -5,19 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { getBooking } from "../../utils/booking";
 
 const MyCalendar = () => {
+  const navigate = useNavigate();
+
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { userId, role, firstName, lastName } = userData;
+  const rolePosition = role === 2 ? "customer" : role === 3 && "guard";
 
   const [myBooking, setMyBooking] = useState([]);
 
   useEffect(() => {
-    getBooking({ userId })
+    getBooking({ userId, role: rolePosition })
       .then((res) => {
         if (res?.data && res?.data.length > 0) {
           const formatBooking = res?.data.map((booking) => ({
             companyname: booking.companyname,
             start: new Date(booking.time_start),
             end: new Date(booking.time_end),
+            ...(role === 3 && { customerId: booking.customer_id }),
           }));
           setMyBooking(formatBooking);
         }
@@ -25,7 +29,6 @@ const MyCalendar = () => {
       .catch((err) => console.error("ERROR: ", err));
   }, []);
 
-  const navigate = useNavigate();
   const handleNewBooking = () => {
     navigate("new-booking");
   };
@@ -37,7 +40,7 @@ const MyCalendar = () => {
           My Calendar
         </div>
         <div className="mt-8 mb-10">
-          {role == 2 && (
+          {role === 2 && (
             <div className="w-full flex justify-end">
               <BaseButton
                 className="bg-[#C7923E] w-32 h-11 mt-6 rounded"
@@ -50,6 +53,7 @@ const MyCalendar = () => {
           <CalendarComponent
             view="week"
             style={{ height: "590px" }}
+            rolePosition={rolePosition && rolePosition}
             eventsData={myBooking}
           />
         </div>

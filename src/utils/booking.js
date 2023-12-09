@@ -10,19 +10,19 @@ const createNewBooking = ({ data, userId }) =>
     })
   );
 
-const getBooking = ({ userId }) =>
+const getBooking = ({ userId, role }) =>
   axios(
     configuration({
       method: "get",
-      path: `/customer/getmyBooking/${userId}`,
+      path: `/${role}/getmyBooking/${userId}`,
     })
   );
 
-const getDetailBookingOneDay = ({ params }) =>
+const getDetailBookingOneDay = ({ params, role }) =>
   axios(
     configuration({
       method: "get",
-      path: "/customer/getDetailBookingOneDay",
+      path: `/${role}/getDetailBookingOneDay`,
       params,
     })
   );
@@ -31,9 +31,24 @@ const attendance = ({ data }) =>
   axios(
     configuration({
       method: "post",
-      path: "/customer/attendence",
+      path: "/customer/editattendence",
       data,
     })
   );
 
-export { createNewBooking, getBooking, getDetailBookingOneDay, attendance };
+const payment = ({ data }) =>
+  axios(
+    configuration({
+      method: "post",
+      path: "/customer/payment",
+      data,
+    })
+  );
+
+export {
+  createNewBooking,
+  getBooking,
+  getDetailBookingOneDay,
+  attendance,
+  payment,
+};

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 import BaseButton from "../../components/Button";
 import CheckBox from "../../components/Checkbox";
@@ -25,7 +26,7 @@ function SignUp() {
   const [errorMatchPasswd, setErrorMatchPasswd] = useState("");
   const [role, setRole] = useState(2);
   const [gender, setGender] = useState(true);
-  const [salary, setSalary] = useState("7");
+  const [salary, setSalary] = useState("7000000");
   const [error, setError] = useState("");
   const [isSignUpSuccess, setSignUpSuccess] = useState(false);
   const [isChecked, setChecked] = useState(false);
@@ -49,7 +50,7 @@ function SignUp() {
       email &&
       gender &&
       address &&
-      // dob &&
+      dob &&
       confirmpasswd &&
       role &&
       salary &&
@@ -69,7 +70,6 @@ function SignUp() {
         phone,
       }).then((result) => {
         setErrorMatchPasswd("");
-
         if (result.data) {
           setError("");
           setSignUpSuccess(true);
@@ -133,7 +133,11 @@ function SignUp() {
                 placeholder="DD-MM-YYYY"
                 dateFormat="DD-MM-YYYY"
                 timeFormat={false}
+                isValidDate={(currentDate, selectedDate) => {
+                  return currentDate.isBefore(moment(selectedDate));
+                }}
                 onChange={(dateOfBirth) => setDob(dateOfBirth)}
+                // onChange={(dateOfBirth) => setDob(dateOfBirth)}
               />
 
               <BaseInput

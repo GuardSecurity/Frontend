@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Popup from "reactjs-popup";
 
 import helloAdmin from "../../assets/helloAdmin.png";
 import moment from "moment";
@@ -6,7 +7,6 @@ import { getBookingList } from "../../utils/admin";
 import BaseButton from "../../components/Button";
 import { amountFormatting } from "../../utils/formatHelper";
 import BookingDetailManager from "./Detail/BookingDetailManager";
-import Popup from "reactjs-popup";
 
 import "./styles.css";
 
@@ -19,9 +19,9 @@ const HEADER_TABLE = [
   "",
 ];
 
-const HeaderTable = HEADER_TABLE.map((header) => (
+const HeaderTable = HEADER_TABLE.map((header, index) => (
   <th className="border-b border-gray-200 bg-slate-100 py-3" key={`${header}`}>
-    {header}
+    <div className={`${index < 2 && "ml-2"} flex`}>{header}</div>
   </th>
 ));
 
@@ -30,6 +30,7 @@ function BookingList() {
   const [bookingList, setBookingList] = useState([]);
   const [isDisplayPopup, setDisplayPopup] = useState(false);
   const [selectedCompanyName, setSelectedCompanyName] = useState("");
+  const [customerId, setCustomerId] = useState("");
 
   useEffect(() => {
     getBookingList("getBookingPayment")
@@ -54,7 +55,8 @@ function BookingList() {
     setActiveLabel(status);
   };
 
-  const handleDisplayDetail = (companyName) => {
+  const handleDisplayDetail = (companyName, customerId) => {
+    setCustomerId(customerId);
     setDisplayPopup(true);
     setSelectedCompanyName(companyName);
   };
@@ -63,8 +65,9 @@ function BookingList() {
     bookingList.map((booking) => (
       <tbody>
         <BodyTableRow
-          key={booking.customer_id}
+          key={booking.bookingname}
           companyName={booking.companyname}
+          customerId={booking.customer_id}
           address={booking.address}
           quantity={booking.quantity}
           totalAmount={booking.total_amount}
@@ -77,6 +80,7 @@ function BookingList() {
   const BodyTableRow = ({
     companyName,
     address,
+    customerId,
     quantity,
     totalAmount,
     bookingDate,
@@ -88,19 +92,16 @@ function BookingList() {
           {companyName}
         </td>
         <td className="py-3 border-b border-gray-300 pl-2">{address}</td>
-        <td className="py-3 border-b border-gray-300 flex justify-center">
-          {quantity}
-        </td>
+        <td className="py-5 border-b border-gray-300">{quantity}</td>
         <td className="py-3 border-b border-gray-300 ml-4">
           {amountFormatting(totalAmount)}
         </td>
-        <td className="py-3 border-b border-gray-300 flex justify-center">
+        <td className="py-3 border-b border-gray-300">
           {moment(bookingDate).format("DD-MM-YYY")}
         </td>
-        <td className="py-3 border-b border-gray-300">{status}</td>
         <td
           className="py-3 border-b border-gray-300"
-          onClick={() => handleDisplayDetail(companyName)}
+          onClick={() => handleDisplayDetail(companyName, customerId)}
         >
           <button className="hover:bg-blue-100 text-blue-700 rounded-full text-xs ml-2">
             <svg
@@ -179,6 +180,7 @@ function BookingList() {
             <BookingDetailManager
               companyName={selectedCompanyName}
               activeLabel={activeLabel}
+              customerId={customerId}
               setDisplayPopup={setDisplayPopup}
               setActiveLabel={setActiveLabel}
             />
