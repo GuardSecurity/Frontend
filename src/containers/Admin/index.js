@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import GuardList from "./GuardList";
 import CustomerList from "./CustomerList";
 import BookingList from "./BookingList";
+import Dashboard from "./Dashboard";
 
 import BaseButton from "../../components/Button";
 import { useAuth } from "../../hooks/Auth";
@@ -10,7 +11,7 @@ import { useAuth } from "../../hooks/Auth";
 import "./styles.css";
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState("customers");
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   const { logout } = useAuth();
 
@@ -22,7 +23,9 @@ const Admin = () => {
     <div className="flex h-screen">
       <div className="w-52">
         <div className="p-6">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <h1 className="text-2xl font-bold"
+          onClick={() => handleTabClick("dashboard")}
+          >Dashboard</h1>
         </div>
         <div className="h-1/2">
           <ul>
@@ -64,6 +67,7 @@ const Admin = () => {
         {activeTab === "customers" && <CustomerList />}
         {activeTab === "guards" && <GuardList />}
         {activeTab === "bookings" && <BookingList />}
+        {activeTab === "dashboard" && <Dashboard />}
       </div>
     </div>
   );
