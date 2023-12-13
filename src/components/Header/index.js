@@ -106,9 +106,7 @@ const Header = () => {
                           onClick={() => navigate("/customer-unpaid-list")}
                           className="hover:bg-yellow-100 rounded-md p-1"
                         >
-                          <IconButton size="md" color="amber">
-                            <ShoppingBagIcon className="h-7 w-7 " />
-                          </IconButton>
+                          <ShoppingBagIcon className="h-8 w-8" />
                         </button>
                       )}
 
