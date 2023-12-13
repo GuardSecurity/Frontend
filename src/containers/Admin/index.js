@@ -8,6 +8,7 @@ import BaseButton from "../../components/Button";
 import { useAuth } from "../../hooks/Auth";
 
 import "./styles.css";
+import NewsList from "./NewsList";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("customers");
@@ -50,6 +51,14 @@ const Admin = () => {
             >
               Bookings
             </li>
+            <li
+              className={`p-4 cursor-pointer ${
+                activeTab === "news" ? "bg-[#C7923E] text-white" : ""
+              }`}
+              onClick={() => handleTabClick("news")}
+            >
+              News
+            </li>
           </ul>
           <div className="h-full flex justify-center items-end">
             <BaseButton
@@ -64,6 +73,7 @@ const Admin = () => {
         {activeTab === "customers" && <CustomerList />}
         {activeTab === "guards" && <GuardList />}
         {activeTab === "bookings" && <BookingList />}
+        {activeTab === "news" && <NewsList />}
       </div>
     </div>
   );

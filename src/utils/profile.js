@@ -1,16 +1,22 @@
-import axios from "axios";
+import axios from 'axios';
 
 const getInfo = ({ userId }) =>
   axios({
-    method: "get",
+    method: 'get',
     url: `http://localhost:3000/customer/myinfor/${userId}`,
   });
 
 const updateInfo = ({ userId, data }) =>
   axios({
-    method: "post",
+    method: 'post',
     url: `http://localhost:3000/customer/changeinfor/${userId}`,
     data,
   });
+const updateImg = ({ userId, data }) =>
+  axios({
+    method: 'post',
+    url: `http://localhost:3000/customer/changeimg/${userId}`,
+    data,
+  });
 
-export { getInfo, updateInfo };
+export { getInfo, updateInfo, updateImg };

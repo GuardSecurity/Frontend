@@ -16,6 +16,8 @@ import Header from "./components/Header";
 import EventDetail from "./containers/EventDetail";
 import NewBooking from "./components/NewBooking";
 import Payment from "./containers/Payment";
+import News from "./components/News/News";
+import CustomerUnpaidList from "./containers/CustomerUnpaidList";
 
 function App() {
   return (
@@ -42,10 +44,18 @@ function App() {
               element={containerLayout(<NewBooking />)}
             />
             <Route
+              path="news/:id"
+              element={containerLayout(<News />)}
+            />
+            <Route
               path="user-my-calendar/new-booking/payment/:companyNameForPayment"
               element={containerLayout(<Payment />)}
             />
             <Route path="my-profile" element={containerLayout(<MyProfile />)} />
+            <Route
+              path="customer-unpaid-list"
+              element={containerLayout(<CustomerUnpaidList />)}
+            />
             <Route path="admin" element={<Admin />} />
           </Route>
         </Routes>

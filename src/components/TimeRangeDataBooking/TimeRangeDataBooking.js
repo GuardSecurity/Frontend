@@ -15,10 +15,10 @@ const TimeRangeDataBooking = ({ className, dataBooking }) => (
       dataBooking.map((data) => (
         <div className="mt-2 grid grid-cols-2">
           <div className="flex justify-center w-40 h-6">
-            {dateTimeFormatting(data.time_start)}
+            {dateTimeFormatting(data?.time_start)}
           </div>
           <div className="flex justify-center w-40 h-6">
-            {dateTimeFormatting(data.time_end)}
+            {dateTimeFormatting(data?.time_end)}
           </div>
         </div>
       ))}

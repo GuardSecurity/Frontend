@@ -216,7 +216,7 @@ function SignUp() {
               email.length === 0 ||
               passwd.length === 0 ||
               confirmpasswd.length === 0 ||
-              !isChecked
+              !isChecked 
             }
             className="bg-[#3A57E8] w-48 h-11 mt-6 rounded"
             content="Sign up"

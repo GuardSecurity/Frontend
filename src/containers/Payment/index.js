@@ -101,7 +101,16 @@ function Payment() {
         </div>
 
         <BaseButton
-          className="mt-8 flex pb-4 bg-[#C7923E]"
+          className="mt-8 flex pb-4 bg-gray-400"
+          onClick={() => navigate(-1)}
+          onBlur={() =>
+            cardholder.length === 0 && setErr("Please fill the Cardholder name")
+          }
+          content={"Cancel"}
+        />
+
+        <BaseButton
+          className="mt-8 flex pb-4 bg-[#C7923E] ml-6"
           onClick={handleSubmit}
           onBlur={() =>
             cardholder.length === 0 && setErr("Please fill the Cardholder name")

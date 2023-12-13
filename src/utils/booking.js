@@ -45,10 +45,28 @@ const payment = ({ data }) =>
     })
   );
 
+const getCustomerUnpaidBooking = ({ customerId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/customer/getBookingNotPayment/${customerId}`,
+    })
+  );
+
+const getCustomerUnpaidBookingDetail = ({ bookingname }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/customer/getDetailBooking/${bookingname}`,
+    })
+  );
+
 export {
   createNewBooking,
   getBooking,
   getDetailBookingOneDay,
   attendance,
   payment,
+  getCustomerUnpaidBooking,
+  getCustomerUnpaidBookingDetail,
 };
