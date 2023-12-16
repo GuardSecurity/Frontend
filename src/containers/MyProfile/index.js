@@ -283,7 +283,7 @@ function MyProfile() {
       </div>
 
       <div className='w-[201px] h-11 left-[41px] top-[421px] absolute text-zinc-700 text-[22px] font-bold'>
-        John Doe - Host
+        {firstname} {lastname}
       </div>
       <button
         onClick={() => setToggleUpdateForm(!toggleUpdateForm)}
@@ -311,9 +311,6 @@ function MyProfile() {
       </div>
       <div className='w-[253px] h-[30px] left-[41px] top-[283px] absolute text-zinc-700 text-lg font-bold'>
         Identity Verification
-      </div>
-      <div className='w-[239px] h-[72px] left-[41px] top-[315px] absolute text-neutral-400 text-sm font-normal leading-tight'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
       </div>
       <div className='w-[105px] h-[22px] left-[374px] top-[186px] absolute text-zinc-700 text-lg font-bold'>
         0 Reviews

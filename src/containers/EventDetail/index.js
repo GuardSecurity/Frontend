@@ -264,7 +264,6 @@ export default function EventDetail() {
 
                     <Popup
                       open={isDisplayPopup}
-                      onClose={() => isDisplayPopup && setDisplayPopup(false)}
                       modal
                       {...{
                         contentStyle: {
