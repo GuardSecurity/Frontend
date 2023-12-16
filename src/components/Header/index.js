@@ -1,14 +1,20 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ShoppingBagIcon } from "@heroicons/react/24/solid";
+import {
+  Bars3Icon,
+  ShoppingCartIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { IconButton } from "@material-tailwind/react";
 import { Link, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import BaseButton from "../Button";
 import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/Auth";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import AUTH_PATH_NAME from "./AuthPathName";
-import { IconButton } from "@material-tailwind/react";
+import NotificationOnHeader from "./NotificationOnHeader";
+import { getInfo, getInfoGua } from "../../utils/profile";
 
 const navigation = [
   { name: "About", path: "" },
@@ -35,6 +41,31 @@ const Header = () => {
   const splitLocation = pathname.split("/")[1];
 
   const navs = cookies.token ? privateNavigation : navigation;
+
+  const [userAvatar, setUserAvatar] = useState("");
+
+  useEffect(() => {
+    if (userData?.userId) {
+      if (userData?.role === 2) {
+        getInfo({ userId: userData?.userId })
+          .then((res) => {
+            if (res?.data?.img) {
+              setUserAvatar(res.data.img);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+      if (userData?.role === 3) {
+        getInfoGua({ userId: userData?.userId })
+          .then((res) => {
+            if (res?.data?.img) {
+              setUserAvatar(res.data.img);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+    }
+  }, [pathname]);
 
   const NavigationBar = () =>
     navs.map(
@@ -101,87 +132,16 @@ const Header = () => {
                     //   content={"Logout"}
                     // />
                     <div className="flex justify-center items-center">
-                      {userData?.role === 2 && (
-                        <button
-                          onClick={() => navigate("/customer-unpaid-list")}
-                          className="hover:bg-yellow-100 rounded-md p-1"
-                        >
-                          <ShoppingBagIcon className="h-8 w-8" />
-                        </button>
-                      )}
+                      <button
+                        onClick={() => navigate("/customer-unpaid-list")}
+                        className="hover:bg-yellow-100 rounded-md"
+                      >
+                        <IconButton size="sm" color="amber">
+                          <ShoppingCartIcon className="h-6 w-6" />
+                        </IconButton>
+                      </button>
 
-                      <Menu as="div" className="relative ml-3">
-                        <Menu.Button className="relative flex max-w-xs items-center text-sm focus:outline-none hover:bg-yellow-100 rounded-md p-1">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-7 h-7"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                            />
-                          </svg>
-                        </Menu.Button>
-
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                  to="my-profile"
-                                >
-                                  Noti 1
-                                </Link>
-                              )}
-                            </Menu.Item>
-
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                  to="my-profile"
-                                >
-                                  Noti 2
-                                </Link>
-                              )}
-                            </Menu.Item>
-
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                  to="my-profile"
-                                >
-                                  Noti 3
-                                </Link>
-                              )}
-                            </Menu.Item>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
+                      <NotificationOnHeader />
 
                       <Menu as="div" className="relative ml-3">
                         <div>
@@ -190,8 +150,12 @@ const Header = () => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              // src={user.imageUrl}
-                              alt=""
+                              src={
+                                userAvatar
+                                  ? userAvatar
+                                  : "https://t4.ftcdn.net/jpg/02/83/34/87/360_F_283348729_wcG8rvBF5f1VfPGKy916pIcmgGk0PK7B.jpg"
+                              }
+                              alt="User avatar"
                             />
                           </Menu.Button>
                         </div>
@@ -215,6 +179,19 @@ const Header = () => {
                                   to="my-profile"
                                 >
                                   My profile
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                  to="change-pass"
+                                >
+                                  Change Password
                                 </Link>
                               )}
                             </Menu.Item>

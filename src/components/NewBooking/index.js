@@ -20,7 +20,7 @@ function NewBooking() {
   const [swal, setSwal] = useState({});
 
   const [companyName, setCompanyName] = useState("");
-  const [service, setService] = useState("Cars");
+  const [service, setService] = useState("Design");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -112,7 +112,7 @@ function NewBooking() {
 
   return (
     <div className="w-full h-full mt-14">
-      <div className="flex justify-center">
+      <div className="block md:flex">
         <div className="w-full md:w-2/5 px-8 bg-white lg:ml-4">
           <div className="rounded shadow p-6">
             <BaseInput

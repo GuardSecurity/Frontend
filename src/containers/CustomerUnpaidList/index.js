@@ -84,14 +84,18 @@ function CustomerUnpaidList() {
     <div className="p-10">
       <p className="text-2xl font-bold">Unpaid bookings</p>
 
-      {unpaidList.map((booking) => (
-        <UnpaidBookingItem
-          companyName={booking.companyname}
-          bookingDate={booking.booking_date}
-          totalAmount={booking.total_amount}
-          handleToggleDetail={handleToggleDetail}
-        />
-      ))}
+      {unpaidList.length ? (
+        unpaidList.map((booking) => (
+          <UnpaidBookingItem
+            companyName={booking.companyname}
+            bookingDate={booking.booking_date}
+            totalAmount={booking.total_amount}
+            handleToggleDetail={handleToggleDetail}
+          />
+        ))
+      ) : (
+        <div className="h-96" />
+      )}
 
       <Popup
         open={isDisplayPopup}

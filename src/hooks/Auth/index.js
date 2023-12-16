@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3000";
@@ -15,7 +15,6 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const [cookies, setCookies, removeCookie] = useCookies();
 

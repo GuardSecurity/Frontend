@@ -37,6 +37,8 @@ function Review({ guard, bookingName, customerId, setDisplayPopup, setSwal }) {
     }
   };
 
+  console.log("guard", guard);
+
   return (
     <div className="">
       <p className="text-[30px] font-bold">Feedback my service</p>
@@ -51,7 +53,7 @@ function Review({ guard, bookingName, customerId, setDisplayPopup, setSwal }) {
             className="h-10 w-10 rounded-full"
           />
 
-          <p className="ml-4">Th</p>
+          <p className="ml-4">{guard?.firstname + " " + guard?.lastname}</p>
         </div>
 
         <Rating

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import BaseButton from '../../components/Button';
 
-import { getInfo, updateImg, updateInfo } from '../../utils/profile';
+import { getInfo, getInfoGua, updateImgCus, updateImgGua, updateInfo, updateInfoGua } from '../../utils/profile';
 import DateTimePicker from '../../components/DateTimePicker';
 import moment from 'moment';
 import BaseInput from '../../components/Input/Input';
@@ -25,22 +25,41 @@ function MyProfile() {
 
   const userData = JSON.parse(localStorage.getItem('userData'));
   const { userId } = userData;
-
+  const { role } = userData;
+  // console.log('role', role);
   useEffect(() => {
-    getInfo({ userId })
-      .then((res) => {
-        if (res.data) {
-          const { address, firstname, lastname, dob, gender, phone, img } = res.data;
-          setFirstName(firstname);
-          setLastName(lastname);
-          setDob(moment(dob).format('DD-MM-YYYY'));
-          setAddress(address);
-          setGender(gender);
-          setPhone(phone);
-          setImg(img);
-        }
-      })
-      .catch((err) => console.error(err));
+    if (role === 2) {
+      getInfo({ userId })
+        .then((res) => {
+          if (res.data) {
+            const { address, firstname, lastname, dob, gender, phone, img } = res.data;
+            setFirstName(firstname);
+            setLastName(lastname);
+            setDob(moment(dob).format('DD-MM-YYYY'));
+            setAddress(address);
+            setGender(gender);
+            setPhone(phone);
+            setImg(img);
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+    if (role === 3) {
+      getInfoGua({ userId })
+        .then((res) => {
+          if (res.data) {
+            const { address, firstname, lastname, dob, gender, phone, img } = res.data;
+            setFirstName(firstname);
+            setLastName(lastname);
+            setDob(moment(dob).format('DD-MM-YYYY'));
+            setAddress(address);
+            setGender(gender);
+            setPhone(phone);
+            setImg(img);
+          }
+        })
+        .catch((err) => console.error(err));
+    }
   }, [file]);
 
   // Get image file
@@ -63,14 +82,25 @@ function MyProfile() {
       const data = {
         img: imageUrl,
       };
-      const updateResponse = await updateImg({ userId, data: data });
+      if (role === 2) {
+        const updateResponse = await updateImgCus({ userId, data: data });
 
-      setSwal({
-        ...swal,
-        show: true,
-        text: updateResponse.data.message || '',
-        icon: 'success',
-      });
+        setSwal({
+          ...swal,
+          show: true,
+          text: updateResponse.data.message || '',
+          icon: 'success',
+        });
+      } if(role ===3) {
+        const updateResponse = await updateImgGua({ userId, data: data });
+
+        setSwal({
+          ...swal,
+          show: true,
+          text: updateResponse.data.message || '',
+          icon: 'success',
+        });
+      }
     } catch (error) {
       setSwal({
         ...swal,
@@ -92,24 +122,46 @@ function MyProfile() {
       phone,
     };
 
-    updateInfo({ userId, data })
-      .then((res) =>
-        setSwal({
-          ...swal,
-          show: true,
-          text: res.data.message || '',
-          icon: 'success',
-          // didClose: () => navigate("../user-my-calendar"),
-        })
-      )
-      .catch((err) =>
-        setSwal({
-          ...swal,
-          show: true,
-          text: err.response.data.message || '',
-          icon: 'error',
-        })
-      );
+    if (role === 2) {
+      updateInfo({ userId, data })
+        .then((res) =>
+          setSwal({
+            ...swal,
+            show: true,
+            text: res.data.message || '',
+            icon: 'success',
+            // didClose: () => navigate("../user-my-calendar"),
+          })
+        )
+        .catch((err) =>
+          setSwal({
+            ...swal,
+            show: true,
+            text: err.response.data.message || '',
+            icon: 'error',
+          })
+        );
+    }
+    if (role === 3) {
+      updateInfoGua({ userId, data })
+        .then((res) =>
+          setSwal({
+            ...swal,
+            show: true,
+            text: res.data.message || '',
+            icon: 'success',
+            // didClose: () => navigate("../user-my-calendar"),
+          })
+        )
+        .catch((err) =>
+          setSwal({
+            ...swal,
+            show: true,
+            text: err.response.data.message || '',
+            icon: 'error',
+          })
+        );
+    }
   };
 
   const UpdateForm = () => {

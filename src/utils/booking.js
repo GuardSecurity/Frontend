@@ -27,6 +27,14 @@ const getDetailBookingOneDay = ({ params, role }) =>
     })
   );
 
+const customerCancelBooking = ({ bookingname }) =>
+  axios(
+    configuration({
+      method: "post",
+      path: `/customer/CancelBooking/${bookingname}`,
+    })
+  );
+
 const attendance = ({ data }) =>
   axios(
     configuration({
@@ -69,4 +77,5 @@ export {
   payment,
   getCustomerUnpaidBooking,
   getCustomerUnpaidBookingDetail,
+  customerCancelBooking,
 };
