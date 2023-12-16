@@ -4,8 +4,16 @@ import SweetAlert2 from "react-sweetalert2";
 import moment from "moment";
 import Popup from "reactjs-popup";
 
-import { attendance, getDetailBookingOneDay } from "../../utils/booking";
-import { amountFormatting, dateFormatting } from "../../utils/formatHelper";
+import {
+  attendance,
+  customerCancelBooking,
+  getDetailBookingOneDay,
+} from "../../utils/booking";
+import {
+  amountFormatting,
+  dateFormatting,
+  dateFullTimeFormatting,
+} from "../../utils/formatHelper";
 import BaseButton from "../../components/Button";
 import TimeRangeDataBooking from "../../components/TimeRangeDataBooking/TimeRangeDataBooking";
 import Review from "../../components/Review/Review";
@@ -103,6 +111,25 @@ export default function EventDetail() {
       );
   };
 
+  const handleCancelBooking = () => {
+    customerCancelBooking({ bookingname: bookingName })
+      .then((res) =>
+        setSwal({
+          show: true,
+          text: res.data || "",
+          icon: "success",
+          didClose: () => navigate("../user-my-calendar"),
+        })
+      )
+      .catch((err) =>
+        setSwal({
+          show: true,
+          text: err.response.data.message || "",
+          icon: "error",
+        })
+      );
+  };
+
   return (
     <div class="w-full my-10 px-10">
       <div className="flex items-center">
@@ -116,11 +143,13 @@ export default function EventDetail() {
       </div>
       <div className="bg-white rounded-lg shadow-lg px-5 py-6 mt-5">
         <Descriptions title="Service" content={bookingDetail.service} />
+
         <Descriptions
           title="Address"
           content={bookingDetail.address}
           className="mt-4"
         />
+
         <Descriptions
           title="Country"
           content={bookingDetail.country}
@@ -140,6 +169,7 @@ export default function EventDetail() {
               content={bookingDetail.status === "1" ? "Unpaid" : "Paid"}
               className="mt-4"
             />
+
             <Descriptions
               title="Total amount"
               content={amountFormatting(bookingDetail.total_amount)}
@@ -147,6 +177,20 @@ export default function EventDetail() {
             />
           </>
         )}
+
+        <Descriptions
+          title="Start"
+          content={dateFullTimeFormatting(
+            bookingDetail?.dataBooking?.time_start
+          )}
+          className="mt-4"
+        />
+
+        <Descriptions
+          title="End"
+          content={dateFullTimeFormatting(bookingDetail?.dataBooking?.time_end)}
+          className="mt-4"
+        />
       </div>
       <div className="bg-white rounded-lg shadow-lg px-5 py-6 mt-5">
         <div className="bg-green-300 w-24 py-1 flex justify-center font-medium rounded-2xl">
@@ -220,7 +264,6 @@ export default function EventDetail() {
 
                     <Popup
                       open={isDisplayPopup}
-                      onClose={() => isDisplayPopup && setDisplayPopup(false)}
                       modal
                       {...{
                         contentStyle: {
@@ -245,15 +288,23 @@ export default function EventDetail() {
               </div>
             </div>
 
-            {bookingDetail?.guard?.length && (
-              <div className="flex justify-center mt-2">
+            <div className="flex justify-center mt-6">
+              {bookingDetail?.status === 4 && (
+                <BaseButton
+                  content="Cancel"
+                  className="bg-gray-700"
+                  onClick={handleCancelBooking}
+                />
+              )}
+
+              {bookingDetail?.guard?.length > 0 && (
                 <BaseButton
                   content="Save"
-                  className="bg-[#C7923E]"
+                  className="bg-[#C7923E] ml-8"
                   onClick={handleAttendance}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
 

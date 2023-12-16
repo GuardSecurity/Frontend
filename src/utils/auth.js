@@ -48,5 +48,21 @@ const login = (username, passwd) => {
     .then((result) => result.data)
     .catch((error) => error);
 };
-
-export { signUp, login };
+const changePass = ({ data }) => {
+  return  axios(
+      configuration({
+        method: 'post',
+        path: '/customer/changePassword',
+        data: data,
+      })
+    );
+}
+const changePassGua = ({ data }) =>
+  axios(
+    configuration({
+      method: 'post',
+      path: '/guard/changePassword',
+      data: data,
+    })
+  );
+export { signUp, login, changePass, changePassGua };

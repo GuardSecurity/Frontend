@@ -142,7 +142,7 @@ function NewBooking() {
             />
 
             <BaseInput
-              label="Country"
+              label="City"
               classExtend="w-full mt-3"
               onChange={(e) => setCountry(e.target.value)}
             />

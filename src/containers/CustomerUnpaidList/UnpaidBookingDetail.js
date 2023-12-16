@@ -9,7 +9,7 @@ import {
   dateTimeFormatting,
 } from "../../utils/formatHelper";
 
-function UnpaidBookingDetail({ bookingName, companyName }) {
+function BookingDetail({ bookingName, companyName }) {
   const [detail, setDetail] = useState({});
 
   useEffect(() => {
@@ -28,8 +28,6 @@ function UnpaidBookingDetail({ bookingName, companyName }) {
       console.error(error);
     }
   };
-
-  console.log(detail);
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -72,4 +70,4 @@ function UnpaidBookingDetail({ bookingName, companyName }) {
   );
 }
 
-export default UnpaidBookingDetail;
+export default BookingDetail;

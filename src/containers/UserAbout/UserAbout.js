@@ -17,25 +17,28 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 function truncateHtml(content) {
-  const truncatedContent = content?.replace(/<[^>]*>?/gm, '').slice(0, 200);
+  const truncatedContent = content?.replace(/<[^>]*>?/gm, "").slice(0, 200);
   return `${truncatedContent}...`;
 }
 
 const IntroCard = ({ srcImg, time, title, content }) => (
-  
-  <div className='bg-white flex-col gap-6 flex'>
-    <img className='object-cover w-80 h-[300px]' src={srcImg} />
-    <div className='flex'>
-      <div className='w-[131.98px] opacity-60 text-black text-sm font-normal'>INTERNET</div>
-      <div className='w-[131.98px] opacity-60 text-black text-sm font-normal'>
-        {moment(time).format('DD/MM/YYYY')}
+  <div className="bg-white flex-col gap-6 flex">
+    <img className="object-cover w-80 h-[300px]" src={srcImg} />
+    <div className="flex">
+      <div className="w-[131.98px] opacity-60 text-black text-sm font-normal">
+        INTERNET
+      </div>
+      <div className="w-[131.98px] opacity-60 text-black text-sm font-normal">
+        {moment(time).format("DD/MM/YYYY")}
       </div>
     </div>
 
-    <div className='h-60 flex-col justify-start items-start gap-6 flex'>
-      <div className='w-[387.29px] h-[40px] text-black text-2xl font-normal leading-[38px] mb-7'>{title}</div>
+    <div className="h-60 flex-col justify-start items-start gap-6 flex">
+      <div className="w-[387.29px] h-[40px] text-black text-2xl font-normal leading-[38px] mb-7">
+        {title}
+      </div>
       <div
-        className='w-[384.43px] h-[104.85px] text-black text-base font-normal leading-7'
+        className="w-[384.43px] h-[104.85px] text-black text-base font-normal leading-7"
         dangerouslySetInnerHTML={{ __html: truncateHtml(content) }}
       />
     </div>
@@ -95,19 +98,19 @@ function User() {
         setPostList3(response.data.slice(1));
       })
       .catch((error) => {
-        console.error('Error fetching news data:', error);
+        console.error("Error fetching news data:", error);
       });
   }, []);
 
   function extractFirstImageSrc(htmlContent) {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlContent, 'text/html');
+    const doc = parser.parseFromString(htmlContent, "text/html");
 
-    const imgElements = doc.querySelectorAll('img');
+    const imgElements = doc.querySelectorAll("img");
 
     if (imgElements.length > 0) {
       // Lấy src của ảnh đầu tiên
-      const firstImageSrc = imgElements[0].getAttribute('src');
+      const firstImageSrc = imgElements[0].getAttribute("src");
       return firstImageSrc;
     } else {
       // Trả về null nếu không có ảnh
@@ -135,43 +138,47 @@ function User() {
   };
 
   return (
-    <div className='w-full mx-auto max-w-screen-xl'>
-      <div className='mx-auto relative'>
-        <img className='w-screen h-auto' src={tryStaffBanner} alt='Banner' />
-        <div className='w-102 h-48 absolute  top-10 left-24 px-12 py-2'>
-          <div className='w-96 h-20 text-white text-[62px] font-light '>
+    <div className="w-full mx-auto max-w-screen-xl">
+      <div className="mx-auto relative">
+        <img className="w-screen h-auto" src={tryStaffBanner} alt="Banner" />
+        <div className="w-102 h-48 absolute  top-10 left-24 px-12 py-2">
+          <div className="w-96 h-20 text-white text-[62px] font-light ">
             Welcome
             <br />
             Back,
           </div>
         </div>
       </div>
-      <div className='p-4 md:flex md:items-center md:justify-between mt-16 gap-3'>
+      <div className="p-4 md:flex md:items-center md:justify-between mt-16 gap-3">
         <Link to={`/news/${postList1[0]?.id}`}>
           <img
-            className='object-cover h-96 mt-10 md:mt-0'
+            className="object-cover h-96 mt-10 md:mt-0"
             src={extractFirstImageSrc(postList1[0]?.content)}
             alt={postList1[0]?.title}
           />
         </Link>
-        <div className='flex-col justify-start items-start inline-flex'>
-          <div className='flex-col justify-start items-start flex'>
-            <p className='opacity-60 text-black text-sm '>{moment(postList1[0]?.publish_date).format('DD/MM/YYYY')}</p>
+        <div className="flex-col justify-start items-start inline-flex">
+          <div className="flex-col justify-start items-start flex">
+            <p className="opacity-60 text-black text-sm ">
+              {moment(postList1[0]?.publish_date).format("DD/MM/YYYY")}
+            </p>
             <Link to={`/news/${postList1[0]?.id}`}>
-              <div className='w-[616px] h-[85.52px] text-black text-2xl font-normal leading-[38px] mt-4'>
+              <div className="w-[616px] h-[85.52px] text-black text-2xl font-normal leading-[38px] mt-4">
                 {postList1[0]?.title}
               </div>
             </Link>
             <Link to={`/news/${postList1[0]?.id}`}>
               <div
-                className='w-[564.88px] h-[221.76px] text-black text-base font-normal leading-7 mt-8'
-                dangerouslySetInnerHTML={{ __html: truncateHtml(postList1[0]?.content) }}
+                className="w-[564.88px] h-[221.76px] text-black text-base font-normal leading-7 mt-8"
+                dangerouslySetInnerHTML={{
+                  __html: truncateHtml(postList1[0]?.content),
+                }}
               />
             </Link>
           </div>
         </div>
       </div>
-      <div className='mx-auto flex items-center justify-center gap-10 mt-20'>
+      <div className="mx-auto flex items-center justify-center gap-10 mt-20">
         <Link to={`/news/${postList3[0]?.id}`}>
           <IntroCard
             srcImg={extractFirstImageSrc(postList3[0]?.content)}
@@ -198,45 +205,43 @@ function User() {
         </Link>
       </div>
 
-      {userData && userData.role === 2 && (
+      {userData && userData.role === 2 && topRank.length && (
         <div className="w-full">
           <div className="max-w-screen-xl text-center text-zinc-800 text-5xl leading-[52.80px] mt-10">
             Top Ranking
           </div>
           <div className="flex w-full gap-5 justify-around mt-20">
-            {topRank.length && (
-              <>
-                {topRank[1] && (
-                  <GuardCard
-                    srcImg={guardAv}
-                    name={topRank[1].firstname + " " + topRank[1].lastname}
-                    ranking="2"
-                    start={Number(topRank[1].avgrating)}
-                    className="h-[581px]"
-                  />
-                )}
+            <>
+              {topRank[1] && (
+                <GuardCard
+                  srcImg={guardAv}
+                  name={topRank[1].firstname + " " + topRank[1].lastname}
+                  ranking="2"
+                  start={Number(topRank[1].avgrating)}
+                  className="h-[581px]"
+                />
+              )}
 
-                {topRank[0] && (
-                  <GuardCard
-                    srcImg={guardAv}
-                    name={topRank[0].firstname + " " + topRank[0].lastname}
-                    ranking="1"
-                    start={Number(topRank[0].avgrating)}
-                    className="h-[581px]"
-                  />
-                )}
+              {topRank[0] && (
+                <GuardCard
+                  srcImg={guardAv}
+                  name={topRank[0].firstname + " " + topRank[0].lastname}
+                  ranking="1"
+                  start={Number(topRank[0].avgrating)}
+                  className="h-[581px]"
+                />
+              )}
 
-                {topRank[2] && (
-                  <GuardCard
-                    srcImg={guardAv}
-                    name={topRank[2].firstname + " " + topRank[2].lastname}
-                    ranking="3"
-                    start={Number(topRank[2].avgrating)}
-                    className="h-[581px]"
-                  />
-                )}
-              </>
-            )}
+              {topRank[2] && (
+                <GuardCard
+                  srcImg={guardAv}
+                  name={topRank[2].firstname + " " + topRank[2].lastname}
+                  ranking="3"
+                  start={Number(topRank[2].avgrating)}
+                  className="h-[581px]"
+                />
+              )}
+            </>
           </div>
         </div>
       )}
@@ -249,16 +254,18 @@ function User() {
                 Our Services
               </div>
             </div>
-            <div class='w-[822.14px] h-[130.15px] left-[33.77px] top-[77.20px] absolute text-center text-white text-[40px] font-normal uppercase leading-[64px] tracking-wide'>
+            <div class="w-[822.14px] h-[130.15px] left-[33.77px] top-[77.20px] absolute text-center text-white text-[40px] font-normal uppercase leading-[64px] tracking-wide">
               We offer the Best Solutions for Your Security Needs
             </div>
-            <div class='w-[888.80px] h-[97.61px] left-0 top-[223.62px] absolute text-center text-white text-xl font-normal leading-loose'>
-              Give us a call today for a FREE estimate for your private event or occasion. Our team is eager to have a
-              comprehensive discussion with you, addressing any inquiries you might have. We offer top-notch security
-              guard services at competitive rates to ensure the safety and success of your event
+            <div class="w-[888.80px] h-[97.61px] left-0 top-[223.62px] absolute text-center text-white text-xl font-normal leading-loose">
+              Give us a call today for a FREE estimate for your private event or
+              occasion. Our team is eager to have a comprehensive discussion
+              with you, addressing any inquiries you might have. We offer
+              top-notch security guard services at competitive rates to ensure
+              the safety and success of your event
             </div>
           </div>
-          <div class='h-[391px] left-0 top-[345px] absolute'></div>
+          <div class="h-[391px] left-0 top-[345px] absolute"></div>
         </div>
         {/* <div class="w-full h-[441px] left-[215.98px] top-[399px] absolute">
           <div class="w-[319.02px] h-[440px] left-0 top-0 absolute">

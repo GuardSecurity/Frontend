@@ -5,6 +5,11 @@ const getInfo = ({ userId }) =>
     method: 'get',
     url: `http://localhost:3000/customer/myinfor/${userId}`,
   });
+const getInfoGua = ({ userId }) =>
+  axios({
+    method: 'get',
+    url: `http://localhost:3000/guard/myinfor/${userId}`,
+  });
 
 const updateInfo = ({ userId, data }) =>
   axios({
@@ -12,11 +17,23 @@ const updateInfo = ({ userId, data }) =>
     url: `http://localhost:3000/customer/changeinfor/${userId}`,
     data,
   });
-const updateImg = ({ userId, data }) =>
+const updateInfoGua = ({ userId, data }) =>
+  axios({
+    method: 'post',
+    url: `http://localhost:3000/guard/changeinfor/${userId}`,
+    data,
+  });
+const updateImgCus = ({ userId, data }) =>
   axios({
     method: 'post',
     url: `http://localhost:3000/customer/changeimg/${userId}`,
     data,
   });
+const updateImgGua = ({ userId, data }) =>
+  axios({
+    method: 'post',
+    url: `http://localhost:3000/guard/changeimg/${userId}`,
+    data,
+  });
 
-export { getInfo, updateInfo, updateImg };
+export { getInfo, updateInfo, updateImgCus, updateImgGua, getInfoGua, updateInfoGua };
