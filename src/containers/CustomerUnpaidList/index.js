@@ -75,9 +75,11 @@ function CustomerUnpaidList() {
   }
 
   const handleToggleDetail = (companyName) => {
-    setDisplayPopup(true);
-    setBookingName(userData?.userId + companyName);
+    // setDisplayPopup(true);
+    setBookingName();
     setCompanyName(companyName);
+
+    navigate(`../../contract/${userData?.userId + companyName}`);
   };
 
   return (

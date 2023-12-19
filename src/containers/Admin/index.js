@@ -7,11 +7,13 @@ import BookingList from "./BookingList";
 import BaseButton from "../../components/Button";
 import { useAuth } from "../../hooks/Auth";
 
-import "./styles.css";
 import NewsList from "./NewsList";
+import Quantity from "./Detail/Quatity";
+
+import "./styles.css";
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState("customers");
+  const [activeTab, setActiveTab] = useState("quantity");
 
   const { logout } = useAuth();
 
@@ -26,7 +28,16 @@ const Admin = () => {
           <h1 className="text-2xl font-bold">Dashboard</h1>
         </div>
         <div className="h-1/2">
-          <ul>
+          <ul className="h-1/2">
+            <li
+              className={`p-4 cursor-pointer ${
+                activeTab === "quantity" ? "bg-[#C7923E] text-white" : ""
+              }`}
+              onClick={() => handleTabClick("quantity")}
+            >
+              Quantity
+            </li>
+
             <li
               className={`p-4 cursor-pointer ${
                 activeTab === "customers" ? "bg-[#C7923E] text-white" : ""
@@ -35,6 +46,7 @@ const Admin = () => {
             >
               Customers
             </li>
+
             <li
               className={`p-4 cursor-pointer ${
                 activeTab === "guards" ? "bg-[#C7923E] text-white" : ""
@@ -43,6 +55,7 @@ const Admin = () => {
             >
               Guards
             </li>
+
             <li
               className={`p-4 cursor-pointer ${
                 activeTab === "bookings" ? "bg-[#C7923E] text-white" : ""
@@ -51,6 +64,7 @@ const Admin = () => {
             >
               Bookings
             </li>
+
             <li
               className={`p-4 cursor-pointer ${
                 activeTab === "news" ? "bg-[#C7923E] text-white" : ""
@@ -60,16 +74,17 @@ const Admin = () => {
               News
             </li>
           </ul>
-          <div className="h-full flex justify-center items-end">
+          <div className="h-5/6 flex justify-center items-end">
             <BaseButton
-              className="mt-2 flex justify-center items-center bg-[#C7923E]"
+              className="flex justify-center items-center bg-[#C7923E]"
               content={"Logout"}
               onClick={logout}
             />
           </div>
         </div>
       </div>
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 w-full">
+        {activeTab === "quantity" && <Quantity />}
         {activeTab === "customers" && <CustomerList />}
         {activeTab === "guards" && <GuardList />}
         {activeTab === "bookings" && <BookingList />}

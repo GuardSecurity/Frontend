@@ -20,6 +20,7 @@ import News from "./components/News/News";
 import CustomerUnpaidList from "./containers/CustomerUnpaidList";
 import BookingDetail from "./containers/NotificationDetail/BookingDetail";
 import { ChangePass } from "./containers/ChangePassword/ChangePass";
+import Contract from "./components/NewBooking/Contract";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
               element={containerLayout(<CustomerUnpaidList />)}
             />
             <Route path="admin" element={<Admin />} />
+            <Route path="contract/:bookingName" element={<Contract />} />
           </Route>
         </Routes>
       </AppProvider>

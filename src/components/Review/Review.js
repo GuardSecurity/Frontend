@@ -37,8 +37,6 @@ function Review({ guard, bookingName, customerId, setDisplayPopup, setSwal }) {
     }
   };
 
-  console.log("guard", guard);
-
   return (
     <div className="">
       <p className="text-[30px] font-bold">Feedback my service</p>

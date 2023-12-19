@@ -69,6 +69,23 @@ const getCustomerUnpaidBookingDetail = ({ bookingname }) =>
     })
   );
 
+const getGuardDetailById = ({ guardId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/customer/getInfoGuardbyID/${guardId}`,
+    })
+  );
+
+const requestChangeGuard = ({ data }) =>
+  axios(
+    configuration({
+      method: "post",
+      path: `/customer/RequestChangeGuard`,
+      data,
+    })
+  );
+
 export {
   createNewBooking,
   getBooking,
@@ -78,4 +95,6 @@ export {
   getCustomerUnpaidBooking,
   getCustomerUnpaidBookingDetail,
   customerCancelBooking,
+  getGuardDetailById,
+  requestChangeGuard,
 };

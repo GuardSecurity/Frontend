@@ -15,6 +15,7 @@ import multiLocations from "../../assets/multiLocations.png";
 import { getTop4New } from "../../utils/admin";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { DEFAULT_AVA } from "../../utils/constants";
 
 function truncateHtml(content) {
   const truncatedContent = content?.replace(/<[^>]*>?/gm, "").slice(0, 200);
@@ -214,7 +215,7 @@ function User() {
             <>
               {topRank[1] && (
                 <GuardCard
-                  srcImg={guardAv}
+                  srcImg={topRank[1]?.img || DEFAULT_AVA}
                   name={topRank[1].firstname + " " + topRank[1].lastname}
                   ranking="2"
                   start={Number(topRank[1].avgrating)}
@@ -224,7 +225,7 @@ function User() {
 
               {topRank[0] && (
                 <GuardCard
-                  srcImg={guardAv}
+                  srcImg={topRank[0]?.img || DEFAULT_AVA}
                   name={topRank[0].firstname + " " + topRank[0].lastname}
                   ranking="1"
                   start={Number(topRank[0].avgrating)}
@@ -234,7 +235,7 @@ function User() {
 
               {topRank[2] && (
                 <GuardCard
-                  srcImg={guardAv}
+                  srcImg={topRank[2]?.img || DEFAULT_AVA}
                   name={topRank[2].firstname + " " + topRank[2].lastname}
                   ranking="3"
                   start={Number(topRank[2].avgrating)}

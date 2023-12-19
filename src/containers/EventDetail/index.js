@@ -8,6 +8,7 @@ import {
   attendance,
   customerCancelBooking,
   getDetailBookingOneDay,
+  requestChangeGuard,
 } from "../../utils/booking";
 import {
   amountFormatting,
@@ -17,6 +18,7 @@ import {
 import BaseButton from "../../components/Button";
 import TimeRangeDataBooking from "../../components/TimeRangeDataBooking/TimeRangeDataBooking";
 import Review from "../../components/Review/Review";
+import GuardDetails from "./GuardDetails";
 
 export default function EventDetail() {
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -40,6 +42,8 @@ export default function EventDetail() {
   const [guardId, setGuardId] = useState("");
   const [swal, setSwal] = useState({});
   const [isDisplayPopup, setDisplayPopup] = useState(false);
+  const [isToggleGuardDetailPopup, setToggleGuardDetailPopup] = useState(false);
+  const [guardIdSelected, setGuardIdSelected] = useState("");
 
   useEffect(() => {
     const params = {
@@ -68,6 +72,15 @@ export default function EventDetail() {
 
   const handleRating = async () => {
     setDisplayPopup(true);
+  };
+
+  const handleChangeGuard = async () => {
+    const data = {
+      bookingname: bookingName,
+      guard_id: userId,
+    };
+
+    requestChangeGuard({ data });
   };
 
   const Descriptions = ({ title, content, className }) => (
@@ -128,6 +141,11 @@ export default function EventDetail() {
           icon: "error",
         })
       );
+  };
+
+  const handleToggleGuardDetail = (id) => {
+    setGuardIdSelected(id);
+    setToggleGuardDetailPopup(true);
   };
 
   return (
@@ -229,10 +247,33 @@ export default function EventDetail() {
 
                 {bookingDetail?.guard?.map((guard, index) => (
                   <>
-                    <div className="flex justify-center"></div>
-                    <div className="flex justify-center">{guard.firstname}</div>
-                    <div className="flex justify-center">{guard.lastname}</div>
-                    <div className="flex justify-around items-center w-48 mb-2">
+                    <div
+                      className="flex justify-center cursor-pointer"
+                      onClick={() => handleToggleGuardDetail(guard?.guard_id)}
+                    >
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src={
+                          guard?.img
+                            ? guard?.img
+                            : "https://t4.ftcdn.net/jpg/02/83/34/87/360_F_283348729_wcG8rvBF5f1VfPGKy916pIcmgGk0PK7B.jpg"
+                        }
+                        alt="User avatar"
+                      />
+                    </div>
+                    <div
+                      className="flex justify-center cursor-pointer"
+                      onClick={() => handleToggleGuardDetail(guard?.guard_id)}
+                    >
+                      {guard.firstname}
+                    </div>
+                    <div
+                      className="flex justify-center cursor-pointer"
+                      onClick={() => handleToggleGuardDetail(guard?.guard_id)}
+                    >
+                      {guard.lastname}
+                    </div>
+                    <div className="flex justify-around items-center w-48 mb-2 cursor-pointer">
                       <input
                         type="radio"
                         value={1}
@@ -255,15 +296,24 @@ export default function EventDetail() {
                     </div>
 
                     {moment(end).isBefore(new Date()) && (
-                      <BaseButton
-                        content="Rating"
-                        className="bg-blue-500 ml-8 text-sm"
-                        onClick={handleRating}
-                      />
+                      <div className="flex">
+                        <BaseButton
+                          content="Rating"
+                          className="bg-blue-500 ml-4 text-sm"
+                          onClick={handleRating}
+                        />
+
+                        <BaseButton
+                          content="Change"
+                          className="bg-green-400 ml-8 text-sm"
+                          onClick={handleChangeGuard}
+                        />
+                      </div>
                     )}
 
                     <Popup
                       open={isDisplayPopup}
+                      onClose={() => isDisplayPopup && setDisplayPopup(false)}
                       modal
                       {...{
                         contentStyle: {
@@ -324,6 +374,31 @@ export default function EventDetail() {
         didClose={() => setSwal({ ...swal, show: false })}
         {...swal}
       />
+
+      <Popup
+        open={isToggleGuardDetailPopup}
+        onClose={() =>
+          isToggleGuardDetailPopup && setToggleGuardDetailPopup(false)
+        }
+        modal
+        {...{
+          contentStyle: { width: "80%", borderRadius: 4, padding: 20 },
+        }}
+      >
+        <div>
+          <div className="content">
+            <GuardDetails guardId={guardIdSelected} />
+          </div>
+          <div className="w-full flex justify-center mt-10">
+            <button
+              className="bg-blue-500 text-white px-4 py-1 rounded-sm mr-10"
+              onClick={() => setToggleGuardDetailPopup(false)}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </Popup>
     </div>
   );
 }
