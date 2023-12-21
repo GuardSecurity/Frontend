@@ -149,6 +149,14 @@ const getSummaryAdmin = () =>
     })
   );
 
+const getManagerNotificationList = () =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getMyNoti`,
+    })
+  );
+
 export {
   getCustomerList,
   getGuardList,
@@ -169,4 +177,5 @@ export {
   searchByName,
   searchByNameUser,
   getSummaryAdmin,
+  getManagerNotificationList,
 };

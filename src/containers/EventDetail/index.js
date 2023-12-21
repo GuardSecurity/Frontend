@@ -230,7 +230,7 @@ export default function EventDetail() {
         {role === 2 && (
           <div className="w-full flex-col">
             <div className="flex justify-center">
-              <div class="grid grid-cols-5 gap-5 w-4/5 h-26">
+              <div class="grid grid-cols-6 gap-5 w-4/5 h-26">
                 <div className="flex justify-center font-medium bg-gray-300">
                   Image
                 </div>
@@ -243,6 +243,7 @@ export default function EventDetail() {
                 <div className="flex justify-center font-medium bg-gray-300 w-48">
                   Attendance
                 </div>
+                <div className="flex justify-center w-28" />
                 <div className="flex justify-center w-28" />
 
                 {bookingDetail?.guard?.map((guard, index) => (
@@ -295,21 +296,29 @@ export default function EventDetail() {
                       <br />
                     </div>
 
-                    {moment(end).isBefore(new Date()) && (
-                      <div className="flex">
-                        <BaseButton
-                          content="Rating"
-                          className="bg-blue-500 ml-4 text-sm"
-                          onClick={handleRating}
-                        />
+                    <div>
+                      {moment(end).isBefore(new Date()) && (
+                        <div className="flex">
+                          <BaseButton
+                            content="Rating"
+                            className="bg-blue-500 ml-4 text-sm"
+                            onClick={handleRating}
+                          />
+                        </div>
+                      )}
+                    </div>
 
-                        <BaseButton
-                          content="Change"
-                          className="bg-green-400 ml-8 text-sm"
-                          onClick={handleChangeGuard}
-                        />
-                      </div>
-                    )}
+                    <div>
+                      {moment(end).isBefore(new Date()) && (
+                        <div className="flex">
+                          <BaseButton
+                            content="Change"
+                            className="bg-green-400 ml-8 text-sm"
+                            onClick={handleChangeGuard}
+                          />
+                        </div>
+                      )}
+                    </div>
 
                     <Popup
                       open={isDisplayPopup}
@@ -360,11 +369,96 @@ export default function EventDetail() {
 
         {role === 3 && (
           <div className="flex w-full">
-            <div className="w-1/3">
-              <TimeRangeDataBooking
-                className={"w-full mt-4"}
-                dataBooking={[bookingDetail?.dataBooking]}
-              />
+            <div class="grid grid-cols-4 gap-5 w-4/5 h-26">
+              <div className="flex justify-center font-medium bg-gray-300">
+                Image
+              </div>
+              <div className="flex justify-center font-medium bg-gray-300">
+                First Name
+              </div>
+              <div className="flex justify-center font-medium bg-gray-300">
+                Last Name
+              </div>
+              <div className="flex justify-center font-medium bg-gray-300 w-48">
+                Attendance
+              </div>
+
+              {bookingDetail?.guard?.map((guard, index) => (
+                <>
+                  <div
+                    className="flex justify-center cursor-pointer"
+                    onClick={() => handleToggleGuardDetail(guard?.guard_id)}
+                  >
+                    <img
+                      className="h-8 w-8 rounded-full"
+                      src={
+                        guard?.img
+                          ? guard?.img
+                          : "https://t4.ftcdn.net/jpg/02/83/34/87/360_F_283348729_wcG8rvBF5f1VfPGKy916pIcmgGk0PK7B.jpg"
+                      }
+                      alt="User avatar"
+                    />
+                  </div>
+
+                  <div
+                    className="flex justify-center cursor-pointer"
+                    onClick={() => handleToggleGuardDetail(guard?.guard_id)}
+                  >
+                    {guard.firstname}
+                  </div>
+
+                  <div
+                    className="flex justify-center cursor-pointer"
+                    onClick={() => handleToggleGuardDetail(guard?.guard_id)}
+                  >
+                    {guard.lastname}
+                  </div>
+
+                  <div className="flex justify-around items-center w-48 mb-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      value={1}
+                      checked={guardStatus[index] === 1}
+                      disabled={true}
+                    />
+                    <label className="text-sm">Present</label>
+                    <br />
+                    <input
+                      type="radio"
+                      value={0}
+                      checked={
+                        guardStatus[index] === null || guardStatus[index] === 0
+                      }
+                      disabled={true}
+                    />
+                    <label className="text-sm">Absent</label>
+                    <br />
+                  </div>
+
+                  <Popup
+                    open={isDisplayPopup}
+                    onClose={() => isDisplayPopup && setDisplayPopup(false)}
+                    modal
+                    {...{
+                      contentStyle: {
+                        width: "60%",
+                        borderRadius: 4,
+                        padding: 20,
+                      },
+                    }}
+                  >
+                    <div className="content">
+                      <Review
+                        guard={guard}
+                        customerId={userId}
+                        bookingName={bookingName}
+                        setDisplayPopup={setDisplayPopup}
+                        setSwal={setSwal}
+                      />
+                    </div>
+                  </Popup>
+                </>
+              ))}
             </div>
           </div>
         )}

@@ -1,18 +1,12 @@
 const SERVICES = [
-  { value: "Design", label: "Design" },
-  { value: "Education", label: "Education" },
-  { value: "Transportation", label: "Transportation" },
-  { value: "Financial services", label: "Financial services" },
-  { value: "Security", label: "Security" },
-  { value: "Entertainment", label: "Entertainment" },
-  { value: "Cleaning", label: "Cleaning" },
-  { value: "Software", label: "Software" },
-  { value: "Media", label: "Media" },
-  { value: "Consulting", label: "Consulting" },
-  { value: "Events", label: "Events" },
-  { value: "Media", label: "Media" },
-  { value: "Fitness", label: "Fitness" },
-  { value: "Other", label: "Other" },
+  { value: 'Cars', label: 'Cars' },
+  { value: 'Education', label: 'Education' },
+  { value: 'Transportation', label: 'Transportation' },
+  { value: 'Security Bank', label: 'Security Bank' },
+  { value: 'Event', label: 'Event' },
+  { value: 'Personal', label: 'Personal' },
+  { value: 'Organization', label: 'Organization' },
+  { value: 'Other', label: 'Other' },
 ];
 
 const DEFAULT_AVA =

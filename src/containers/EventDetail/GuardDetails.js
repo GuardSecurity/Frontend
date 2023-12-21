@@ -4,6 +4,7 @@ import { getGuardDetailById } from "../../utils/booking";
 import Descriptions from "../../components/Descriptions";
 import {
   amountFormatting,
+  dateFormatting,
   valueToLabelGender,
   valueToLabelGuardStatus,
 } from "../../utils/formatHelper";
@@ -26,20 +27,20 @@ function GuardDetails({ guardId }) {
     }
   };
 
-  console.log("detail", detail);
-
   return (
     <div className="grid grid-cols-2 gap-4">
       <Descriptions
         title="Name"
         content={detail?.firstname + " " + detail?.lastname}
       />
-      <Descriptions title="Date of birth" content={detail?.dob} />
+      <Descriptions
+        title="Date of birth"
+        content={dateFormatting(detail?.dob)}
+      />
       <Descriptions
         title="Gender"
         content={valueToLabelGender(detail?.gender)}
       />
-      <Descriptions title="Salary" content={amountFormatting(detail?.salary)} />
       <Descriptions title="Address" content={detail?.address} />
       <Descriptions title="Phone" content={detail?.phone} />
       <Descriptions

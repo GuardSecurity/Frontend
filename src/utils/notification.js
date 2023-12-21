@@ -1,11 +1,11 @@
 import axios from "axios";
 import configuration from "./config";
 
-const getNotificationList = ({ userId }) =>
+const getNotificationList = ({ userId, role }) =>
   axios(
     configuration({
       method: "get",
-      path: `/customer/getMyNoti/${userId}`,
+      path: `/${role}/getMyNoti/${userId}`,
     })
   );
 

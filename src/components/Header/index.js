@@ -25,7 +25,7 @@ const navigation = [
 const privateNavigation = [
   { name: "About", path: "user-about" },
   { name: "My Calendar", path: "user-my-calendar" },
-  { name: "Send Application", path: "user-send-application" },
+  // { name: "Send Application", path: "user-send-application" },
 ];
 
 const Header = () => {
@@ -132,14 +132,16 @@ const Header = () => {
                     //   content={"Logout"}
                     // />
                     <div className="flex justify-center items-center">
-                      <button
-                        onClick={() => navigate("/customer-unpaid-list")}
-                        className="hover:bg-yellow-100 rounded-md"
-                      >
-                        <IconButton size="sm" color="amber">
-                          <ShoppingCartIcon className="h-6 w-6" />
-                        </IconButton>
-                      </button>
+                      {userData?.role === 2 && (
+                        <button
+                          onClick={() => navigate("/customer-unpaid-list")}
+                          className="hover:bg-yellow-100 rounded-md"
+                        >
+                          <IconButton size="sm" color="amber">
+                            <ShoppingCartIcon className="h-6 w-6" />
+                          </IconButton>
+                        </button>
+                      )}
 
                       <NotificationOnHeader />
 
@@ -196,7 +198,7 @@ const Header = () => {
                               )}
                             </Menu.Item>
 
-                            {userData?.role === 2 && (
+                            {/* {userData?.role === 2 && (
                               <Menu.Item>
                                 {({ active }) => (
                                   <Link
@@ -210,7 +212,7 @@ const Header = () => {
                                   </Link>
                                 )}
                               </Menu.Item>
-                            )}
+                            )} */}
 
                             <Menu.Item>
                               {({ active }) => (

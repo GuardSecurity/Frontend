@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
 import SweetAlert2 from "react-sweetalert2";
 
 import BaseButton from "../Button";
 import BaseInput from "../Input/Input";
 import DateTimePicker from "../DateTimePicker";
-import { createNewBooking } from "../../utils/booking";
+import { createNewBooking, vnPayMent } from "../../utils/booking";
 import { amountFormatting } from "../../utils/formatHelper";
 
 import { SERVICES } from "../../utils/constants";
@@ -20,8 +20,10 @@ function NewBooking() {
   const [swal, setSwal] = useState({});
 
   const [companyName, setCompanyName] = useState("");
-  const [service, setService] = useState("Design");
+  const [service, setService] = useState('Cars');
+  const [serviceOther, setServiceOther] = useState("");
   const [address, setAddress] = useState("");
+  const [params, setParams] = useState("");
   const [country, setCountry] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [totalAmount, setTotalAmount] = useState("");
@@ -29,6 +31,7 @@ function NewBooking() {
   const [timeEnd, setTimeEnd] = useState(
     moment(new Date()).add(23 - new Date().getHours(), "hours")
   );
+  const [bookingHours, setBookingHours] = useState(0);
 
   const isValid =
     timeStart && timeEnd && moment(timeEnd).isAfter(moment(timeStart));
@@ -62,6 +65,7 @@ function NewBooking() {
       }
 
       setTotalAmount(amountOfWorkingTime);
+      setBookingHours(workingHours);
     }
   }, [quantity, timeStart, timeEnd]);
 
@@ -78,9 +82,10 @@ function NewBooking() {
       timeEnd &&
       totalAmount
     ) {
+      
       const data = {
         companyname: companyName,
-        service,
+        service: service === "Other" ? serviceOther : service,
         address,
         country,
         quantity,
@@ -88,31 +93,34 @@ function NewBooking() {
         booking_date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
         dataBooking: formatDataBooking(numberOfDayWorking, timeStart, timeEnd),
       };
+      // const dataVNPay = {
+      //   amount: totalAmount,
+      //   bookingname: companyName,
+      //   userId: userId,
+      // }; 
 
       try {
         const res = await createNewBooking({ data, userId });
-
-        setSwal({
-          ...swal,
-          show: true,
-          text: res.data.message || "",
-          icon: "success",
-          didClose: () => navigate(`payment/${companyName}`),
-        });
+        // const res1 = await vnPayMent(dataVNPay);
+        // window.location.href = res1.data;
+        navigate(`/contract/${userId + companyName}`);
       } catch (err) {
-        setSwal({
-          ...swal,
-          show: true,
-          text: err.response.data.message || "",
-          icon: "error",
-        });
+        console.log('err', err);
       }
     }
   };
-
+  // const dataVNPay = {
+  //   amount: totalAmount,
+  //   companyname: companyName,
+  // }; 
+  // console.log('amount',  dataVNPay);
+  // const usep = useSearchParams()
+  // console.log('ussssee', usep);
+  
+  
   return (
-    <div className="w-full h-full mt-14">
-      <div className="block md:flex">
+    <div className="w-full h-full mt-14 ">
+      <div className="block md:flex justify-center">
         <div className="w-full md:w-2/5 px-8 bg-white lg:ml-4">
           <div className="rounded shadow p-6">
             <BaseInput
@@ -122,7 +130,7 @@ function NewBooking() {
             />
 
             <div>
-              <div className="text-gray-400 leading-7 mb-2">Service</div>
+              <div className="text-gray-400 leading-7 mb-1 mt-3">Service</div>
               <select
                 id="service"
                 name="service"
@@ -134,6 +142,14 @@ function NewBooking() {
                 ))}
               </select>
             </div>
+
+            {service === "Other" && (
+              <BaseInput
+                label=""
+                classExtend="w-full"
+                onBlur={(e) => setServiceOther(e.target.value)}
+              />
+            )}
 
             <BaseInput
               label="Address"
@@ -190,7 +206,23 @@ function NewBooking() {
 
             {totalAmount && quantity > 0 && (
               <div className="mt-6 ml-2 font-medium">
-                Total amount: {amountFormatting(totalAmount)}
+                Booking-hour: {bookingHours}h
+                <br />
+                Price/hour: 50,000 VND
+                <br />
+                <div className="text-2xl ">
+                  Total amount: {amountFormatting(totalAmount)} VND
+                </div>
+                <div className="mt-2 text-sm italic text-red-900">
+                  * * *
+                  <br />
+                  Renting more than 5 security guards reduces 5%.
+                  <br />
+                  Renting more than 10 security guards reduces 10%.
+                  <br />
+                  Renting for more than 7 days gets a 5% discount
+                  <br />
+                </div>
               </div>
             )}
 

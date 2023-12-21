@@ -31,17 +31,26 @@ function SignUp() {
   const [isSignUpSuccess, setSignUpSuccess] = useState(false);
   const [isChecked, setChecked] = useState(false);
 
+  const [emailError, setEmailError] = useState('');
+  
+
+
+
+const validateEmail = (value) => {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  if (!emailRegex.test(value)) {
+    setEmailError('Invalid email format!');
+    return false;
+  }
+  setEmailError('');
+  return true;
+};
+
+
+  
   const handleSignUp = () => {
-    if (
-      passwd.length > 0 &&
-      confirmpasswd.length > 0 &&
-      passwd !== confirmpasswd
-    ) {
-      setErrorMatchPasswd("Password do not match!");
-      return;
-    } else {
-      setErrorMatchPasswd("");
-    }
+    
+
 
     if (
       firstname &&
@@ -54,7 +63,9 @@ function SignUp() {
       confirmpasswd &&
       role &&
       salary &&
-      isChecked
+      isChecked &&
+      validateEmail(email) &&
+      phone.length === 10
     ) {
       signUp({
         email,
@@ -69,69 +80,86 @@ function SignUp() {
         lastname,
         phone,
       }).then((result) => {
-        setErrorMatchPasswd("");
+        setErrorMatchPasswd('');
         if (result.data) {
-          setError("");
+          setError('');
           setSignUpSuccess(true);
         } else {
           setError(result.response.data.error);
         }
       });
     } else {
-      setError("Please fill all fields!");
+      setError('Please fill all fields!');
       setSignUpSuccess(false);
     }
   };
 
   return (
-    <div className="flex flex-wrap h-screen">
-      <div className="w-1/2 hidden lg:block">
-        <img className="w-full h-screen object-cover" src={Auth_bg} alt="bg" />
+    <div className='flex flex-wrap h-screen'>
+      <div className='w-1/2 hidden lg:block'>
+        <img className='w-full h-screen object-cover' src={Auth_bg} alt='bg' />
       </div>
       {isSignUpSuccess ? (
-        <div className="flex justify-center items-center flex-col h-screen w-full lg:w-1/2">
-          <p className="text-green-700 text-2xl">Sign up successfully !</p>
-          <Link to="/login">
-            <p className="text-orange-400 text-xl mt-6">Login here</p>
+        <div className='flex justify-center items-center flex-col h-screen w-full lg:w-1/2'>
+          <p className='text-green-700 text-2xl'>Sign up successfully !</p>
+          <Link to='/login'>
+            <p className='text-orange-400 text-xl mt-6'>Login here</p>
           </Link>
         </div>
       ) : (
-        <form className="flex justify-center items-center flex-col h-screen w-full lg:w-1/2">
-          <div className="text-black text-3xl font-semibold leading-10">
-            Sign Up
-          </div>
-          <div className="text-gray-400 leading-7 mt-4">
-            Create your Hope UI account
-          </div>
-          {error && <div className="text-red-400 leading-7 mt-4">{error}</div>}
-          <div className="mt-6 flex">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+        <form className='flex justify-center items-center flex-col h-screen w-full lg:w-1/2'>
+          <div className='text-black text-3xl font-semibold leading-10'>Sign Up</div>
+          <div className='text-gray-400 leading-7 mt-4'>Create your Hope UI account</div>
+          {error && <div className='text-red-400 leading-7 mt-4'>{error}</div>}
+          <div className='mt-6 flex'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6'>
               <BaseInput
-                label="First Name"
-                onBlur={(e) => setfirstname(e.target.value)}
+                label='First Name'
+                onChange={(e) => {
+                  setfirstname(e.target.value);
+                }}
+                error={firstname.length === 0 ? 'Required' : false}
               />
+
               <BaseInput
-                label="Last Name"
-                onBlur={(e) => setLastName(e.target.value)}
+                label='Last Name'
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+                error={lastname.length === 0 ? 'Required' : false}
               />
+
               <BaseInput
-                label="Email"
-                onChange={(e) => setEmail(e.target.value)}
+                label='Email'
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(email);
+                }}
+                error={emailError}
               />
+
               <BaseInput
-                label="Phone No."
-                onChange={(e) => setPhone(e.target.value)}
+                label='Phone No.'
+                type={'number'}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+                error={phone.length !== 10 ? 'Required 10 number' : false}
               />
+
               <BaseInput
-                label="Address"
-                type="text"
-                onChange={(e) => setAddress(e.target.value)}
+                label='Address'
+                type='text'
+                onChange={(e) => {
+                  setAddress(e.target.value);
+                }}
+                error={address.length === 0 ? 'Required' : false}
               />
 
               <DateTimePicker
-                label="Date of Birth"
-                placeholder="DD-MM-YYYY"
-                dateFormat="DD-MM-YYYY"
+                label='Date of Birth'
+                placeholder='DD-MM-YYYY'
+                dateFormat='DD-MM-YYYY'
                 timeFormat={false}
                 isValidDate={(currentDate, selectedDate) => {
                   return currentDate.isBefore(moment(selectedDate));
@@ -141,23 +169,27 @@ function SignUp() {
               />
 
               <BaseInput
-                label="Password"
-                type="password"
-                onChange={(e) => setPasswd(e.target.value)}
+                label='Password'
+                type='password'
+                onChange={(e) => {
+                  setPasswd(e.target.value);
+                }}
+                error={passwd.length < 8 ? 'Password must be at least 8 characters' : false}
               />
+
               <BaseInput
                 error={errorMatchPasswd}
-                label="Confirm password"
-                type="password"
+                label='Confirm password'
+                type='password'
                 onChange={(e) => setconfirmpasswd(e.target.value)}
               />
 
               <div>
-                <div className="text-gray-400 leading-7 mb-2">Gender</div>
+                <div className='text-gray-400 leading-7 mb-2'>Gender</div>
                 <select
-                  id="gender"
-                  name="gender"
-                  className="h-11 w-full px-4 bg-white rounded border border-orange-400"
+                  id='gender'
+                  name='gender'
+                  className='h-11 w-full px-4 bg-white rounded border border-orange-400'
                   onChange={(e) => setGender(e.target.value)}
                 >
                   <option value={true}>Male</option>
@@ -166,11 +198,11 @@ function SignUp() {
               </div>
 
               <div>
-                <div className="text-gray-400 leading-7 mb-2">Role</div>
+                <div className='text-gray-400 leading-7 mb-2'>Role</div>
                 <select
-                  id="role"
-                  name="role"
-                  className="h-11 w-full px-4 bg-white rounded border border-orange-400"
+                  id='role'
+                  name='role'
+                  className='h-11 w-full px-4 bg-white rounded border border-orange-400'
                   onChange={(e) => setRole(Number(e.target.value))}
                 >
                   <option value={2}>Customer</option>
@@ -180,66 +212,53 @@ function SignUp() {
 
               {role === 3 && (
                 <div>
-                  <div className="text-gray-400 leading-7 mb-2">Experience</div>
+                  <div className='text-gray-400 leading-7 mb-2'>Experience</div>
                   <select
-                    id="cars"
-                    name="cars"
-                    className="h-11 w-full px-4 bg-white rounded border border-orange-400"
+                    id='cars'
+                    name='cars'
+                    className='h-11 w-full px-4 bg-white rounded border border-orange-400'
                     onChange={(e) => {
                       setSalary(e.target.value);
                     }}
                   >
-                    <option value="7000000">0 - 1 year</option>
-                    <option value="8500000">1 - 3 year</option>
-                    <option value="11000000">3 - 5 year</option>
-                    <option value="15000000">5 - 15 year</option>
+                    <option value='7000000'>0 - 1 year</option>
+                    <option value='8500000'>1 - 3 year</option>
+                    <option value='11000000'>3 - 5 year</option>
+                    <option value='15000000'>5 - 15 year</option>
                   </select>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="flex flex-row w-96 justify-center items-center mt-2.5">
+          <div className='flex flex-row w-96 justify-center items-center mt-2.5'>
             <CheckBox
               isChecked={isChecked}
               onCheck={() => setChecked(!isChecked)}
-              label={
-                <p className="ml-3 text-gray-400 ">
-                  I agree with the terms of use
-                </p>
-              }
+              label={<p className='ml-3 text-gray-400 '>I agree with the terms of use</p>}
             />
           </div>
 
           <BaseButton
-            disabled={
-              email.length === 0 ||
-              passwd.length === 0 ||
-              confirmpasswd.length === 0 ||
-              !isChecked 
-            }
-            className="bg-[#3A57E8] w-48 h-11 mt-6 rounded"
-            content="Sign up"
+            disabled={email.length === 0 || passwd.length === 0 || confirmpasswd.length === 0 || !isChecked}
+            className='bg-[#3A57E8] w-48 h-11 mt-6 rounded'
+            content='Sign up'
             onClick={handleSignUp}
           />
 
-          <div className="text-slate-800 mt-5">
-            or sign up with other accounts?
+          <div className='text-slate-800 mt-5'>or sign up with other accounts?</div>
+
+          <div className='flex flex-wrap mt-5'>
+            <img src={Gmail} alt='icon' />
+            <img src={Facebook} alt='icon' />
+            <img src={Instagram} alt='icon' />
+            <img src={Linkedin} alt='icon' />
           </div>
 
-          <div className="flex flex-wrap mt-5">
-            <img src={Gmail} alt="icon" />
-            <img src={Facebook} alt="icon" />
-            <img src={Instagram} alt="icon" />
-            <img src={Linkedin} alt="icon" />
-          </div>
-
-          <div className="mt-1">
-            <span className="text-slate-800  leading-7">
-              Already have an Account?
-            </span>
-            <Link to="/login">
-              <span className="text-orange-400 leading-7">Sign in</span>
+          <div className='mt-1'>
+            <span className='text-slate-800  leading-7'>Already have an Account?</span>
+            <Link to='/login'>
+              <span className='text-orange-400 leading-7'>Sign in</span>
             </Link>
           </div>
         </form>
