@@ -18,8 +18,8 @@ import { getInfo, getInfoGua } from "../../utils/profile";
 
 const navigation = [
   { name: "About", path: "" },
-  { name: "Booking", path: "booking" },
-  { name: "Contact", path: "contract" },
+  { name: "Booking", path: "login" },
+  { name: "Contact", path: "login" },
 ];
 
 const privateNavigation = [
