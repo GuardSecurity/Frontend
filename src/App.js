@@ -47,10 +47,10 @@ function App() {
               element={containerLayout(<NewBooking />)}
             />
             <Route path="news/:id" element={containerLayout(<News />)} />
-            <Route
+            {/* <Route
               path="user-my-calendar/new-booking/payment/:companyNameForPayment"
               element={containerLayout(<Payment />)}
-            />
+            /> */}
             <Route path="my-profile" element={containerLayout(<MyProfile />)} />
             <Route
               path="change-pass"

@@ -1,66 +1,55 @@
-import BaseButton from "../../components/Button";
-import securityBanner from "../../assets/securityBanner.jfif";
-import rectangle from "../../assets/rectangle.png";
-import construction from "../../assets/construction.png";
-import slackLogo from "../../assets/slackLogo.png";
-import figmaLogo from "../../assets/figmaLogo.png";
-import microsoftLogo from "../../assets/microsoftLogo.png";
-import hupspotLogo from "../../assets/hupspotLogo.png";
-import outreachLogo from "../../assets/outreachLogo.png";
-import googleLogo from "../../assets/googleLogo.png";
-import padlock from "../../assets/padlock.png";
-import star from "../../assets/star.png";
-import users from "../../assets/users.png";
-import periscope from "../../assets/periscope.png";
-import tryStaffBanner from "../../assets/tryStaffBanner.png";
-import quote from "../../assets/quote.png";
-import sontungAvatar from "../../assets/sontungAvatar.png";
-import stijnAvatar from "../../assets/stijnAvatar.png";
-import BodyguardServicesSydney from "../../assets/BodyguardServicesSydney.png";
+import BaseButton from '../../components/Button';
+import securityBanner from '../../assets/securityBanner.jfif';
+import rectangle from '../../assets/rectangle.png';
+import construction from '../../assets/construction.png';
+import slackLogo from '../../assets/slackLogo.png';
+import figmaLogo from '../../assets/figmaLogo.png';
+import microsoftLogo from '../../assets/microsoftLogo.png';
+import hupspotLogo from '../../assets/hupspotLogo.png';
+import outreachLogo from '../../assets/outreachLogo.png';
+import googleLogo from '../../assets/googleLogo.png';
+import padlock from '../../assets/padlock.png';
+import star from '../../assets/star.png';
+import users from '../../assets/users.png';
+import periscope from '../../assets/periscope.png';
+import tryStaffBanner from '../../assets/tryStaffBanner.png';
+import quote from '../../assets/quote.png';
+import sontungAvatar from '../../assets/sontungAvatar.png';
+import stijnAvatar from '../../assets/stijnAvatar.png';
+import BodyguardServicesSydney from '../../assets/BodyguardServicesSydney.png';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../../hooks/Auth";
-
+import { useAuth } from '../../hooks/Auth';
 
 const SecurityAdvantageCard = ({ srcImg, title, description }) => {
   return (
-    <div className="grow shrink basis-0 px-4 flex-col justify-start items-center gap-4 inline-flex">
-      <div className="self-stretch flex-col justify-start items-center gap-6 flex">
-        <img className="object-cover" src={srcImg} alt="Security Advantage" />
-        <div className="self-stretch h-6 text-center text-black text-2xl font-extrabold leading-loose">
-          {title || ""}
+    <div className='grow shrink basis-0 px-4 flex-col justify-start items-center gap-4 inline-flex'>
+      <div className='self-stretch flex-col justify-start items-center gap-6 flex'>
+        <img className='object-cover' src={srcImg} alt='Security Advantage' />
+        <div className='self-stretch h-6 text-center text-black text-2xl font-extrabold leading-loose'>
+          {title || ''}
           <br />
         </div>
-        <div className="self-stretch text-center text-zinc-800 text-opacity-70 text-lg font-normal leading-relaxed">
-          {description || ""}
+        <div className='self-stretch text-center text-zinc-800 text-opacity-70 text-lg font-normal leading-relaxed'>
+          {description || ''}
         </div>
       </div>
     </div>
   );
 };
 
-const CustomCard = ({
-  content,
-  customerAvatar,
-  customerPosition,
-  customerName,
-  classExtend,
-}) => {
+const CustomCard = ({ content, customerAvatar, customerPosition, customerName, classExtend }) => {
   return (
     <div
       className={`w-80 px-8 py-8 bg-white rounded-lg shadow border border-blue-400 flex-col justify-start items-start gap-2.5 inline-flex ${classExtend}`}
     >
-      <div className="self-stretch h-64 flex-col justify-start items-start gap-5 flex">
-        <img src={quote} alt="Quote" />
-        <span className="text-black  leading-snug">{content || ""}</span>
-        <div className="self-stretch justify-start items-center gap-4 inline-flex">
-          <img src={customerAvatar} alt="Customer avatar" />
-          <div className="grow shrink basis-0 flex-col justify-center items-start gap-0.5 inline-flex">
-            <div className="w-56 text-[#C7923E] text-xs font-bold uppercase ">
-              {customerPosition || ""}
-            </div>
-            <div className="w-56 text-black text-base font-bold">
-              {customerName || ""}
-            </div>
+      <div className='self-stretch h-64 flex-col justify-start items-start gap-5 flex'>
+        <img src={quote} alt='Quote' />
+        <span className='text-black  leading-snug'>{content || ''}</span>
+        <div className='self-stretch justify-start items-center gap-4 inline-flex'>
+          <img src={customerAvatar} alt='Customer avatar' />
+          <div className='grow shrink basis-0 flex-col justify-center items-start gap-0.5 inline-flex'>
+            <div className='w-56 text-[#C7923E] text-xs font-bold uppercase '>{customerPosition || ''}</div>
+            <div className='w-56 text-black text-base font-bold'>{customerName || ''}</div>
           </div>
         </div>
       </div>

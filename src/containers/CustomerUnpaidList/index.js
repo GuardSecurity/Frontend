@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import Popup from "reactjs-popup";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { amountFormatting, dateFormatting } from "../../utils/formatHelper";
 
@@ -73,26 +73,36 @@ function CustomerUnpaidList() {
   const [isDisplayPopup, setDisplayPopup] = useState(false);
   const [bookingName, setBookingName] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const params = window.location.search;
+  const [params, setParams] = useState("");
+  // setParams(window.location.search);
   const [swal, setSwal] = useState({});
+  const [hasSetPaymentCalled, setHasSetPaymentCalled] = useState(false);
+
 
   useEffect(() => {
     (userData?.role === 2 || userData?.userId) && unpaidBookingData();
   }, []);
 
   useEffect(() => {
-    const callNetPayment = async () => {
-      try {
+    setParams(window.location.search);
+  }, []);
+
+  const callNetPayment = async () => {
+    try {
+      if (params && !hasSetPaymentCalled) {
         await setPayment(params); // Thực hiện gọi API ở đây
-      } catch (err) {
-        console.log('err', err);
+        setHasSetPaymentCalled(true);
+        setParams(''); // Bạn có chắc rằng bạn muốn xóa params sau khi đã gọi setPayment?
       }
-    };
-    if (params) {
-      callNetPayment();
+    } catch (err) {
+      console.log('err', err);
     }
-    unpaidBookingData();
+  };
+  
+  useEffect(() => {
+    callNetPayment();
   }, [params]);
+  
   const unpaidBookingData = async () => {
     try {
       const res = await getCustomerUnpaidBooking({

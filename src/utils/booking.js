@@ -52,14 +52,6 @@ const attendance = ({ data }) =>
     })
   );
 
-const payment = ({ data }) =>
-  axios(
-    configuration({
-      method: "post",
-      path: "/customer/payment",
-      data,
-    })
-  );
 
 const getCustomerUnpaidBooking = ({ customerId }) =>
   axios(
@@ -106,7 +98,6 @@ export {
   getBooking,
   getDetailBookingOneDay,
   attendance,
-  payment,
   getCustomerUnpaidBooking,
   getCustomerUnpaidBookingDetail,
   customerCancelBooking,
