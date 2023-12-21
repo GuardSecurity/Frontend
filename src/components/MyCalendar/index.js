@@ -3,6 +3,7 @@ import BaseButton from "../Button";
 import CalendarComponent from "./Calendar";
 import { useNavigate } from "react-router-dom";
 import { getBooking } from "../../utils/booking";
+import { getInfo, getInfoGua } from "../../utils/profile";
 
 const MyCalendar = () => {
   const navigate = useNavigate();
@@ -12,8 +13,30 @@ const MyCalendar = () => {
   const rolePosition = role === 2 ? "customer" : role === 3 && "guard";
 
   const [myBooking, setMyBooking] = useState([]);
+  const [userAvatar, setUserAvatar] = useState("");
 
   useEffect(() => {
+    if (userData?.userId) {
+      if (userData?.role === 2) {
+        getInfo({ userId: userData?.userId })
+          .then((res) => {
+            if (res?.data?.img) {
+              setUserAvatar(res.data.img);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+      if (userData?.role === 3) {
+        getInfoGua({ userId: userData?.userId })
+          .then((res) => {
+            if (res?.data?.img) {
+              setUserAvatar(res.data.img);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+    }
+
     getBooking({ userId, role: rolePosition })
       .then((res) => {
         if (res?.data && res?.data.length > 0) {
@@ -61,8 +84,13 @@ const MyCalendar = () => {
       <div className="col-span-2 pl-8">
         <div className="w-[355.39px] h-[51.95px] justify-start items-center gap-4 inline-flex my-8">
           <img
-            className="w-[49.39px] h-[51.95px] rounded-[31px]"
-            src="https://via.placeholder.com/49x52"
+            className="h-8 w-8 rounded-full"
+            src={
+              userAvatar
+                ? userAvatar
+                : "https://t4.ftcdn.net/jpg/02/83/34/87/360_F_283348729_wcG8rvBF5f1VfPGKy916pIcmgGk0PK7B.jpg"
+            }
+            alt="User avatar"
           />
           <div className="flex-col justify-start items-center gap-4 inline-flex">
             <div className="w-[285px] text-black text-base font-mediume">

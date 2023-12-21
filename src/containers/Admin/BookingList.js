@@ -97,7 +97,7 @@ function BookingList() {
           {amountFormatting(totalAmount)}
         </td>
         <td className="py-3 border-b border-gray-300">
-          {moment(bookingDate).format("DD-MM-YYY")}
+          {moment(bookingDate).format("DD-MM-YYYY")}
         </td>
         <td
           className="py-3 border-b border-gray-300"

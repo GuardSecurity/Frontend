@@ -9,9 +9,8 @@ import {
 } from "@react-pdf/renderer";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { createTw } from "react-pdf-tailwind";
 
-import { getCustomerUnpaidBookingDetail } from "../../utils/booking";
+import { getCustomerUnpaidBookingDetail, vnPayMent } from "../../utils/booking";
 import { amountFormatting, dateTimeFormatting } from "../../utils/formatHelper";
 
 // const styles = StyleSheet.create({
@@ -31,28 +30,44 @@ function Contract() {
   if (!bookingName) return null;
 
   const unpaidBookingData = async () => {
+    
     try {
       const res = await getCustomerUnpaidBookingDetail({
         bookingname: bookingName,
       });
       setDetail(res?.data[0] || {});
+      
     } catch (error) {
       console.error(error);
     }
   };
+  
+  const handlePayment = async () => {
+    try {
+      const dataVNPay = {
+        amount: detail.total_amount,
+        bookingname: detail.bookingName,
+      };
+      const res1 = await vnPayMent(dataVNPay);
+      window.location.href = res1.data;
+    } catch (error) {
+      console.log('err', error);
+    }
+  }
+
 
   const ContractOfCustomer = () => {
     return (
       <Document>
         <Page size="A4" className="grid grid-cols-1" style={{ padding: 20 }}>
           <View
-            // className="flex text-4xl font-bold justify-center"
-            style={{
-              fontSize: 40,
-              fontWeight: "bold",
-              justifyContent: "center",
-              flex: 1,
-            }}
+            className="flex text-4xl font-bold justify-center"
+            // style={{
+            //   fontSize: 40,
+            //   fontWeight: "bold",
+            //   justifyContent: "center",
+            //   flex: 1,
+            // }}
           >
             <Text>Economic contracts</Text>
           </View>
@@ -162,28 +177,28 @@ function Contract() {
       </Document>
     );
   };
-
+  
   return (
     <View>
       <ContractOfCustomer />
 
-      <View className="w-full flex justify-end">
+      <View className='w-full flex justify-end pr-4'>
         <View
-          className="h-10 w-28 bg-blue-gray-400 cursor-pointer flex justify-center items-center rounded-md text-white mr-4"
-          onClick={() => navigate("/")}
+          className='h-10 w-28 bg-blue-gray-400 cursor-pointer flex justify-center items-center rounded-md text-white mr-4'
+          onClick={() => navigate('/user-my-calendar')}
         >
-          Cancel
+          Back
         </View>
 
-        <View className="h-10 w-28 bg-[#C7923E] cursor-pointer flex justify-center items-center rounded-md text-white mr-4">
-          Accept
+        <View
+          onClick={handlePayment}
+          className='h-10 w-28 bg-[#C7923E] cursor-pointer flex justify-center items-center rounded-md text-white mr-4'
+        >
+          Payment
         </View>
 
-        <PDFDownloadLink
-          document={<ContractOfCustomer />}
-          fileName="EconomicContract"
-        >
-          <View className="h-10 w-28 bg-cyan-700 cursor-pointer flex justify-center items-center rounded-md text-white">
+        <PDFDownloadLink document={<ContractOfCustomer />} fileName='EconomicContract'>
+          <View className='h-10 w-28 bg-cyan-700 cursor-pointer flex justify-center items-center rounded-md text-white'>
             Export to PDF
           </View>
         </PDFDownloadLink>

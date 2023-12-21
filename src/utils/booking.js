@@ -9,6 +9,14 @@ const createNewBooking = ({ data, userId }) =>
       data,
     })
   );
+const vnPayMent = ( data ) =>
+  axios(
+    configuration({
+      method: 'post',
+      path: `/order/create_payment_url`,
+      data,
+    })
+  );
 
 const getBooking = ({ userId, role }) =>
   axios(
@@ -68,6 +76,13 @@ const getCustomerUnpaidBookingDetail = ({ bookingname }) =>
       path: `/customer/getDetailBooking/${bookingname}`,
     })
   );
+const setPayment = (params) =>
+  axios(
+    configuration({
+      method: 'get',
+      path: `/order/vnpay_ipn/${params}`,
+    })
+  );
 
 const getGuardDetailById = ({ guardId }) =>
   axios(
@@ -97,4 +112,6 @@ export {
   customerCancelBooking,
   getGuardDetailById,
   requestChangeGuard,
+  vnPayMent,
+  setPayment,
 };

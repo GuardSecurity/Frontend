@@ -1,29 +1,39 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-import BaseButton from '../../components/Button';
+import BaseButton from "../../components/Button";
 
-import { getInfo, getInfoGua, updateImgCus, updateImgGua, updateInfo, updateInfoGua } from '../../utils/profile';
-import DateTimePicker from '../../components/DateTimePicker';
-import moment from 'moment';
-import BaseInput from '../../components/Input/Input';
-import SweetAlert2 from 'react-sweetalert2';
+import {
+  getInfo,
+  getInfoGua,
+  updateImgCus,
+  updateImgGua,
+  updateInfo,
+  updateInfoGua,
+} from "../../utils/profile";
+import DateTimePicker from "../../components/DateTimePicker";
+import moment from "moment";
+import BaseInput from "../../components/Input/Input";
+import SweetAlert2 from "react-sweetalert2";
+import { amountFormatting } from "../../utils/formatHelper";
 
 function MyProfile() {
-  const [firstname, setFirstName] = useState('');
-  const [lastname, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [dob, setDob] = useState('');
-  const [address, setAddress] = useState('');
-  const [gender, setGender] = useState('');
-  const [img, setImg] = useState('');
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
+  const [address, setAddress] = useState("");
+  const [gender, setGender] = useState("");
+  const [salary, setSalary] = useState("");
+  const [img, setImg] = useState("");
 
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
+  const [submit, setSubmit] = useState(false);
   const [file, setFile] = useState();
 
   const [swal, setSwal] = useState({});
 
-  const userData = JSON.parse(localStorage.getItem('userData'));
+  const userData = JSON.parse(localStorage.getItem("userData"));
   const { userId } = userData;
   const { role } = userData;
   // console.log('role', role);
@@ -48,7 +58,7 @@ function MyProfile() {
       getInfoGua({ userId })
         .then((res) => {
           if (res.data) {
-            const { address, firstname, lastname, dob, gender, phone, img } = res.data;
+            const { address, firstname, lastname, dob, gender, phone, img, salary } = res.data;
             setFirstName(firstname);
             setLastName(lastname);
             setDob(moment(dob).format('DD-MM-YYYY'));
@@ -56,11 +66,13 @@ function MyProfile() {
             setGender(gender);
             setPhone(phone);
             setImg(img);
+            setSalary(salary);
           }
         })
         .catch((err) => console.error(err));
     }
   }, [file]);
+  
 
   // Get image file
   const handleChangeAvatar = (e) => setFile(e.target.files[0]);
@@ -69,13 +81,16 @@ function MyProfile() {
   const handleUploadAvatar = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append("image", file);
 
     try {
-      const res = await fetch('https://api.imgbb.com/1/upload?key=f7bb453322a00301accf8e38c2cd0ac0', {
-        method: 'POST',
-        body: formData,
-      });
+      const res = await fetch(
+        "https://api.imgbb.com/1/upload?key=f7bb453322a00301accf8e38c2cd0ac0",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const imageData = await res.json();
       const imageUrl = imageData.data.url;
@@ -88,83 +103,201 @@ function MyProfile() {
         setSwal({
           ...swal,
           show: true,
-          text: updateResponse.data.message || '',
-          icon: 'success',
+          text: updateResponse.data.message || "",
+          icon: "success",
         });
-      } if(role ===3) {
+      }
+      if (role === 3) {
         const updateResponse = await updateImgGua({ userId, data: data });
 
         setSwal({
           ...swal,
           show: true,
-          text: updateResponse.data.message || '',
-          icon: 'success',
+          text: updateResponse.data.message || "",
+          icon: "success",
         });
       }
     } catch (error) {
       setSwal({
         ...swal,
         show: true,
-        text: error.response ? error.response.data.message || '' : 'An error occurred',
-        icon: 'error',
+        text: error.response
+          ? error.response.data.message || ""
+          : "An error occurred",
+        icon: "error",
       });
     }
     setFile(false);
   };
 
-  const handleUpdateProfile = () => {
-    const data = {
-      address,
-      firstname,
-      lastname,
-      dob,
-      gender,
-      phone,
-    };
 
-    if (role === 2) {
-      updateInfo({ userId, data })
-        .then((res) =>
-          setSwal({
-            ...swal,
-            show: true,
-            text: res.data.message || '',
-            icon: 'success',
-            // didClose: () => navigate("../user-my-calendar"),
-          })
-        )
-        .catch((err) =>
-          setSwal({
-            ...swal,
-            show: true,
-            text: err.response.data.message || '',
-            icon: 'error',
-          })
-        );
-    }
-    if (role === 3) {
-      updateInfoGua({ userId, data })
-        .then((res) =>
-          setSwal({
-            ...swal,
-            show: true,
-            text: res.data.message || '',
-            icon: 'success',
-            // didClose: () => navigate("../user-my-calendar"),
-          })
-        )
-        .catch((err) =>
-          setSwal({
-            ...swal,
-            show: true,
-            text: err.response.data.message || '',
-            icon: 'error',
-          })
-        );
-    }
-  };
 
   const UpdateForm = () => {
+    const [phoneError, setPhoneError] = useState('');
+    const [firstError, setFirstError] = useState('');
+    const [lastError, setLastError] = useState('');
+    const [addressError, setAddressError] = useState('');
+    const [dobError, setDobError] = useState('');
+    const [phoneEdit, setPhoneEdit] = useState(phone);
+    const [firstEdit, setFirstEdit] = useState(firstname);
+    const [lastEdit, setLastEdit] = useState(lastname);
+    const [addressEdit, setAddressEdit] = useState(address);
+    const [dobEdit, setDobEdit] = useState(dob);
+    const [genderEdit, setGenderEdit] = useState(gender);
+
+
+    const handleFirst = (e) => {
+      const value = e.target.value
+      if (!value) {
+        setFirstError('required to fill in')
+        return
+      }
+      setFirstEdit(value)
+    }
+    const handleLast = (e) => {
+      const value = e.target.value
+      if (!value) {
+        setLastError('required to fill in')
+        return
+      }
+      setLastEdit(value)
+    }
+    const handleAddress = (e) => {
+      const value = e.target.value
+      if (!value) {
+        setAddressError('required to fill in')
+        return
+      }
+      setAddressEdit(value)
+    }
+    const handleDob = (value) => {
+      
+      if (!value) {
+        setDobError('Date of birth is required.');
+        return
+      } 
+      else {
+        setDobError(''); 
+        setDobEdit(value); 
+      }
+    }
+    const handlePhoneChange = (e) => { 
+      const value = e.target.value;
+
+      if (/[^0-9]/.test(value) || value === '') {
+        setPhoneError('Please enter right format phone.');
+        return
+      } else {
+        setPhoneError(''); // Xóa thông báo lỗi nếu không có ký tự chữ
+      }
+      setPhoneEdit(value);
+    }
+      const handleUpdateProfile = () => {
+        if (addressEdit === address && firstEdit === firstname && lastEdit === lastname && dobEdit ===dob && phoneEdit === phone) {
+          setSwal({
+            ...swal,
+            show: true,
+            text: 'Please fill in all fields',
+            icon: 'error',
+          });
+          return;
+        }
+
+        const data = {
+          address: addressEdit,
+          firstname: firstEdit,
+          lastname: lastEdit,
+          dob: dobEdit,
+          gender: gender,
+          phone: phoneEdit,
+        };
+
+        if (role === 2) {
+          updateInfo({ userId, data })
+            .then((res) => {
+              setSwal({
+                ...swal,
+                show: true,
+                text: res.data.message || '',
+                icon: 'success',
+                // didClose: () => navigate("../user-my-calendar"),
+              });
+              setToggleUpdateForm(false);
+            })
+            .catch((err) =>
+              setSwal({
+                ...swal,
+                show: true,
+                text: err.response.data.message || '',
+                icon: 'error',
+              })
+            );
+        }
+        if (role === 3) {
+          updateInfoGua({ userId, data })
+            .then((res) =>
+            {
+              setSwal({
+                ...swal,
+                show: true,
+                text: res.data.message || '',
+                icon: 'success',
+                // didClose: () => navigate("../user-my-calendar"),
+              });
+              setToggleUpdateForm(false);
+              }
+            )
+            .catch((err) =>
+              setSwal({
+                ...swal,
+                show: true,
+                text: err.response.data.message || '',
+                icon: 'error',
+              })
+            );
+        }
+        setSubmit(!submit)
+      };
+    const currentDate = moment();
+
+    // Định dạng ngày hiện tại thành chuỗi 'DD-MM-YYYY' (tùy thuộc vào định dạng của DateTimePicker của bạn)
+    const formattedCurrentDate = currentDate.format('DD-MM-YYYY');
+    
+    useEffect(() => {
+      if (role === 2) {
+        getInfo({ userId })
+          .then((res) => {
+            if (res.data) {
+              const { address, firstname, lastname, dob, gender, phone, img } = res.data;
+              setFirstName(firstname);
+              setLastName(lastname);
+              setDob(moment(dob).format('DD-MM-YYYY'));
+              setAddress(address);
+              setGender(gender);
+              setPhone(phone);
+              setImg(img);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+      if (role === 3) {
+        getInfoGua({ userId })
+          .then((res) => {
+            if (res.data) {
+              const { address, firstname, lastname, dob, gender, phone, img } = res.data;
+              setFirstName(firstname);
+              setLastName(lastname);
+              setDob(moment(dob).format('DD-MM-YYYY'));
+              setAddress(address);
+              setGender(gender);
+              setPhone(phone);
+              setImg(img);
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+    }, [submit]);
+    
     return (
       <div className='h-5 w-full left-[539px] top-[14px] absolute '>
         <div className='h-full'>
@@ -176,11 +309,12 @@ function MyProfile() {
                   <input
                     type='text'
                     className='border rounded-r px-4 py-2  rounded border-orange-400 w-full'
-                    defaultValue={firstname}
+                    defaultValue={firstEdit}
                     onBlur={(e) => {
-                      setFirstName(e.target.value);
+                      handleFirst(e);
                     }}
                   />
+                  {firstError && <div className='error-message text-red-900'>{firstError}</div>}
                 </div>
 
                 <div className='pb-4'>
@@ -188,9 +322,10 @@ function MyProfile() {
                   <input
                     type='text'
                     className='border rounded-r px-4 py-2  rounded border-orange-400 w-full'
-                    defaultValue={lastname}
-                    onBlur={(e) => setLastName(e.target.value)}
+                    defaultValue={lastEdit}
+                    onBlur={(e) => handleLast(e)}
                   />
+                  {lastError && <div className='error-message text-red-900'>{lastError}</div>}
                 </div>
 
                 <div className='pb-4'>
@@ -199,8 +334,8 @@ function MyProfile() {
                     id='gender'
                     name='gender'
                     className='border rounded-r px-4 py-2  rounded border-orange-400 w-full'
-                    onChange={(e) => setGender(e.target.value)}
-                    defaultValue={gender}
+                    onChange={(e) => setGenderEdit(String(e.target.value).toLowerCase() === 'true')}
+                    defaultValue={genderEdit}
                   >
                     <option value={true}>Male</option>
                     <option value={false}>Female</option>
@@ -212,9 +347,10 @@ function MyProfile() {
                   <input
                     type='text'
                     className='border rounded-r px-4 py-2  rounded border-orange-400 w-full'
-                    defaultValue={phone}
-                    onBlur={(e) => setPhone(e.target.value)}
+                    defaultValue={phoneEdit}
+                    onBlur={(e) => handlePhoneChange(e)}
                   />
+                  {phoneError && <div className='error-message text-red-900'>{phoneError}</div>}
                 </div>
 
                 <div className='pb-4'>
@@ -222,9 +358,10 @@ function MyProfile() {
                   <input
                     type='text'
                     className='border rounded-r px-4 py-2  rounded border-orange-400 w-full'
-                    defaultValue={address}
-                    onBlur={(e) => setAddress(e.target.value)}
+                    defaultValue={addressEdit}
+                    onBlur={(e) => handleAddress(e)}
                   />
+                  {addressError && <div className='error-message text-red-900'>{addressError}</div>}
                 </div>
 
                 <DateTimePicker
@@ -232,8 +369,11 @@ function MyProfile() {
                   placeholder='DD-MM-YYYY'
                   dateFormat='DD-MM-YYYY'
                   timeFormat={false}
-                  initialValue={dob}
-                  onChange={(dateOfBirth) => setDob(dateOfBirth)}
+                  initialValue={dobEdit}
+                  isValidDate={(currentDate, selectedDate) => {
+                    return !currentDate.isAfter(moment(selectedDate));
+                  }}
+                  onChange={(dateOfBirth) => handleDob(dateOfBirth)}
                 />
 
                 <BaseButton className='mt-4 flex pb-4 bg-[#C7923E]' content={'Submit'} onClick={handleUpdateProfile} />
@@ -241,7 +381,6 @@ function MyProfile() {
             </div>
           </div>
         </div>
-        <SweetAlert2 didClose={() => setSwal({ ...swal, show: false })} {...swal} />
       </div>
     );
   };
@@ -273,6 +412,7 @@ function MyProfile() {
           id='upload-photo'
           className='hidden'
         />
+
         {file && (
           <BaseButton
             content='Submit'
@@ -280,11 +420,16 @@ function MyProfile() {
             onClick={handleUploadAvatar}
           />
         )}
+        <div className='flex flex-col gap-4 mt-6'>
+          <p>Hello {firstname + ' ' + lastname}</p>
+          <p>DOB: {dob}</p>
+          <p>Address: {address}</p>
+          <p>Gender: {gender ? 'Male' : 'Female'}</p>
+          <p>Phone: {phone}</p>
+          {role === 3 && <p>Salary: {amountFormatting(salary)} VND</p>}
+        </div>
       </div>
 
-      <div className='w-[201px] h-11 left-[41px] top-[421px] absolute text-zinc-700 text-[22px] font-bold'>
-        John Doe - Host
-      </div>
       <button
         onClick={() => setToggleUpdateForm(!toggleUpdateForm)}
         className='w-[158px] h-[54px] left-[339px] top-[101px] absolute'
@@ -297,28 +442,9 @@ function MyProfile() {
       <div className='h-5 left-[339px] top-[14px] text-2xl absolute w-full '>
         {firstname} {lastname}
       </div>
-      <div className='w-[178px] left-[39px] top-[462px] absolute'>
-        <div className='w-[149px] h-[22px] left-[29px] top-[1px] absolute text-neutral-400 text-[15px] font-medium'>
-          Email Confirmed
-        </div>
-        <div className='w-[19px] h-[19px] left-0 top-0 absolute flex-col justify-start items-start inline-flex'></div>
-      </div>
-      <div className='w-[180px] left-[39px] top-[490px] absolute'>
-        <div className='w-[151px] h-[22px] left-[29px] top-[1px] absolute text-neutral-400 text-[15px] font-medium'>
-          Mobile Confirmed
-        </div>
-        <div className='w-[19px] h-[19px] left-0 top-0 absolute flex-col justify-start items-start inline-flex'></div>
-      </div>
-      <div className='w-[253px] h-[30px] left-[41px] top-[283px] absolute text-zinc-700 text-lg font-bold'>
-        Identity Verification
-      </div>
-      <div className='w-[239px] h-[72px] left-[41px] top-[315px] absolute text-neutral-400 text-sm font-normal leading-tight'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
-      </div>
-      <div className='w-[105px] h-[22px] left-[374px] top-[186px] absolute text-zinc-700 text-lg font-bold'>
-        0 Reviews
-      </div>
+
       {toggleUpdateForm && <UpdateForm />}
+      <SweetAlert2 didClose={() => setSwal({ ...swal, show: false })} {...swal} />
     </div>
   );
 }

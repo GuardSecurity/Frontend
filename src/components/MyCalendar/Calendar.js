@@ -93,8 +93,8 @@ export default function CalendarComponent({
       localStorage.setItem("customerIdOfBooking", props?.customerId);
 
     localStorage.setItem("companyName", companyname);
-    localStorage.setItem("start", start);
-    localStorage.setItem("end", end);
+    localStorage.setItem("start", new Date(start));
+    localStorage.setItem("end", new Date(end));
 
     navigate("/event-detail");
   };

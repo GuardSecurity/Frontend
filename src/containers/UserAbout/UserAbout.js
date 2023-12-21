@@ -137,6 +137,7 @@ function User() {
       console.error(error);
     }
   };
+  // console.log('postList1', postList1[0]);
 
   return (
     <div className="w-full mx-auto max-w-screen-xl">
@@ -150,63 +151,175 @@ function User() {
           </div>
         </div>
       </div>
-      <div className="p-4 md:flex md:items-center md:justify-between mt-16 gap-3">
-        <Link to={`/news/${postList1[0]?.id}`}>
-          <img
-            className="object-cover h-96 mt-10 md:mt-0"
-            src={extractFirstImageSrc(postList1[0]?.content)}
-            alt={postList1[0]?.title}
-          />
-        </Link>
-        <div className="flex-col justify-start items-start inline-flex">
-          <div className="flex-col justify-start items-start flex">
-            <p className="opacity-60 text-black text-sm ">
-              {moment(postList1[0]?.publish_date).format("DD/MM/YYYY")}
-            </p>
-            <Link to={`/news/${postList1[0]?.id}`}>
-              <div className="w-[616px] h-[85.52px] text-black text-2xl font-normal leading-[38px] mt-4">
-                {postList1[0]?.title}
-              </div>
-            </Link>
-            <Link to={`/news/${postList1[0]?.id}`}>
-              <div
-                className="w-[564.88px] h-[221.76px] text-black text-base font-normal leading-7 mt-8"
-                dangerouslySetInnerHTML={{
-                  __html: truncateHtml(postList1[0]?.content),
-                }}
-              />
-            </Link>
+      {postList1[0] !== undefined ? (
+        <div className="p-4 md:flex md:items-center md:justify-between mt-16 gap-3">
+          <Link to={`/news/${postList1[0]?.id}`}>
+            <img
+              className="object-cover h-96 mt-10 md:mt-0"
+              src={extractFirstImageSrc(postList1[0]?.content)}
+              alt={postList1[0]?.title}
+            />
+          </Link>
+          <div className="flex-col justify-start items-start inline-flex">
+            <div className="flex-col justify-start items-start flex">
+              <p className="opacity-60 text-black text-sm ">
+                {moment(postList1[0]?.publish_date).format("DD/MM/YYYY")}
+              </p>
+              <Link to={`/news/${postList1[0]?.id}`}>
+                <div className="w-[616px] h-[85.52px] text-black text-2xl font-normal leading-[38px] mt-4">
+                  {postList1[0]?.title}
+                </div>
+              </Link>
+              <Link to={`/news/${postList1[0]?.id}`}>
+                <div
+                  className="w-[564.88px] h-[221.76px] text-black text-base font-normal leading-7 mt-8"
+                  dangerouslySetInnerHTML={{
+                    __html: truncateHtml(postList1[0]?.content),
+                  }}
+                />
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mx-auto flex items-center justify-center gap-10 mt-20">
-        <Link to={`/news/${postList3[0]?.id}`}>
-          <IntroCard
-            srcImg={extractFirstImageSrc(postList3[0]?.content)}
-            time={postList3[0]?.publish_date}
-            title={postList3[0]?.title}
-            content={postList3[0]?.content}
-          />
-        </Link>
-        <Link to={`/news/${postList3[1]?.id}`}>
-          <IntroCard
-            srcImg={extractFirstImageSrc(postList3[1]?.content)}
-            time={postList3[1]?.publish_date}
-            title={postList3[1]?.title}
-            content={postList3[1]?.content}
-          />
-        </Link>
-        <Link to={`/news/${postList3[2]?.id}`}>
-          <IntroCard
-            srcImg={extractFirstImageSrc(postList3[2]?.content)}
-            time={postList3[2]?.publish_date}
-            title={postList3[2]?.title}
-            content={postList3[2]?.content}
-          />
-        </Link>
+      ) : (
+        <div
+          role="status"
+          class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center mt-20"
+        >
+          <div class="flex items-center justify-center w-full h-56 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
+            <svg
+              class="w-10 h-10 text-gray-200 dark:text-gray-600"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 18"
+            >
+              <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+            </svg>
+          </div>
+          <div class="w-full">
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+          </div>
+          <span class="sr-only">Loading...</span>
+        </div>
+      )}
+      <div className="mx-auto flex items-center justify-center gap-10 my-20">
+        {postList3[0] !== undefined ? (
+          <Link to={`/news/${postList3[0]?.id}`}>
+            <IntroCard
+              srcImg={extractFirstImageSrc(postList3[0]?.content)}
+              time={postList3[0]?.publish_date}
+              title={postList3[0]?.title}
+              content={postList3[0]?.content}
+            />
+          </Link>
+        ) : (
+          <div
+            role="status"
+            class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center w-[31%]"
+          >
+            <div class="flex items-center justify-center h-32 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
+              <svg
+                class="w-10 h-10 text-gray-200 dark:text-gray-600"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 18"
+              >
+                <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+              </svg>
+            </div>
+            <div class="w-full">
+              <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+            </div>
+            <span class="sr-only">Loading...</span>
+          </div>
+        )}
+        {postList3[1] !== undefined ? (
+          <Link to={`/news/${postList3[1]?.id}`}>
+            <IntroCard
+              srcImg={extractFirstImageSrc(postList3[1]?.content)}
+              time={postList3[1]?.publish_date}
+              title={postList3[1]?.title}
+              content={postList3[1]?.content}
+            />
+          </Link>
+        ) : (
+          <div
+            role="status"
+            class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center w-[31%]"
+          >
+            <div class="flex items-center justify-center w-full h-32 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
+              <svg
+                class="w-10 h-10 text-gray-200 dark:text-gray-600"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 18"
+              >
+                <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+              </svg>
+            </div>
+            <div class="w-full">
+              <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+            </div>
+            <span class="sr-only">Loading...</span>
+          </div>
+        )}
+        {postList3[2] !== undefined ? (
+          <Link to={`/news/${postList3[2]?.id}`}>
+            <IntroCard
+              srcImg={extractFirstImageSrc(postList3[2]?.content)}
+              time={postList3[2]?.publish_date}
+              title={postList3[2]?.title}
+              content={postList3[2]?.content}
+            />
+          </Link>
+        ) : (
+          <div
+            role="status"
+            class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center w-[31%]"
+          >
+            <div class="flex items-center justify-center w-full h-32 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
+              <svg
+                class="w-10 h-10 text-gray-200 dark:text-gray-600"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 18"
+              >
+                <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+              </svg>
+            </div>
+            <div class="w-full">
+              <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+            </div>
+            <span class="sr-only">Loading...</span>
+          </div>
+        )}
       </div>
 
-      {userData && userData.role === 2 && topRank.length && (
+      {userData && userData.role === 2 && topRank.length > 0 && (
         <div className="w-full">
           <div className="max-w-screen-xl text-center text-zinc-800 text-5xl leading-[52.80px] mt-10">
             Top Ranking
@@ -268,41 +381,41 @@ function User() {
           </div>
           <div class="h-[391px] left-0 top-[345px] absolute"></div>
         </div>
-        {/* <div class="w-full h-[441px] left-[215.98px] top-[399px] absolute">
+        <div class="w-full h-[441px] left-[115.98px] top-[399px] absolute">
           <div class="w-[319.02px] h-[440px] left-0 top-0 absolute">
             <div class="w-[282px] h-[440px] left-[0.02px] top-0 absolute rounded-lg flex-col justify-center items-center inline-flex">
               <div class="w-[282px] h-[440px] bg-black rounded-[5px] shadow"></div>
             </div>
             <img
-              class='w-[281.79px] h-[227.30px] left-0 top-0 absolute rounded-tl-[5px] rounded-tr-[5px]'
+              class="w-[281.79px] h-[227.30px] left-0 top-0 absolute rounded-tl-[5px] rounded-tr-[5px]"
               src={SecuritySolutions}
             />
-            <div class='w-[295px] h-6 left-[24.02px] top-[249px] absolute text-white text-2xl font-normal leading-relaxed tracking-widest'>
+            <div class="w-[295px] h-6 left-[24.02px] top-[249px] absolute text-white text-2xl font-normal leading-relaxed tracking-widest">
               Security Solutions :<br />
             </div>
-            <div class='w-[219.34px] h-[104.78px] left-[24.37px] top-[285.33px] absolute text-white text-[15px] font-normal leading-relaxed'>
+            <div class="w-[219.34px] h-[104.78px] left-[24.37px] top-[285.33px] absolute text-white text-[15px] font-normal leading-relaxed">
               Customized Security Services
               <br />
               Peace of Mind Assurance
               <br />
               Professional Protection
             </div>
-            <div class='w-[113px] h-5 left-[15.02px] top-[410px] absolute text-center text-white text-sm font-normal leading-relaxed'>
+            <div class="w-[113px] h-5 left-[15.02px] top-[410px] absolute text-center text-white text-sm font-normal leading-relaxed">
               READ MORE
             </div>
           </div>
-          <div class='w-[282.15px] h-[440px] left-[330.02px] top-0 absolute'>
-            <div class='w-[282px] h-[440px] left-0 top-0 absolute rounded-[5px] flex-col justify-center items-center inline-flex'>
-              <div class='w-[282px] h-[440px] bg-black rounded-[5px] shadow'></div>
+          <div class="w-[282.15px] h-[440px] left-[330.02px] top-0 absolute">
+            <div class="w-[282px] h-[440px] left-0 top-0 absolute rounded-[5px] flex-col justify-center items-center inline-flex">
+              <div class="w-[282px] h-[440px] bg-black rounded-[5px] shadow"></div>
             </div>
             <img
-              class='w-[281.79px] h-[225.46px] left-[0.36px] top-0 absolute rounded-tl-[5px] rounded-tr-[5px]'
+              class="w-[281.79px] h-[225.46px] left-[0.36px] top-0 absolute rounded-tl-[5px] rounded-tr-[5px]"
               src={experience}
             />
-            <div class='w-[231px] h-6 left-[25px] top-[247px] absolute text-white text-2xl font-normal leading-relaxed tracking-widest'>
+            <div class="w-[231px] h-6 left-[25px] top-[247px] absolute text-white text-2xl font-normal leading-relaxed tracking-widest">
               Experience :
             </div>
-            <div class='w-[219.34px] h-[72.04px] left-[24.73px] top-[285.33px] absolute text-white text-[15px] font-normal leading-relaxed'>
+            <div class="w-[219.34px] h-[72.04px] left-[24.73px] top-[285.33px] absolute text-white text-[15px] font-normal leading-relaxed">
               Extensive Management Experience
               <br />
               Tailored Security Services
@@ -310,31 +423,31 @@ function User() {
               Asset Protection Assurance
             </div>
           </div>
-          <div class='w-[653px] h-[441px] left-[337.02px] top-[-0px] absolute'>
-            <div class='w-[281.79px] h-[440px] left-[323.75px] top-0 absolute flex-col justify-center items-center inline-flex'>
-              <div class='w-[281.79px] h-[440px] bg-black rounded-[5px] shadow'></div>
+          <div class="w-[653px] h-[441px] left-[337.02px] top-[-0px] absolute">
+            <div class="w-[281.79px] h-[440px] left-[323.75px] top-0 absolute flex-col justify-center items-center inline-flex">
+              <div class="w-[281.79px] h-[440px] bg-black rounded-[5px] shadow"></div>
             </div>
             <img
-              class='w-[281.79px] h-[236.17px] left-[323.75px] top-0 absolute rounded-tl-[5px] rounded-tr-[5px]'
+              class="w-[281.79px] h-[236.17px] left-[323.75px] top-0 absolute rounded-tl-[5px] rounded-tr-[5px]"
               src={multiLocations}
             />
-            <div class='w-[309px] h-[25.14px] left-[344px] top-[257.68px] absolute text-white text-2xl font-normal leading-relaxed tracking-widest'>
+            <div class="w-[309px] h-[25.14px] left-[344px] top-[257.68px] absolute text-white text-2xl font-normal leading-relaxed tracking-widest">
               Multiple Locations :
             </div>
-            <div class='w-[239.14px] h-[75.46px] left-[348.12px] top-[298.89px] absolute text-white text-[15px] font-normal leading-relaxed'>
+            <div class="w-[239.14px] h-[75.46px] left-[348.12px] top-[298.89px] absolute text-white text-[15px] font-normal leading-relaxed">
               Extensive Geographic <br />
               Multi-State Solutions
               <br />
               Comprehensive Security Services
             </div>
-            <div class='w-[118px] h-[31px] left-[337px] top-[410px] absolute text-center text-white text-sm font-normal leading-relaxed'>
+            <div class="w-[118px] h-[31px] left-[337px] top-[410px] absolute text-center text-white text-sm font-normal leading-relaxed">
               READ MORE
             </div>
-            <div class='w-[118px] h-[31px] left-0 top-[407px] absolute text-center text-white text-sm font-normal leading-relaxed'>
+            <div class="w-[118px] h-[31px] left-0 top-[407px] absolute text-center text-white text-sm font-normal leading-relaxed">
               READ MORE
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
