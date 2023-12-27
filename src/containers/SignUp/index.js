@@ -159,7 +159,7 @@ const validateEmail = (value) => {
               <DateTimePicker
                 label='Date of Birth'
                 placeholder='DD-MM-YYYY'
-                dateFormat='DD-MM-YYYY'
+                dateFormat='YYYY-MM-DD'
                 timeFormat={false}
                 isValidDate={(currentDate, selectedDate) => {
                   return currentDate.isBefore(moment(selectedDate));

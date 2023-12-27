@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const BASE_URL = 'http://guardsystem.site:3000';
+const BASE_URL = 'http://localhost:3000';
 
 const configuration = (method, path, data) => ({
   method: method,

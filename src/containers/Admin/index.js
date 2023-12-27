@@ -9,22 +9,41 @@ import { useAuth } from "../../hooks/Auth";
 
 import NewsList from "./NewsList";
 import Quantity from "./Detail/Quatity";
+import IcNoti from "../../assets/notification-svgrepo-com.svg";
 
 import "./styles.css";
 import AdminNotification from "./Detail/AdminNotification";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("quantity");
+  const [showNotificationPopup, setShowNotificationPopup] = useState(false); // Step 1
+
 
   const { logout } = useAuth();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+    setShowNotificationPopup(false);
   };
 
   return (
     <div className='flex h-screen'>
       {/* <img src={helloAdmin} className='w-full' /> */}
+      <div
+        className={`absolute cursor-pointer top-10 right-[500px] p-3 fl  ${
+          activeTab === 'notifications' ? 'bg-[#C7923E] text-white rounded-full' : ''
+        }`}
+        onClick={() => {
+          setShowNotificationPopup(!showNotificationPopup);
+        }}
+      >
+        <img src={IcNoti} height={'32px'} width={'32px'} />
+        {showNotificationPopup && (
+          <div className='absolute bg-white p-4 rounded-lg shadow-lg mt-3'>
+            <AdminNotification handleTabClick={handleTabClick} />
+          </div>
+        )}
+      </div>
       <div className='w-52'>
         <div className='p-6'>
           <h1 className='text-2xl font-bold'>Dashboard</h1>
@@ -65,13 +84,6 @@ const Admin = () => {
             >
               News
             </li>
-
-            <li
-              className={`p-4 cursor-pointer ${activeTab === 'notifications' ? 'bg-[#C7923E] text-white' : ''}`}
-              onClick={() => handleTabClick('notifications')}
-            >
-              Notifications
-            </li>
           </ul>
           <div className='h-[100%] flex justify-center items-end'>
             <BaseButton className='flex justify-center items-center bg-[#C7923E]' content={'Logout'} onClick={logout} />
@@ -79,12 +91,12 @@ const Admin = () => {
         </div>
       </div>
       <div className='bg-gray-100 w-full'>
-        {activeTab === 'quantity' && <Quantity />}
-        {activeTab === 'customers' && <CustomerList />}
-        {activeTab === 'guards' && <GuardList />}
-        {activeTab === 'bookings' && <BookingList />}
-        {activeTab === 'news' && <NewsList />}
-        {activeTab === 'notifications' && <AdminNotification handleTabClick={handleTabClick} />}
+        {activeTab === 'quantity' && <Quantity setShowNotificationPopup={setShowNotificationPopup} />}
+        {activeTab === 'customers' && <CustomerList setShowNotificationPopup={setShowNotificationPopup} />}
+        {activeTab === 'guards' && <GuardList setShowNotificationPopup={setShowNotificationPopup} />}
+        {activeTab === 'bookings' && <BookingList setShowNotificationPopup={setShowNotificationPopup} />}
+        {activeTab === 'news' && <NewsList setShowNotificationPopup={setShowNotificationPopup} />}
+        {/* {activeTab === 'notifications' && <AdminNotification handleTabClick={handleTabClick} />} */}
       </div>
     </div>
   );

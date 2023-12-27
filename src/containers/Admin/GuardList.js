@@ -16,13 +16,17 @@ const HEADER_TABLE = [
   { label: '', sortable: false },
 ];
 
-function GuardList() {
+function GuardList({ setShowNotificationPopup }) {
   const [guardList, setGuardList] = useState([]);
   const [isDisplayPopup, setDisplayPopup] = useState(false);
   const [guardDetail, setGuardDetail] = useState({});
   const [sortField, setSortField] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentItems, setCurrentItems] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const handleSort = (header) => {
     if (header.sortable) {
@@ -38,41 +42,50 @@ function GuardList() {
       onClick={() => handleSort(header)}
     >
       <div className={`${index < 2 && 'ml-2'} flex`}>
-        {header.label}
-        {header.sortable && (
-          <button
-            className='ml-2 text-gray-500 focus:outline-none'
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSort(header);
-            }}
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='w-4 h-4'
+        <div className='flex'>
+          {header.label}
+          {header.sortable && (
+            <button
+              className='ml-2 text-gray-500 focus:outline-none'
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSort(header);
+              }}
             >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5'
-              />
-            </svg>
-          </button>
-        )}
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='w-4 h-4 '
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5'
+                />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
     </th>
   ));
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-  };
+        setShowNotificationPopup(false);
 
+  };
+  useEffect(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    setCurrentItems(guardList.slice(indexOfFirstItem, indexOfLastItem));
+  }, [guardList, currentPage]);
+  const totalPages = Math.ceil(guardList.length / itemsPerPage);
   const BodyTable = () =>
-    guardList.map((guard) => (
+    currentItems.map((guard) => (
       <BodyTableRow
         key={guard.guard_id}
         guardId={guard.guard_id}
@@ -93,7 +106,7 @@ function GuardList() {
   }, []);
 
   useEffect(() => {
-    const sortedList = [...guardList].sort((a, b) => {
+    const sortedList = [...currentItems].sort((a, b) => {
       if (sortField) {
         const fieldA = a[sortField];
         const fieldB = b[sortField];
@@ -118,7 +131,7 @@ function GuardList() {
       return 0;
     });
 
-    setGuardList(sortedList);
+    setCurrentItems(sortedList);
   }, [sortField, sortOrder]);
 
   useEffect(() => {
@@ -127,7 +140,7 @@ function GuardList() {
         if (searchQuery) {
           const response = await searchByName(searchQuery);
           if (response.status === 200) {
-            setGuardList(response.data);
+            setCurrentItems(response.data);
           } else {
             console.error('Failed to fetch guard list. Status:', response.status);
           }
@@ -152,6 +165,8 @@ function GuardList() {
     try {
       const res = await getGuardById({ guardId });
       setGuardDetail(res.data);
+          setShowNotificationPopup(false);
+
     } catch (error) {
       console.error(console.error());
     }
@@ -195,6 +210,21 @@ function GuardList() {
           </div>
         </div>
       </Popup>
+      {!searchQuery && (
+        <div className='absolute bottom w-full flex justify-center p-5'>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              className={`pagination-button ${currentPage === page ? 'bg-yellow-500 p-3' : 'p-3'}`}
+              onClick={() => {
+                setCurrentPage(page);         setShowNotificationPopup(false);
+}}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
