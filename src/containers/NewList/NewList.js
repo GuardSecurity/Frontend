@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { getAllNews } from '../../utils/admin';
 import { dateFormatting, dateTimeFormatting } from '../../utils/formatHelper';
 import { Link } from 'react-router-dom';
+import '../../index.css';
 
 function truncateHtml(content) {
-  const truncatedContent = content?.replace(/<[^>]*>?/gm, '').slice(0, 200);
+  const truncatedContent = content?.replace(/<[^>]*>?/gm, '').slice(0, 300);
   return `${truncatedContent}...`;
 }
 function extractFirstImageSrc(htmlContent) {
@@ -45,29 +46,26 @@ const NewList = () => {
 
   const totalPages = Math.ceil(newsArr.length / itemsPerPage);
 
-  const handlePaginationClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   const NewComponents = ({ sculpture }) => {
     return (
       <div className='p-8 w-[80%]'>
         <Link to={`/news/${sculpture.id}`}>
-          <div className='flex rounded overflow-hidden shadow-lg zoom p-7'>
+          <div className='flex rounded overflow-hidden shadow-lg zoom p-7 relative'>
             <img src={extractFirstImageSrc(sculpture.content)} alt='New Image' height={'300px'} width={'250px'} />
-            <div className='px-6 py-4 w-full relative'>
+            <div className='px-6 py-4 w-full '>
               <div className='font-bold text-xl mb-2'>{sculpture.title}</div>
               <p
-                className='text-gray-700 text-base'
+                className='text-gray-700 text-base w-70%'
                 dangerouslySetInnerHTML={{
                   __html: truncateHtml(sculpture.content),
                 }}
               ></p>
-              <p className='absolute bottom-0 right-1 text-gray-700 text-base font-semibold'>
-                <span className='font-semibold text-xs'>Date Public: </span>
-                {dateFormatting(sculpture.publish_date)}
-              </p>
             </div>
+            <p className='absolute bottom-0 right-1 text-gray-700 text-base font-semibold'>
+              <span className='font-semibold text-xs'>Date Public: </span>
+              {dateFormatting(sculpture.publish_date)}
+            </p>
           </div>
         </Link>
       </div>
