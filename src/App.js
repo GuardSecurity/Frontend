@@ -21,6 +21,7 @@ import CustomerUnpaidList from "./containers/CustomerUnpaidList";
 import BookingDetail from "./containers/NotificationDetail/BookingDetail";
 import { ChangePass } from "./containers/ChangePassword/ChangePass";
 import Contract from "./components/NewBooking/Contract";
+import NewList from "./containers/NewList/NewList";
 
 function App() {
   return (
@@ -55,6 +56,10 @@ function App() {
             <Route
               path="change-pass"
               element={containerLayout(<ChangePass />)}
+            />
+            <Route
+              path="news-list"
+              element={containerLayout(<NewList />)}
             />
             <Route
               path="booking-detail/:bookingName"

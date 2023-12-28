@@ -25,7 +25,7 @@ const navigation = [
 const privateNavigation = [
   { name: "About", path: "user-about" },
   { name: "My Calendar", path: "user-my-calendar" },
-  // { name: "Send Application", path: "user-send-application" },
+  { name: "News", path: "news-list" },
 ];
 
 const Header = () => {
