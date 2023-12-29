@@ -21,6 +21,7 @@ import CustomerUnpaidList from "./containers/CustomerUnpaidList";
 import BookingDetail from "./containers/NotificationDetail/BookingDetail";
 import { ChangePass } from "./containers/ChangePassword/ChangePass";
 import Contract from "./components/NewBooking/Contract";
+import NewList from "./containers/NewList/NewList";
 
 function App() {
   return (
@@ -47,14 +48,18 @@ function App() {
               element={containerLayout(<NewBooking />)}
             />
             <Route path="news/:id" element={containerLayout(<News />)} />
-            <Route
+            {/* <Route
               path="user-my-calendar/new-booking/payment/:companyNameForPayment"
               element={containerLayout(<Payment />)}
-            />
+            /> */}
             <Route path="my-profile" element={containerLayout(<MyProfile />)} />
             <Route
               path="change-pass"
               element={containerLayout(<ChangePass />)}
+            />
+            <Route
+              path="news-list"
+              element={containerLayout(<NewList />)}
             />
             <Route
               path="booking-detail/:bookingName"

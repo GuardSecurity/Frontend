@@ -18,14 +18,14 @@ import { getInfo, getInfoGua } from "../../utils/profile";
 
 const navigation = [
   { name: "About", path: "" },
-  { name: "Booking", path: "login" },
-  { name: "Contact", path: "login" },
+  { name: "Booking", path: "booking" },
+  { name: "Contact", path: "contract" },
 ];
 
 const privateNavigation = [
   { name: "About", path: "user-about" },
   { name: "My Calendar", path: "user-my-calendar" },
-  // { name: "Send Application", path: "user-send-application" },
+  { name: "News", path: "news-list" },
 ];
 
 const Header = () => {

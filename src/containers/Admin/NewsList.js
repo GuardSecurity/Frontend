@@ -15,36 +15,41 @@
     </th>
   ));
 
-function NewsList() {
+function NewsList({ setShowNotificationPopup }) {
   const [newsList, setNewsList] = useState([]); // Initialize the news list state
 
-  
-    const [newsDetail, setNewsDetail] = useState({});
-    const [selectedNews, setSelectedNews] = useState({});
-    const [displayPopup, setDisplayPopup] = useState(false);
-    const [isCreate, setIsCreate] = useState(false);
+  const [newsDetail, setNewsDetail] = useState({});
+  const [selectedNews, setSelectedNews] = useState({});
+  const [displayPopup, setDisplayPopup] = useState(false);
+  const [isCreate, setIsCreate] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentItems, setCurrentItems] = useState('');
 
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
   // const handleCreateNews = (newNews) => {
   //   setNewsList([...newsList, newNews]);
   // };
-    const BodyTable = () =>
-      newsList.map((news, index) => (
-        <BodyTableRow
-          key={index}
-          newid={news.id}
-          title={news.title}
-          staffId={news.manager_id}
-          datePublic={moment(news.datePublic).format('DD-MM-YYYY')}
-          handleDisplayDetail={handleDisplayDetail}
-          editorValue={news.content}
-        />
-      ));
-    const handleCreate = () => {
-      setDisplayPopup(true);
-      setIsCreate(true);
-      setIsEditing(false)
+  const BodyTable = () =>
+    currentItems.map((news, index) => (
+      <BodyTableRow
+        key={index}
+        newid={news.id}
+        title={news.title}
+        staffId={news.manager_id}
+        datePublic={moment(news.datePublic).format('DD-MM-YYYY')}
+        handleDisplayDetail={handleDisplayDetail}
+        editorValue={news.content}
+      />
+    ));
+  const handleCreate = () => {
+    setDisplayPopup(true);
+    setIsCreate(true);
+    setIsEditing(false);
+        setShowNotificationPopup(false);
+
   };
   useEffect(() => {
     // Call the API and set the data into newsList when the component is rendered
@@ -57,69 +62,93 @@ function NewsList() {
       });
   }, [displayPopup]);
 
-    useEffect(() => {
-      if (!displayPopup) {
-        setIsCreate(false);
-      }
-    }, [displayPopup]);
+  useEffect(() => {
+    if (!displayPopup) {
+      setIsCreate(false);
+    }
+  }, [displayPopup]);
+
+  useEffect(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    setCurrentItems(newsList.slice(indexOfFirstItem, indexOfLastItem));
+  }, [newsList, currentPage]);
   // console.log('contentValue', contentValue);
+  const totalPages = Math.ceil(newsList.length / itemsPerPage);
+
   const handleDisplayDetail = (id) => {
     // console.log('newwList []', newsList[id-1]);
     // console.log('id', id);
     const selectedNews = newsList.find((item) => item.id === id);
     setSelectedNews(selectedNews);
-    console.log('selectedNews', selectedNews);    
+    console.log('selectedNews', selectedNews);
     setIsEditing(true);
-    setDisplayPopup(true)
+    setDisplayPopup(true);
+        setShowNotificationPopup(false);
+
   };
   // console.log('newSlected',selectedNews);
   // console.log('isCreate', isCreate);
   // console.log('newsList', newsList);
   // console.log('selectNew', selectedNews);
-    return (
-      <div>
-        <img src={helloAdmin} />
-        <div className='w-full flex justify-center items-center py-4'>
-          <BaseButton content='Create' className={`rounded-3xl bg-[#C7923E] font-medium w-32`} onClick={handleCreate} />
-        </div>
-        <div className='flex justify-center w-full mt-4'>
-          <table className='w-[98%] bg-white border border-gray-300'>
-            <thead>
-              <tr className='border border-gray-300 '>{HeaderTable}</tr>
-            </thead>
-            {newsList.length > 0 && <BodyTable />}
-          </table>
-        </div>
-        <Popup
-          open={displayPopup}
-          onClose={() => displayPopup && setDisplayPopup(false)}
-          modal
-          {...{
-            contentStyle: { width: '80%', borderRadius: 4, padding: 20 },
-          }}
-          className='popup-editor'
-        >
-          <div>
-            <div className='content'>
-              <NewDetail
-                isCreate={isCreate}
-                setDisplayPopup={setDisplayPopup}
-                // createNews={handleCreateNews}
-                selectedNews={selectedNews}
-                newsList={newsList}
-                isEditing={isEditing}
-              />
-            </div>
-            {/* <div className='w-full flex justify-center mt-4'>
+  return (
+    <div>
+      <img src={helloAdmin} width={'100%'} />
+      <div className='w-full flex justify-center items-center py-4'>
+        <BaseButton content='Create' className={`rounded-3xl bg-[#C7923E] font-medium w-32`} onClick={handleCreate} />
+      </div>
+      <div className='flex justify-center w-full mt-4'>
+        <table className='w-[98%] bg-white border border-gray-300'>
+          <thead>
+            <tr className='border border-gray-300 '>{HeaderTable}</tr>
+          </thead>
+          {newsList.length > 0 && <BodyTable />}
+        </table>
+      </div>
+      <Popup
+        open={displayPopup}
+        onClose={() => displayPopup && setDisplayPopup(false)}
+        modal
+        {...{
+          contentStyle: { width: '80%', borderRadius: 4, padding: 20 },
+        }}
+        className='popup-editor'
+      >
+        <div>
+          <div className='content'>
+            <NewDetail
+              isCreate={isCreate}
+              setDisplayPopup={setDisplayPopup}
+              // createNews={handleCreateNews}
+              selectedNews={selectedNews}
+              newsList={newsList}
+              isEditing={isEditing}
+            />
+          </div>
+          {/* <div className='w-full flex justify-center mt-4'>
                 <button className='bg-blue-500 text-white px-4 py-1 rounded-sm' onClick={() => setDisplayPopup(false)}>
                   OK
                 </button>
               </div> */}
-          </div>
-        </Popup>
+        </div>
+      </Popup>
+      <div className='absolute bottom w-full flex justify-center p-5'>
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            className={`pagination-button ${currentPage === page ? 'bg-yellow-500 p-3' : 'p-3'}`}
+            onClick={() => {
+              setCurrentPage(page);
+                setShowNotificationPopup(false);
+}}
+          >
+            {page}
+          </button>
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   const BodyTableRow = ({
     newid,
@@ -135,7 +164,9 @@ function NewsList() {
       <tbody>
         <tr>
           <td className='py-3 border-b border-gray-300 pl-2'>{newid}</td>
-          <td className='py-3 border-b border-gray-300 pl-2 font-bold'>{title}</td>
+          <td className='py-3 border-b border-gray-300 pl-2 font-bold'>
+            <span>{title}</span>
+          </td>
           <td className='py-3 border-b border-gray-300 pl-2'>{staffId}</td>
           {/* <td className='py-3  border-b border-gray-300 pl-2' dangerouslySetInnerHTML={{ __html: editorValue }}></td> */}
           <td className='py-3 border-b border-gray-300'>{datePublic}</td>
