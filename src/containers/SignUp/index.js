@@ -36,22 +36,18 @@ function SignUp() {
 
 
 
-const validateEmail = (value) => {
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  if (!emailRegex.test(value)) {
-    setEmailError('Invalid email format!');
-    return false;
+const validateEmail = (mail) => {
+  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  if (regex.test(mail)) {
+    return true;
   }
-  setEmailError('');
-  return true;
+  return false;
 };
+
 
 
   
   const handleSignUp = () => {
-    
-
-
     if (
       firstname &&
       lastname &&
@@ -64,9 +60,7 @@ const validateEmail = (value) => {
       role &&
       salary &&
       isChecked &&
-      validateEmail(email) &&
-      phone.length === 10
-    ) {
+      error === '') {
       signUp({
         email,
         address,
@@ -118,7 +112,14 @@ const validateEmail = (value) => {
                 onChange={(e) => {
                   setfirstname(e.target.value);
                 }}
-                error={firstname.length === 0 ? 'Required' : false}
+                onBlur={() => {
+                  if (firstname.length === 0) {
+                    setError('First Name is required!');
+                  } else {
+                    setError('');
+                  }
+                }}
+                // error={firstname.length === 0 ? 'Required' : false}
               />
 
               <BaseInput
@@ -126,14 +127,30 @@ const validateEmail = (value) => {
                 onChange={(e) => {
                   setLastName(e.target.value);
                 }}
-                error={lastname.length === 0 ? 'Required' : false}
+                onBlur={() => {
+                  if (lastname.length === 0) {
+                    setError('Last Name is required!');
+                  } else {
+                    setError('');
+                  }
+                }}
+                // error={lastname.length === 0 ? 'Required' : false}
               />
 
               <BaseInput
                 label='Email'
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  validateEmail(email);
+                  // validateEmail(email);
+                }}
+                onBlur={() => {
+                  if (email.length === 0) {
+                    setError('Email is required!');
+                  } else if (!validateEmail(email)) {
+                    setError('Check your email format example@gmail.com');
+                  } else {
+                    setError('');
+                  }
                 }}
                 error={emailError}
               />
@@ -144,7 +161,15 @@ const validateEmail = (value) => {
                 onChange={(e) => {
                   setPhone(e.target.value);
                 }}
-                error={phone.length !== 10 ? 'Required 10 number' : false}
+                onBlur={() => {
+                  if (phone.length === 0) {
+                    setError('Phone is required!');
+                  } else if (phone.length !== 10) {
+                    setError('Phone must be at least 10');
+                  } else {
+                    setError('');
+                  }
+                }}
               />
 
               <BaseInput
@@ -153,12 +178,21 @@ const validateEmail = (value) => {
                 onChange={(e) => {
                   setAddress(e.target.value);
                 }}
-                error={address.length === 0 ? 'Required' : false}
+                onBlur={() => {
+                  if (address.length === 0) {
+                    setError('Address is required!');
+                  } else {
+                    setError('');
+                  }
+                }}
+                // error={address.length === 0 ? 'Required' : false}
               />
 
               <DateTimePicker
                 label='Date of Birth'
+
                 placeholder='DD-MM-YYYY'
+
                 dateFormat='YYYY-MM-DD'
                 timeFormat={false}
                 isValidDate={(currentDate, selectedDate) => {
@@ -174,7 +208,14 @@ const validateEmail = (value) => {
                 onChange={(e) => {
                   setPasswd(e.target.value);
                 }}
-                error={passwd.length < 8 ? 'Password must be at least 8 characters' : false}
+                onBlur={() => {
+                  if (passwd.length < 8) {
+                    setError('Password must be at least 8 characters');
+                  } else {
+                    setError('');
+                  }
+                }}
+                // error={passwd.length < 8 ? 'Password must be at least 8 characters' : false}
               />
 
               <BaseInput
@@ -182,6 +223,13 @@ const validateEmail = (value) => {
                 label='Confirm password'
                 type='password'
                 onChange={(e) => setconfirmpasswd(e.target.value)}
+                onBlur={() => {
+                  if (passwd !== confirmpasswd) {
+                    setError('Confirm passwords is not match');
+                  } else {
+                    setError('');
+                  }
+                }}
               />
 
               <div>
