@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import GuardList from "./GuardList";
 import CustomerList from "./CustomerList";
 import BookingList from "./BookingList";
+import Dashboard from "./Dashboard";
 
 import BaseButton from "../../components/Button";
 import { useAuth } from "../../hooks/Auth";
@@ -22,7 +23,10 @@ const Admin = () => {
     <div className="flex h-screen">
       <div className="w-52">
         <div className="p-6">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <h1 className="text-2xl font-bold"
+          >
+            Dashboard
+          </h1>
         </div>
         <div className="h-1/2">
           <ul>
@@ -50,6 +54,14 @@ const Admin = () => {
             >
               Bookings
             </li>
+            <li
+              className={`p-4 cursor-pointer ${
+                activeTab === "dashboard" ? "bg-[#C7923E] text-white" : ""
+              }`}
+              onClick={() => handleTabClick("dashboard")}
+            >
+              Dashboard
+            </li>
           </ul>
           <div className="h-full flex justify-center items-end">
             <BaseButton
@@ -64,6 +76,7 @@ const Admin = () => {
         {activeTab === "customers" && <CustomerList />}
         {activeTab === "guards" && <GuardList />}
         {activeTab === "bookings" && <BookingList />}
+        {activeTab === "dashboard" && <Dashboard />}
       </div>
     </div>
   );
