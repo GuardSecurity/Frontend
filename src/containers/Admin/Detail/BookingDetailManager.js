@@ -203,43 +203,30 @@ function BookingDetailManager({
 
   return (
     <div>
-      <div className="grid grid-cols-3 gap-4">
-        <Descriptions title="Company name" content={companyName} />
+      <div className='grid grid-cols-3 gap-4'>
+        <Descriptions title='Company name' content={companyName} />
 
-        <Descriptions title="Address" content={booking.address} />
+        <Descriptions title='Address' content={booking.address} />
 
+        <Descriptions title='Booking date' content={dateFormatting(booking.booking_date)} />
+
+        <Descriptions title='Quantity' content={booking.quantity} />
+
+        <Descriptions title='Service' content={booking.service} />
+
+        <Descriptions title='Total amount' content={amountFormatting(booking.total_amount)} />
+
+        <Descriptions title='Customer email' content={booking?.customer?.email} />
         <Descriptions
-          title="Booking date"
-          content={dateFormatting(booking.booking_date)}
+          title='Customer name'
+          content={booking?.customer?.firstname + ' ' + booking?.customer?.lastname}
         />
-
-        <Descriptions title="Quantity" content={booking.quantity} />
-
-        <Descriptions title="Service" content={booking.service} />
-
-        <Descriptions
-          title="Total amount"
-          content={amountFormatting(booking.total_amount)}
-        />
-
-        <Descriptions
-          title="Customer email"
-          content={booking?.customer?.email}
-        />
-        <Descriptions
-          title="Customer name"
-          content={
-            booking?.customer?.firstname + " " + booking?.customer?.lastname
-          }
-        />
+        <Descriptions title='Province/District' content={booking.country} />
       </div>
 
-      <div className="flex w-full mt-4">
-        <div className="w-1/2">
-          <TimeRangeDataBooking
-            className={"w-full mt-4"}
-            dataBooking={booking.dataBooking}
-          />
+      <div className='flex w-full mt-4'>
+        <div className='w-1/2'>
+          <TimeRangeDataBooking className={'w-full mt-4'} dataBooking={booking.dataBooking} />
         </div>
 
         <GuardComponent />
@@ -254,10 +241,7 @@ function BookingDetailManager({
         />
       )}
 
-      <SweetAlert2
-        didClose={() => setSwal({ ...swal, show: false })}
-        {...swal}
-      />
+      <SweetAlert2 didClose={() => setSwal({ ...swal, show: false })} {...swal} />
     </div>
   );
 }

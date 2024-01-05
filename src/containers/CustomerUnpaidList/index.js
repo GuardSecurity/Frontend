@@ -148,14 +148,15 @@ function CustomerUnpaidList() {
 
     navigate(`../../contract/${userData?.userId + companyName}`);
   };
-    // console.log('ussssee', searchParams);
+  // console.log('ussssee', searchParams);
+  
   
   return (
-    <div className="flex justify-center w-full">
-      <div className="p-10">
-        <p className="text-2xl font-bold">Unpaid bookings</p>
+    <div className='flex justify-center w-full'>
+      <div className='p-10'>
+        <p className='text-2xl font-bold'>Unpaid bookings</p>
 
-        {unpaidList.length &&
+        {unpaidList.length ? (
           unpaidList.map((booking) => (
             <UnpaidBookingItem
               companyName={booking.companyname}
@@ -163,41 +164,45 @@ function CustomerUnpaidList() {
               totalAmount={booking.total_amount}
               handleToggleDetail={handleToggleDetail}
               handleDelete={handleDelete}
+              key={booking.id}
             />
-          ))}
+          ))
+        ) : (
+          <div className='flex flex-col mt-3 gap-14'>
+            <span className='text-red-800'>No unpaid bookings found.</span>
+            <button
+              className='p-3 bg-green-400 text-brown-50 font-semibold rounded-md'
+              onClick={() => navigate('/user-my-calendar/new-booking')}
+            >
+              Create Your Booking
+            </button>
+          </div>
+        )}
 
-        {unpaidList.length < 3 && <div className="h-72" />}
-
+        {unpaidList.length < 3 && <div className='h-72' />}
         <Popup
           open={isDisplayPopup}
           onClose={() => isDisplayPopup && setDisplayPopup(false)}
           modal
           {...{
-            contentStyle: { width: "80%", borderRadius: 4, padding: 20 },
+            contentStyle: { width: '80%', borderRadius: 4, padding: 20 },
           }}
         >
           <div>
-            <div className="content">
-              <UnpaidBookingDetail
-                bookingName={bookingName}
-                companyName={companyName}
-              />
+            <div className='content'>
+              <UnpaidBookingDetail bookingName={bookingName} companyName={companyName} />
             </div>
-            <div className="w-full flex justify-center mt-10">
+            <div className='w-full flex justify-center mt-10'>
               <button
-                className="bg-gray-400 text-white px-4 py-1 rounded-sm mr-10"
+                className='bg-gray-400 text-white px-4 py-1 rounded-sm mr-10'
                 onClick={() => setDisplayPopup(false)}
               >
                 CANCEL
               </button>
 
               <button
-                className="bg-blue-500 text-white px-4 py-1 rounded-sm"
-                onClick={() =>
-                  navigate(
-                    `../user-my-calendar/new-booking/payment/${companyName}`
-                  )
-                }
+                className='bg-blue-500 text-white px-4 py-1 rounded-sm'
+                onClick={() => navigate(`../user-my-calendar/new-booking/payment/${companyName}`)}
               >
                 PAYMENT
               </button>
@@ -206,10 +211,7 @@ function CustomerUnpaidList() {
         </Popup>
       </div>
 
-      <SweetAlert2
-        didClose={() => setSwal({ ...swal, show: false })}
-        {...swal}
-      />
+      <SweetAlert2 didClose={() => setSwal({ ...swal, show: false })} {...swal} />
     </div>
   );
 }
