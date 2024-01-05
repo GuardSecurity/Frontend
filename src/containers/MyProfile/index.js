@@ -173,12 +173,16 @@ function MyProfile() {
     const handleDob = (value) => {
       
       if (!value) {
-        setDobError('Date of birth is required.');
+        setSwal('Date of birth is required.');
         return
       } 
-      else {
-        setDobError(''); 
-        setDobEdit(value); 
+      const userAge = calculateAgeFromDate(value);
+      if (userAge < 18) {
+        setDobError('You must be at least 18 years old.');
+        return;
+      } else {
+        setDobError('');
+        setDobEdit(value);
       }
     }
     const handlePhoneChange = (e) => { 
@@ -192,8 +196,18 @@ function MyProfile() {
       }
       setPhoneEdit(value);
     }
-      const handleUpdateProfile = () => {
-        if (addressEdit === address && firstEdit === firstname && lastEdit === lastname && dobEdit ===dob && phoneEdit === phone) {
+    const handleUpdateProfile = () => {
+        if (dobError) {
+          setSwal({
+            ...swal,
+            show: true,
+            text: 'You must be at least 18 years old.',
+            icon: 'error',
+          });
+          return;
+        }
+
+        if (addressEdit === address && firstEdit === firstname && lastEdit === lastname && dobEdit ===dob && phoneEdit === phone && genderEdit === gender) {
           setSwal({
             ...swal,
             show: true,
@@ -202,13 +216,13 @@ function MyProfile() {
           });
           return;
         }
-
+        
         const data = {
           address: addressEdit,
           firstname: firstEdit,
           lastname: lastEdit,
           dob: dobEdit,
-          gender: gender,
+          gender: genderEdit,
           phone: phoneEdit,
         };
 
@@ -297,6 +311,18 @@ function MyProfile() {
           .catch((err) => console.error(err));
       }
     }, [submit]);
+    const calculateAgeFromDate = (dateOfBirth) => {
+      const today = new Date();
+      const birthDate = new Date(dateOfBirth);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+
+      if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      return age;
+    };
     
     return (
       <div className='h-5 w-full left-[539px] top-[14px] absolute '>
@@ -370,9 +396,9 @@ function MyProfile() {
                   dateFormat='DD-MM-YYYY'
                   timeFormat={false}
                   initialValue={dobEdit}
-                  isValidDate={(currentDate, selectedDate) => {
-                    return !currentDate.isAfter(moment(selectedDate));
-                  }}
+                  // isValidDate={(currentDate, selectedDate) => {
+                  //   return calculateAgeFromDate(selectedDate) >= 18 && !currentDate.isAfter(moment(selectedDate));
+                  // }}
                   onChange={(dateOfBirth) => handleDob(dateOfBirth)}
                 />
 

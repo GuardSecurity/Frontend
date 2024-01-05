@@ -48,6 +48,12 @@ const validateEmail = (mail) => {
 
   
   const handleSignUp = () => {
+    if (calculateAgeFromDate(dob) > 18) {
+      setError('');
+    } else {
+      setError('You must be at least 18 years old.');
+      return;
+    }
     if (
       firstname &&
       lastname &&
@@ -86,6 +92,18 @@ const validateEmail = (mail) => {
       setError('Please fill all fields!');
       setSignUpSuccess(false);
     }
+  };
+  const calculateAgeFromDate = (dateOfBirth) => {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age;
   };
 
   return (
@@ -195,9 +213,6 @@ const validateEmail = (mail) => {
 
                 dateFormat='YYYY-MM-DD'
                 timeFormat={false}
-                isValidDate={(currentDate, selectedDate) => {
-                  return currentDate.isBefore(moment(selectedDate));
-                }}
                 onChange={(dateOfBirth) => setDob(dateOfBirth)}
                 // onChange={(dateOfBirth) => setDob(dateOfBirth)}
               />

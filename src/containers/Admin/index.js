@@ -30,7 +30,7 @@ const Admin = () => {
     <div className='flex h-screen'>
       {/* <img src={helloAdmin} className='w-full' /> */}
       <div
-        className={`absolute cursor-pointer top-10 right-[500px] p-3 fl  ${
+        className={`absolute cursor-pointer top-10 right-[50px] p-3 flex justify-end  ${
           activeTab === 'notifications' ? 'bg-[#C7923E] text-white rounded-full' : ''
         }`}
         onClick={() => {
@@ -38,11 +38,12 @@ const Admin = () => {
         }}
       >
         <img src={IcNoti} height={'32px'} width={'32px'} />
+        
         {showNotificationPopup && (
-          <div className='absolute bg-white p-4 rounded-lg shadow-lg mt-3'>
-            <AdminNotification handleTabClick={handleTabClick} />
-          </div>
-        )}
+            <div className='absolute bg-white p-4 rounded-lg shadow-lg mt-10'>
+              <AdminNotification handleTabClick={handleTabClick} />
+            </div>
+          )}
       </div>
       <div className='w-52'>
         <div className='p-6'>
