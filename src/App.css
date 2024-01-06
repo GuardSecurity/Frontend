@@ -1,10 +1,18 @@
 .App {
   text-align: center;
 }
-
+body {
+  overflow-x: hidden;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+.popup-overlay {
+  overflow-y: overlay;
+}
+.quill img {
+  width: 300px;
 }
 
 @media (prefers-reduced-motion: no-preference) {

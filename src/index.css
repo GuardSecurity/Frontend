@@ -22,3 +22,13 @@ code {
 .rbc-time-view .rbc-header {
   border-bottom: none;
 }
+
+.zoom {
+  transition: transform 0.2s; /* Animation */
+}
+
+.zoom:hover {
+  transform: scale(
+    0.9
+  ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}

@@ -2,7 +2,7 @@ import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../Auth";
 
 export const ProtectRoutes = () => {
-  const { pathname, state } = useLocation();
+  const { pathname } = useLocation();
   const { cookies } = useAuth();
 
   const userData = JSON.parse(localStorage.getItem("userData"));

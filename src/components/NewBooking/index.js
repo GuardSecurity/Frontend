@@ -1,45 +1,75 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
 import SweetAlert2 from "react-sweetalert2";
 
 import BaseButton from "../Button";
 import BaseInput from "../Input/Input";
 import DateTimePicker from "../DateTimePicker";
-import { createNewBooking } from "../../utils/booking";
+import { createNewBooking, vnPayMent } from "../../utils/booking";
 import { amountFormatting } from "../../utils/formatHelper";
+
+import { SERVICES } from "../../utils/constants";
+import axios from 'axios';
+
+const BASE_API_URL = 'https://provinces.open-api.vn/api/?depth=2';
+
 
 function NewBooking() {
   const navigate = useNavigate();
 
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = JSON.parse(localStorage.getItem('userData'));
   const { userId } = userData;
 
   const [swal, setSwal] = useState({});
 
-  const [companyName, setCompanyName] = useState("");
-  const [service, setService] = useState("");
-  const [address, setAddress] = useState("");
-  const [country, setCountry] = useState("");
-  const [quantity, setQuantity] = useState();
-  const [totalAmount, setTotalAmount] = useState("");
-  const [timeStart, setTimeStart] = useState("");
-  const [timeEnd, setTimeEnd] = useState("");
+  const [companyName, setCompanyName] = useState('');
+  const [service, setService] = useState('Cars');
+  const [serviceOther, setServiceOther] = useState('');
+  const [address, setAddress] = useState('');
+  const [params, setParams] = useState('');
+  const [country, setCountry] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [totalAmount, setTotalAmount] = useState('');
+  const [timeStart, setTimeStart] = useState(new Date());
+  const [timeEnd, setTimeEnd] = useState(moment(new Date()).add(23 - new Date().getHours(), 'hours'));
+  const [bookingHours, setBookingHours] = useState(0);
+  const [province, setProvince] = useState([]);
+  const [selectProvince, setSelectProvince] = useState([]);
+  const [selectDistrict, setSelectDistrict] = useState([]);
+  const [districts, setDistricts] = useState([]);
 
-  const isValid = timeStart && timeEnd && timeStart < timeEnd;
+  const isValid = timeStart && timeEnd && moment(timeEnd).isAfter(moment(timeStart));
 
-  const numberOfDayWorking =
-    new Date(timeEnd).getDate() - new Date(timeStart).getDate();
+  const numberOfDayWorking = new Date(timeEnd).getDate() - new Date(timeStart).getDate();
 
   useEffect(() => {
-    setTimeStart(new Date());
-    setTimeEnd(moment(new Date()).add(23 - new Date().getHours(), "hours"));
+    const fetchProvinces = async () => {
+      try {
+        const response = await axios.get(`${BASE_API_URL}`);
+        // Kiểm tra dữ liệu trả về từ API
+        if (response && response.data) {
+          setProvince(response.data);
+          if (province) {
+            const provinceName = province[0];
+            if (provinceName.name) {
+              setSelectProvince(provinceName.name);
+            }
+            setDistricts(provinceName.districts);
+          }
+        } else {
+          console.error('Không có dữ liệu trả về từ API');
+        }
+      } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+      }
+    };
+    fetchProvinces();
   }, []);
 
   useEffect(() => {
     if (isValid && quantity) {
-      const workingHours =
-        (new Date(timeEnd).getTime() - new Date(timeStart).getTime()) / 3600000;
+      const workingHours = (new Date(timeEnd).getTime() - new Date(timeStart).getTime()) / 3600000;
 
       // 50 000 VND/h
       let amountOfWorkingTime = quantity * workingHours * 50000;
@@ -62,6 +92,7 @@ function NewBooking() {
       }
 
       setTotalAmount(amountOfWorkingTime);
+      setBookingHours(workingHours);
     }
   }, [quantity, timeStart, timeEnd]);
 
@@ -72,124 +103,203 @@ function NewBooking() {
       companyName &&
       service &&
       address &&
-      country &&
+      // country &&
       quantity &&
       timeStart &&
       timeEnd &&
       totalAmount
     ) {
+      const countryValue = selectProvince + ' ' + selectDistrict;
+
       const data = {
         companyname: companyName,
-        service,
+        service: service === 'Other' ? serviceOther : service,
         address,
-        country,
+        country: countryValue,
         quantity,
         total_amount: totalAmount,
-        booking_date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+        booking_date: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
         dataBooking: formatDataBooking(numberOfDayWorking, timeStart, timeEnd),
       };
+      // const dataVNPay = {
+      //   amount: totalAmount,
+      //   bookingname: companyName,
+      //   userId: userId,
+      // };
 
       try {
         const res = await createNewBooking({ data, userId });
-
-        setSwal({
-          ...swal,
-          show: true,
-          text: res.data.message || "",
-          icon: "success",
-          didClose: () => navigate("../user-my-calendar"),
-        });
+        // const res1 = await vnPayMent(dataVNPay);
+        // window.location.href = res1.data;
+        navigate(`/contract/${userId + companyName}`);
       } catch (err) {
-        setSwal({
-          ...swal,
-          show: true,
-          text: err.response.data.message || "",
-          icon: "error",
-        });
+        console.log('err', err);
       }
     }
   };
 
+
+  const handleSelectChange = (e) => {
+    const selectedName = e.target.value;
+    if (selectedName) {
+      const selectedProvince = province.find((p) => p.name === selectedName);
+      if (selectedProvince) {
+        setSelectProvince(selectedProvince); 
+        setDistricts(selectedProvince.districts);
+        setSelectDistrict(selectedProvince.districts[0].name);
+      }
+    }
+  };
+    // console.log('districtttttt', districts);
+
+
+  // console.log('selectProvince', selectProvince);
+
+  // const dataVNPay = {
+  //   amount: totalAmount,
+  //   companyname: companyName,
+  // };
+  // console.log('amount',  dataVNPay);
+  // const usep = useSearchParams()
+  // const countryValue = selectProvince + ' ' + selectDistrict.name;
+
+  // console.log('selectCity1', selectProvince);
+  // console.log('selectCity2', selectDistrict);
+
   return (
-    <div className="w-full h-full mt-14">
-      <div className="block md:flex">
-        <div className="w-full md:w-2/5 px-8 bg-white lg:ml-4">
-          <div className="rounded shadow p-6">
+    <div className='w-full h-full mt-14 '>
+      <div className='block md:flex justify-center'>
+        <div className='w-full md:w-2/5 px-8 bg-white lg:ml-4'>
+          <div className='rounded shadow p-6'>
             <BaseInput
               label="Your company's name"
-              classExtend="w-full"
+              classExtend='w-full'
               onChange={(e) => setCompanyName(e.target.value)}
             />
 
-            <BaseInput
-              label="Service"
-              classExtend="w-full mt-3"
-              onChange={(e) => setService(e.target.value)}
-            />
+            <div>
+              <div className='text-gray-400 leading-7 mb-1 mt-3'>Service</div>
+              <select
+                id='service'
+                name='service'
+                className='h-11 w-full px-4 bg-white rounded border border-orange-400'
+                onChange={(e) => setService(e.target.value)}
+              >
+                {SERVICES.map((service) => (
+                  <option>{service.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {service === 'Other' && (
+              <BaseInput label='' classExtend='w-full' onBlur={(e) => setServiceOther(e.target.value)} />
+            )}
+
+            <BaseInput label='Address' classExtend='w-full mt-3' onChange={(e) => setAddress(e.target.value)} />
+
+            <div className='flex gap-3'>
+              <div className='flex flex-col w-full'>
+                <div className='text-gray-400 leading-7 mb-1 mt-3'>Provinces</div>
+                <select
+                  id='provinces'
+                  name='Provinces'
+                  className='h-11 w-full px-4 bg-white rounded border border-orange-400'
+                  // onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleSelectChange}
+                >
+                  {province &&
+                    province.length > 0 &&
+                    province.map((province, index) => (
+                      <option key={index} value={province.name}>
+                        {province.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              <div className='flex flex-col w-full'>
+                <div className='text-gray-400 leading-7 mb-1 mt-3'>District</div>
+                <select
+                  id='district'
+                  name='District'
+                  // value={districts[0].name}
+                  className='h-11 w-full px-4 bg-white rounded border border-orange-400'
+                  onChange={(e) => setSelectDistrict(districts.find((district) => district.name === e.target.value))}
+                >
+                  {districts &&
+                    districts.length > 0 &&
+                    districts.map((district, index) => (
+                      <option key={index} value={district.name}>
+                        {district.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
 
             <BaseInput
-              label="Address"
-              classExtend="w-full mt-3"
-              onChange={(e) => setAddress(e.target.value)}
-            />
-
-            <BaseInput
-              label="Country"
-              classExtend="w-full mt-3"
-              onChange={(e) => setCountry(e.target.value)}
-            />
-
-            <BaseInput
-              label="Quantity"
-              classExtend="w-full mt-3"
-              type="number"
+              label='Quantity'
+              classExtend='w-full mt-3'
+              type='number'
+              value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             />
 
-            <div className="flex justify-between mt-3">
+            {quantity < 1 && <p className='text-red-500'>More than!</p>}
+
+            <div className='flex justify-between mt-3'>
               <DateTimePicker
-                label="Time Start"
-                classExtend="w-[190px]"
+                label='Time Start'
+                classExtend='w-[190px]'
                 initialValue={new Date()}
+                isValidDate={(currentDate, selectedDate) => {
+                  return currentDate.isAfter(moment(selectedDate));
+                }}
                 onChange={(time) => setTimeStart(time)}
               />
 
               <DateTimePicker
-                label="Time End"
-                classExtend="w-[190px]"
-                initialValue={moment(new Date()).add(
-                  23 - new Date().getHours(),
-                  "hours"
-                )}
+                label='Time End'
+                classExtend='w-[190px]'
+                initialValue={moment(new Date()).add(23 - new Date().getHours(), 'hours')}
+                isValidDate={(currentDate, selectedDate) => {
+                  return currentDate.isAfter(moment(selectedDate));
+                }}
                 onChange={(time) => setTimeEnd(time)}
               />
             </div>
 
-            {!isValid && timeStart && timeEnd && (
-              <div className="text-red-500">
-                "Start time must be earlier than end time"
-              </div>
-            )}
+            {!isValid && <div className='text-red-500'>"Start time must be earlier than end time"</div>}
 
-            {totalAmount && (
-              <div className="mt-6 ml-2 font-medium">
-                Total amount: {amountFormatting(totalAmount)}
+            {totalAmount && quantity > 0 && (
+              <div className='mt-6 ml-2 font-medium'>
+                Booking-hour: {bookingHours}h
+                <br />
+                Price/hour: 50,000 VND
+                <br />
+                <div className='text-2xl '>Total amount: {amountFormatting(totalAmount)} VND</div>
+                <div className='mt-2 text-sm italic text-red-900'>
+                  * * *
+                  <br />
+                  Renting more than 5 security guards reduces 5%.
+                  <br />
+                  Renting more than 10 security guards reduces 10%.
+                  <br />
+                  Renting for more than 7 days gets a 5% discount
+                  <br />
+                </div>
               </div>
             )}
 
             <BaseButton
-              className="mt-8 flex pb-4 bg-[#C7923E]"
-              disabled={!isValid}
+              className='mt-8 flex pb-4 bg-[#C7923E]'
+              disabled={!isValid || quantity < 1}
               onClick={handleCreateNewBooking}
-              content={"Submit"}
+              content={'Submit'}
             />
           </div>
         </div>
       </div>
-      <SweetAlert2
-        didClose={() => setSwal({ ...swal, show: false })}
-        {...swal}
-      />
+      <SweetAlert2 didClose={() => setSwal({ ...swal, show: false })} {...swal} />
     </div>
   );
 }
@@ -210,30 +320,24 @@ const formatDataBooking = (numberOfDayWorking, timeStart, timeEnd) => {
   return arr.map((e, index) => {
     if (index === 0) {
       return {
-        time_start: moment(timeStart)
-          .add(index, "days")
-          .format("YYYY-MM-DD HH:mm:ss"),
+        time_start: moment(timeStart).format("YYYY-MM-DD HH:mm:ss"),
         time_end: moment(timeEnd)
           .subtract(numberOfDayWorking, "days")
-          .set({ hour: 23, minute: 59, second: 59 })
           .format("YYYY-MM-DD HH:mm:ss"),
       };
     } else if (index > 0 && index < numberOfDayWorking) {
       return {
         time_start: moment(timeStart)
           .add(index, "days")
-          .set({ hour: 0, minute: 0, second: 0 })
           .format("YYYY-MM-DD HH:mm:ss"),
         time_end: moment(timeEnd)
           .subtract(numberOfDayWorking - index, "days")
-          .set({ hour: 23, minute: 59, second: 59 })
           .format("YYYY-MM-DD HH:mm:ss"),
       };
     } else if (index === numberOfDayWorking) {
       return {
         time_start: moment(timeStart)
           .add(index, "days")
-          .set({ hour: 0, minute: 0, second: 0 })
           .format("YYYY-MM-DD HH:mm:ss"),
         time_end: moment(timeEnd).format("YYYY-MM-DD HH:mm:ss"),
       };

@@ -11,11 +11,11 @@ import {
 } from "../../../utils/admin";
 import BaseButton from "../../../components/Button";
 import TableFreeGuards from "./TableFreeGuards";
-
-const userData = JSON.parse(localStorage.getItem("userData"));
+import Descriptions from "../../../components/Descriptions";
 
 function BookingDetailManager({
   companyName,
+  customerId,
   setDisplayPopup,
   activeLabel,
   setActiveLabel,
@@ -31,17 +31,13 @@ function BookingDetailManager({
   const numberLackGuard = booking.quantity - guardsAllocated.length;
 
   useEffect(() => {
-    userData &&
-      userData?.userId &&
-      getManagerBookingDetail({
-        bookingName: `${userData?.userId}${companyName}`,
-      })
-        .then((res) => setBooking(res?.data[0] || []))
-        .catch((err) => console.error("ERROR: ", err));
+    getManagerBookingDetail({
+      bookingName: `${customerId}${companyName}`,
+    })
+      .then((res) => setBooking(res?.data || []))
+      .catch((err) => console.error("ERROR: ", err));
 
     activeLabel !== "unpaid" &&
-      userData &&
-      userData?.userId &&
       getListGuardFree()
         .then((res) => setFreeGuards(res?.data || []))
         .catch((err) => console.error("ERROR: ", err));
@@ -71,7 +67,7 @@ function BookingDetailManager({
 
       activeLabel === "unallocated" &&
         postAllocateGuard({
-          bookingName: `${userData?.userId}${companyName}`,
+          bookingName: `${customerId}${companyName}`,
           data: { listguard: formatObj },
         })
           .then((res) => {
@@ -94,7 +90,7 @@ function BookingDetailManager({
 
       activeLabel === "allocated" &&
         UpdateAllocateGuard({
-          bookingName: `${userData?.userId}${companyName}`,
+          bookingName: `${customerId}${companyName}`,
           data: { listguard: formatObj },
         })
           .then((res) => {
@@ -207,32 +203,30 @@ function BookingDetailManager({
 
   return (
     <div>
-      <div className="grid grid-cols-3 gap-4">
-        <Descriptions title="Company name" content={companyName} />
+      <div className='grid grid-cols-3 gap-4'>
+        <Descriptions title='Company name' content={companyName} />
 
-        <Descriptions title="Address" content={booking.address} />
+        <Descriptions title='Address' content={booking.address} />
 
+        <Descriptions title='Booking date' content={dateFormatting(booking.booking_date)} />
+
+        <Descriptions title='Quantity' content={booking.quantity} />
+
+        <Descriptions title='Service' content={booking.service} />
+
+        <Descriptions title='Total amount' content={amountFormatting(booking.total_amount)} />
+
+        <Descriptions title='Customer email' content={booking?.customer?.email} />
         <Descriptions
-          title="Booking date"
-          content={dateFormatting(booking.booking_date)}
+          title='Customer name'
+          content={booking?.customer?.firstname + ' ' + booking?.customer?.lastname}
         />
-
-        <Descriptions title="Quantity" content={booking.quantity} />
-
-        <Descriptions title="Service" content={booking.service} />
-
-        <Descriptions
-          title="Total amount"
-          content={amountFormatting(booking.total_amount)}
-        />
+        <Descriptions title='Province/District' content={booking.country} />
       </div>
 
-      <div className="flex w-full mt-4">
-        <div className="w-1/2">
-          <TimeRangeDataBooking
-            className={"w-full mt-4"}
-            dataBooking={booking.dataBooking}
-          />
+      <div className='flex w-full mt-4'>
+        <div className='w-1/2'>
+          <TimeRangeDataBooking className={'w-full mt-4'} dataBooking={booking.dataBooking} />
         </div>
 
         <GuardComponent />
@@ -247,19 +241,9 @@ function BookingDetailManager({
         />
       )}
 
-      <SweetAlert2
-        didClose={() => setSwal({ ...swal, show: false })}
-        {...swal}
-      />
+      <SweetAlert2 didClose={() => setSwal({ ...swal, show: false })} {...swal} />
     </div>
   );
 }
-
-const Descriptions = ({ title, content }) => (
-  <div className="flex ">
-    <div className="font-medium">{title}</div>
-    <div className="text-gray-500">: {content}</div>
-  </div>
-);
 
 export default BookingDetailManager;

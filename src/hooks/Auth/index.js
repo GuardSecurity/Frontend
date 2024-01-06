@@ -1,9 +1,9 @@
-import { createContext, useContext, useMemo, useState } from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import { createContext, useContext, useMemo, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = 'http://localhost:3000';
 
 const configuration = (method, path, data) => ({
   method: method,
@@ -15,25 +15,24 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const [cookies, setCookies, removeCookie] = useCookies();
 
   if (!cookies) {
-    localStorage.removeItem("userData");
+    localStorage.removeItem('userData');
   }
 
   const login = ({ email, passwd }) => {
-    return axios(configuration("post", "/auth/login", { email, passwd }))
+    return axios(configuration('post', '/auth/login', { email, passwd }))
       .then((res) => {
         if (res.data?.token) {
-          removeCookie("token");
-          setCookies("token", res.data?.token.toString());
+          removeCookie('token');
+          setCookies('token', res.data?.token.toString());
 
-          localStorage.removeItem("userData");
+          localStorage.removeItem('userData');
 
           localStorage.setItem(
-            "userData",
+            'userData',
             JSON.stringify({
               userId: res.data.user_id,
               firstName: res.data.firstname,
@@ -42,10 +41,9 @@ export const UserProvider = ({ children }) => {
             })
           );
 
-          if (res.data.role === 1) navigate("admin");
+          if (res.data.role === 1) navigate('admin');
 
-          if (res.data.role === 2 || res.data.role === 3)
-            navigate("user-about");
+          if (res.data.role === 2 || res.data.role === 3) navigate('user-about');
 
           return res.data;
         }
@@ -54,10 +52,10 @@ export const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("userData");
+    localStorage.removeItem('userData');
 
-    ["token", "name"].forEach((obj) => removeCookie(obj)); // remove data save in cookies
-    navigate("/login");
+    ['token', 'name'].forEach((obj) => removeCookie(obj)); // remove data save in cookies
+    navigate('/login');
   };
 
   const value = useMemo(

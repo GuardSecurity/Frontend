@@ -1,6 +1,9 @@
+import moment from "moment";
+import { useState } from "react";
 import Datetime from "react-datetime";
 
 import "react-datetime/css/react-datetime.css";
+import { isDateValidFormat } from "../../utils/formatHelper";
 
 function DateTimePicker({
   label,
@@ -10,11 +13,24 @@ function DateTimePicker({
   dateFormat,
   initialValue,
   onChange,
+  isValidDate,
   ...rest
 }) {
+  const [isValid, setValid] = useState(true);
+
   const inputProps = {
     placeholder,
     className: `h-11 px-4 py-2 bg-white rounded border border-orange-400 w-full`,
+    disable: true,
+  };
+
+  const onClosePicker = (moment) => {
+    if (!isDateValidFormat(moment)) {
+      setValid(false);
+    } else if (new Date(moment.format(dateFormat && dateFormat))) {
+      setValid(true);
+      onChange(moment.format(dateFormat && dateFormat));
+    }
   };
 
   return (
@@ -23,11 +39,13 @@ function DateTimePicker({
       <Datetime
         timeFormat={timeFormat && timeFormat}
         dateFormat={dateFormat && dateFormat}
+        isValidDate={isValidDate && isValidDate}
         inputProps={inputProps}
-        initialValue={initialValue && initialValue}
-        onChange={(moment) => onChange(moment.format(dateFormat && dateFormat))}
+        initialValue={initialValue && isValid && initialValue}
+        onClose={onClosePicker}
         {...rest}
       />
+      {!isValid && <p className="text-red-500">Invalid Date</p>}
     </div>
   );
 }

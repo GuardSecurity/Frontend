@@ -59,6 +59,104 @@ const UpdateAllocateGuard = ({ bookingName, data }) =>
     })
   );
 
+const getSalaryGuard = ({ guardId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/GetSalaryGuard/${guardId}`,
+    })
+  );
+
+const getGuardById = ({ guardId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getGuardById/${guardId}`,
+    })
+  );
+
+const getCustomerById = ({ customerId }) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getCustomerById/${customerId}`,
+    })
+  );
+const getAllNews = () =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getAllNews`,
+    })
+  );
+const postNews = ({ news }) =>
+  axios(
+    configuration({
+      method: "post",
+      path: `/manager/postNews`,
+      data: news,
+    })
+  );
+const editNews = ({ news }) =>
+  axios(
+    configuration({
+      method: "post",
+      path: `/manager/editNews`,
+      data: news,
+    })
+  );
+const deleteNews = ({ id }) =>
+  axios(
+    configuration({
+      method: "post",
+      path: `/manager/deleteNews/${id}`,
+    })
+  );
+const getTop4New = () =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getTop4News`,
+    })
+  );
+const getPostById = (id) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getDetailNews/${id}`,
+    })
+  );
+const searchByName = (name) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/searchGuard?q=${name}`,
+    })
+  );
+const searchByNameUser = (name) =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/searchCustomer?q=${name}`,
+    })
+  );
+
+const getSummaryAdmin = () =>
+  axios(
+    configuration({
+      method: "get",
+      path: "/manager/dashboard/summary",
+    })
+  );
+
+const getManagerNotificationList = () =>
+  axios(
+    configuration({
+      method: "get",
+      path: `/manager/getMyNoti`,
+    })
+  );
+
 export {
   getCustomerList,
   getGuardList,
@@ -67,4 +165,17 @@ export {
   getListGuardFree,
   postAllocateGuard,
   UpdateAllocateGuard,
+  getSalaryGuard,
+  getGuardById,
+  getCustomerById,
+  getAllNews,
+  postNews,
+  editNews,
+  deleteNews,
+  getTop4New,
+  getPostById,
+  searchByName,
+  searchByNameUser,
+  getSummaryAdmin,
+  getManagerNotificationList,
 };

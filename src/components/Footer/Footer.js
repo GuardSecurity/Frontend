@@ -17,7 +17,7 @@ const Footer = () => (
         </button>
       </div>
       <div className="w-96 text-white  leading-tight tracking-tight">
-        Copyright GuardGuard Studio
+        Copyright Guard Sysmtem Studio
       </div>
     </div>
     <div className="bg-[#1A242D] w-full sm:w-1/2 p-12 flex flex-col justify-between h-106 md:h-96">
@@ -26,24 +26,19 @@ const Footer = () => (
         <div className="w-24 ml-5 text-[#9A9AB0] text-3xl font-bold">Guard</div>
       </div>
       <div className="text-white  leading-tight tracking-tight mt-4 ">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry.
+      Guard System includes posts installed at
       </div>
       <div className=" text-white  leading-tight tracking-tight mt-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-6">
-          <div>Home</div>
-          <div>About Us</div>
-          <div>Our Team</div>
-          <div>Room & Suites</div>
-          <div>Restaurant & Bar</div>
-          <div>Blog</div>
-          <div>Packages</div>
-          <div>Events</div>
-          <div>Contact Us</div>
-          <div>Voucher</div>
-          <div>Gallery</div>
-          <div>Careers</div>
-          <div>Promo</div>
+          <div>Ho Chi Minh</div>
+          <div>Da Nang</div>
+          <div>Quang Binh</div>
+          <div>Ca Mau</div>
+          <div>Can Tho</div>
+          <div>Tien Giang</div>
+          <div>Can Tho</div>
+          <div>Tien Giang</div>
+          <div>Ha Noi</div>
         </div>
       </div>
     </div>
