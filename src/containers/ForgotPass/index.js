@@ -11,19 +11,19 @@ import Linkedin from "../../assets/Linkedin.png";
 import Auth_bg from "../../assets/authen_bg.png";
 import { useAuth } from "../../hooks/Auth";
 
-function Login() {
+function ForgotPass() {
   const [email, setEmail] = useState("");
   const [passwd, setPasswd] = useState("");
-  const [errorLogin, setErrorLogin] = useState("");
+  const [errorForgotPass, setErrorForgotPass] = useState("");
 
-  const { login } = useAuth();
+  const { ForgotPass } = useAuth();
 
-  const handleLogin = async () => {
+  const handleForgotPass = async () => {
     if (email && passwd) {
-      const dataLogin = await login({ email, passwd });
+      const dataForgotPass = await ForgotPass({ email, passwd });
 
-      if (dataLogin?.message) {
-        setErrorLogin(dataLogin.message);
+      if (dataForgotPass?.message) {
+        setErrorForgotPass(dataForgotPass.message);
       }
     }
   };
@@ -32,13 +32,13 @@ function Login() {
     <div className="flex flex-wrap h-screen">
       <div className="flex justify-center items-center flex-col h-screen w-full lg:w-1/2">
         <div className="text-black text-3xl font-semibold leading-10">
-          Sign In
+          Forgot Password
         </div>
-        {errorLogin ? (
-          <div className="text-red-400 mt-4">{errorLogin}</div>
+        {errorForgotPass ? (
+          <div className="text-red-400 mt-4">{errorForgotPass}</div>
         ) : (
           <div className="text-gray-400  leading-7 mt-4">
-            Sign in to stay connected.
+            Enter email to retrieve password.
           </div>
         )}
         <BaseInput
@@ -46,35 +46,35 @@ function Login() {
           label="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <BaseInput
+        {/* <BaseInput
           classExtend="mt-4 w-96"
           label="Password"
           type="password"
           onChange={(e) => setPasswd(e.target.value)}
-        />
+        /> */}
         <div className="flex flex-row w-96 justify-between items-center mt-2.5">
           <CheckBox
             label={<p className="ml-3 text-gray-400 ">Remember me?</p>}
           />
-          <Link to="/forgotpass">
-            <div className="text-[#C7923E]  leading-7">Forgot Password</div>
+          <Link to="/reset-password">
+            <div className="text-[#C7923E]  leading-7">Login</div>
           </Link>
         </div>
         <BaseButton
           className="bg-[#3A57E8] w-48 h-11 mt-6 rounded"
-          content="Sign in"
+          content="Send"
           disabled={email.length < 1 || passwd.length < 1}
-          onClick={handleLogin}
+          onClick={handleForgotPass}
         />
-        <div className="text-slate-800 mt-5">
+        {/* <div className="text-slate-800 mt-5">
           or sign in with other accounts?
-        </div>
-        <div className="flex flex-wrap mt-5">
+        </div> */}
+        {/* <div className="flex flex-wrap mt-5">
           <img src={Gmail} alt="icon" />
           <img src={Facebook} alt="icon" />
           <img src={Instagram} alt="icon" />
           <img src={Linkedin} alt="icon" />
-        </div>
+        </div> */}
         <div className="mt-1">
           <span className="text-slate-800  leading-7">
             Don’t have an account?{" "}
@@ -93,4 +93,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPass;

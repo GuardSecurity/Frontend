@@ -28,15 +28,6 @@ const Admin = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="flex h-screen">
-      <div className="w-52">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold"
-          >
-            Dashboard
-          </h1>
-=======
     <div className='flex h-screen'>
       {/* <img src={helloAdmin} className='w-full' /> */}
       <div
@@ -58,7 +49,6 @@ const Admin = () => {
       <div className='w-52'>
         <div className='p-6'>
           <h1 className='text-2xl font-bold'>Dashboard</h1>
->>>>>>> f3ee0549a0149341fa4465b2585ca268333a0dad
         </div>
         <div className='h-1/2'>
           <ul className='h-1/2'>
@@ -89,22 +79,12 @@ const Admin = () => {
             >
               Bookings
             </li>
-<<<<<<< HEAD
-            <li
-              className={`p-4 cursor-pointer ${
-                activeTab === "dashboard" ? "bg-[#C7923E] text-white" : ""
-              }`}
-              onClick={() => handleTabClick("dashboard")}
-            >
-              Dashboard
-=======
 
             <li
               className={`p-4 cursor-pointer ${activeTab === 'news' ? 'bg-[#C7923E] text-white' : ''}`}
               onClick={() => handleTabClick('news')}
             >
               News
->>>>>>> f3ee0549a0149341fa4465b2585ca268333a0dad
             </li>
           </ul>
           <div className='h-[100%] flex justify-center items-end'>
@@ -112,13 +92,6 @@ const Admin = () => {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-      <div className="bg-gray-100">
-        {activeTab === "customers" && <CustomerList />}
-        {activeTab === "guards" && <GuardList />}
-        {activeTab === "bookings" && <BookingList />}
-        {activeTab === "dashboard" && <Dashboard />}
-=======
       <div className='bg-gray-100 w-full'>
         {activeTab === 'quantity' && <Quantity setShowNotificationPopup={setShowNotificationPopup} />}
         {activeTab === 'customers' && <CustomerList setShowNotificationPopup={setShowNotificationPopup} />}
@@ -126,7 +99,6 @@ const Admin = () => {
         {activeTab === 'bookings' && <BookingList setShowNotificationPopup={setShowNotificationPopup} />}
         {activeTab === 'news' && <NewsList setShowNotificationPopup={setShowNotificationPopup} />}
         {/* {activeTab === 'notifications' && <AdminNotification handleTabClick={handleTabClick} />} */}
->>>>>>> f3ee0549a0149341fa4465b2585ca268333a0dad
       </div>
     </div>
   );

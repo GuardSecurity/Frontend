@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import containerLayout from "./components/Layout";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
+import ForgotPass from "./containers/ForgotPass";
 import SignUp from "./containers/SignUp";
 import ResetPassword from "./containers/ResetPassword";
 import UserAbout from "./containers/UserAbout/UserAbout";
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route index element={containerLayout(<Home />)} />
           <Route path="login" element={<Login />} />
+          <Route path="forgotpass" element={<ForgotPass />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route element={<ProtectRoutes />}>
