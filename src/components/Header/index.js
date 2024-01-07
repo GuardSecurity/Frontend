@@ -48,8 +48,8 @@ const Header = () => {
       if (userData?.role === 2) {
         getInfo({ userId: userData?.userId })
           .then((res) => {
-            if (res?.data?.img) {
-              setUserAvatar(res.data.img);
+            if (res?.data) {
+              setUserAvatar(res.data);
             }
           })
           .catch((err) => console.error(err));
@@ -57,8 +57,8 @@ const Header = () => {
       if (userData?.role === 3) {
         getInfoGua({ userId: userData?.userId })
           .then((res) => {
-            if (res?.data?.img) {
-              setUserAvatar(res.data.img);
+            if (res?.data) {
+              setUserAvatar(res.data);
             }
           })
           .catch((err) => console.error(err));
@@ -99,85 +99,83 @@ const Header = () => {
   if (pathname === "/admin") {
     return null;
   }
+  console.log('userDataaaaaaaâ', userAvatar);
 
   return (
-    <Disclosure as="nav" className="bg-white">
+    <Disclosure as='nav' className='bg-white'>
       {({ open }) => (
         <>
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 mt-2">
-            <div className="flex h-16 items-center justify-between">
-              <div className="flex items-center">
-                <Link
-                  to="/"
-                  className="flex flex-row items-center justify-between"
-                >
-                  <img className="w-7 h-7" src={logo} alt="Your Company" />
-                  <div className="w-24 ml-5 text-gray-400 text-3xl font-bold">
-                    Guard
-                  </div>
+          <div className='mx-auto px-4 sm:px-6 lg:px-8 mt-2'>
+            <div className='flex h-16 items-center justify-between'>
+              <div className='flex items-center'>
+                <Link to='/' className='flex flex-row items-center justify-between'>
+                  <img className='w-7 h-7' src={logo} alt='Your Company' />
+                  <div className='w-24 ml-5 text-gray-400 text-3xl font-bold'>Guard</div>
                 </Link>
-                <div className="hidden md:block">
-                  <div className="ml-8 flex justify-center items-baseline">
+                <div className='hidden md:block'>
+                  <div className='ml-8 flex justify-center items-baseline'>
                     <NavigationBar />
                   </div>
                 </div>
               </div>
-              <div className="hidden md:block">
-                <div className="ml-4 flex items-center md:ml-6">
+              <div className='hidden md:block'>
+                <div className='ml-4 flex items-center md:ml-6'>
                   {cookies.token ? (
                     // <BaseButton
                     //   onClick={logout}
                     //   className="mt-2 flex justify-center items-center bg-[#C7923E]"
                     //   content={"Logout"}
                     // />
-                    <div className="flex justify-center items-center">
+                    <div className='flex justify-center items-center'>
                       {userData?.role === 2 && (
                         <button
-                          onClick={() => navigate("/customer-unpaid-list")}
-                          className="hover:bg-yellow-100 rounded-md"
+                          onClick={() => navigate('/customer-unpaid-list')}
+                          className='hover:bg-yellow-100 rounded-md'
                         >
-                          <IconButton size="sm" color="amber">
-                            <ShoppingCartIcon className="h-6 w-6" />
+                          <IconButton size='sm' color='amber'>
+                            <ShoppingCartIcon className='h-6 w-6' />
                           </IconButton>
                         </button>
                       )}
 
                       <NotificationOnHeader />
 
-                      <Menu as="div" className="relative ml-3">
+                      <Menu as='div' className='relative ml-3'>
                         <div>
-                          <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span className="absolute -inset-1.5" />
-                            <span className="sr-only">Open user menu</span>
+                          <Menu.Button className='relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
+                            <span className='absolute -inset-1.5' />
+                            <span className='sr-only'>Open user menu</span>
                             <img
-                              className="h-8 w-8 rounded-full"
+                              className='h-8 w-8 rounded-full'
                               src={
-                                userAvatar
-                                  ? userAvatar
-                                  : "https://t4.ftcdn.net/jpg/02/83/34/87/360_F_283348729_wcG8rvBF5f1VfPGKy916pIcmgGk0PK7B.jpg"
+                                !userAvatar
+                                  ? userAvatar.img
+                                  : userAvatar.gender
+                                  ? 'https://t4.ftcdn.net/jpg/02/83/34/87/360_F_283348729_wcG8rvBF5f1VfPGKy916pIcmgGk0PK7B.jpg'
+                                  : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUJOcn-PL5eVYpu9Fs_4CBajb55o0rs_oehPGMqwPuYxCZXFyG1YMBLN8QA2ZfzAGzxM0&usqp=CAU'
                               }
-                              alt="User avatar"
+                              alt='User avatar'
                             />
                           </Menu.Button>
                         </div>
                         <Transition
                           as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
+                          enter='transition ease-out duration-100'
+                          enterFrom='transform opacity-0 scale-95'
+                          enterTo='transform opacity-100 scale-100'
+                          leave='transition ease-in duration-75'
+                          leaveFrom='transform opacity-100 scale-100'
+                          leaveTo='transform opacity-0 scale-95'
                         >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
                             <Menu.Item>
                               {({ active }) => (
                                 <Link
                                   className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
                                   )}
-                                  to="my-profile"
+                                  to='my-profile'
                                 >
                                   My profile
                                 </Link>
@@ -187,10 +185,10 @@ const Header = () => {
                               {({ active }) => (
                                 <Link
                                   className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
                                   )}
-                                  to="change-pass"
+                                  to='change-pass'
                                 >
                                   Change Password
                                 </Link>
@@ -218,8 +216,8 @@ const Header = () => {
                                 <div
                                   onClick={logout}
                                   className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-[#C7923E]"
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-[#C7923E]'
                                   )}
                                 >
                                   Logout
@@ -235,31 +233,31 @@ const Header = () => {
                   )}
                 </div>
               </div>
-              <div className="-mr-2 flex md:hidden">
+              <div className='-mr-2 flex md:hidden'>
                 {/* Mobile menu button */}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md text-[#C7923E] p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                  <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
+                <Disclosure.Button className='relative inline-flex items-center justify-center rounded-md text-[#C7923E] p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
+                  <span className='absolute -inset-0.5' />
+                  <span className='sr-only'>Open main menu</span>
                   {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className='block h-6 w-6' aria-hidden='true' />
                   ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className='block h-6 w-6' aria-hidden='true' />
                   )}
                 </Disclosure.Button>
               </div>
             </div>
           </div>
 
-          <Disclosure.Panel className="md:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+          <Disclosure.Panel className='md:hidden'>
+            <div className='space-y-1 px-2 pb-3 pt-2 sm:px-3'>
               <NavigationBar />
             </div>
-            <div className="border-t border-gray-700 pb-3 pt-4">
-              <div className="flex items-center px-5">
+            <div className='border-t border-gray-700 pb-3 pt-4'>
+              <div className='flex items-center px-5'>
                 {cookies.token ? (
                   <BaseButton
-                    className="mt-2 flex justify-center items-center bg-[#C7923E]"
-                    content={"Logout"}
+                    className='mt-2 flex justify-center items-center bg-[#C7923E]'
+                    content={'Logout'}
                     onClick={logout}
                   />
                 ) : (

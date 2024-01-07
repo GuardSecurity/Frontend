@@ -12,7 +12,11 @@ import { useParams, useNavigate } from "react-router";
 
 import { getCustomerUnpaidBookingDetail, vnPayMent } from "../../utils/booking";
 import { amountFormatting, dateTimeFormatting } from "../../utils/formatHelper";
+import { Font } from '@react-pdf/renderer';
 
+Font.register({
+  family: 'Arial', // Tên mà bạn muốn đặt cho font chữ
+});
 // const styles = StyleSheet.create({
 
 // })
@@ -58,119 +62,112 @@ function Contract() {
 
   const ContractOfCustomer = () => {
     return (
-      <Document>
-        <Page size="A4" className="grid grid-cols-1" style={{ padding: 20 }}>
+      <Document file='someone.pdf'>
+        <Page size='A4' className='grid grid-cols-1' style={{ padding: 20 }}>
           <View
-            className="flex text-4xl font-bold justify-center"
-            // style={{
-            //   fontSize: 40,
-            //   fontWeight: "bold",
-            //   justifyContent: "center",
-            //   flex: 1,
-            // }}
+            className='flex text-4xl font-bold justify-center'
+            style={{
+              display: 'flex',
+              fontSize: '4rem',
+              fontWeight: 'bold',
+              justifyContent: 'center',
+            }}
           >
             <Text>Economic contracts</Text>
           </View>
-          <View className="mt-10">
-            <Text className="h-10 text-xl font-bold">Guard System</Text>
+
+          <View
+            className='mt-10'
+            style={{
+              marginTop: '2.5rem',
+            }}
+          >
+            <Text style={{ height: '2.5rem', fontSize: '1.25rem', fontWeight: 'bold' }}>Guard System</Text>
             <View
-              className="grid grid-cols-5 pt-4"
+              className='grid grid-cols-5 pt-4'
               style={{
-                flex: 1,
-                width: "100%",
+                flex: '1',
+                width: '100%',
               }}
             >
-              <Text className="font-bold">Representative</Text>
+              <Text style={{ fontWeight: 'bold' }}>Representative</Text>
               <Text>Vuong Cong Dung</Text>
 
               <Text></Text>
 
-              <Text className="font-bold">Position</Text>
+              <Text style={{ fontWeight: 'bold' }}>Position</Text>
               <Text>Manager</Text>
 
-              <Text className="font-bold mt-4">Address</Text>
-              <Text className="mt-4">P. Hoa Hai, Q. Ngu Hanh Son, Da Nang</Text>
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Address</Text>
+              <Text style={{ marginTop: '1rem' }}>P. Hoa Hai, Q. Ngu Hanh Son, Da Nang</Text>
 
               <Text></Text>
 
-              <Text className="font-bold mt-4">Phone Number</Text>
-              <Text className="mt-4">0123123123</Text>
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Phone Number</Text>
+              <Text style={{ marginTop: '1rem' }}>0123123123</Text>
             </View>
           </View>
 
-          <View className="mt-10">
-            <Text className="h-10 text-xl font-bold">Customer</Text>
-            <View className="grid grid-cols-5 pt-4">
-              <Text className="font-bold">Full Name</Text>
+          <View
+            className='mt-10'
+            style={{
+              marginTop: '2.5rem',
+            }}
+          >
+            <Text style={{ height: '2.5rem', fontSize: '1.25rem', fontWeight: 'bold' }}>Customer</Text>
+            <View className='grid grid-cols-5 pt-4'>
+              <Text style={{ fontWeight: 'bold' }}>Full Name</Text>
               <Text>{detail?.customername}</Text>
 
               <Text></Text>
               <Text></Text>
               <Text></Text>
 
-              <Text className="font-bold mt-4">Address</Text>
-              <Text className="mt-4">{detail?.addressCustomer}</Text>
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Address</Text>
+              <Text style={{ marginTop: '1rem' }}>{detail?.addressCustomer}</Text>
 
               <Text></Text>
 
-              <Text className="font-bold mt-4">Phone Number</Text>
-              <Text className="mt-4">{detail?.phone}</Text>
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Phone Number</Text>
+              <Text style={{ marginTop: '1rem' }}>{detail?.phone}</Text>
 
-              <Text className="font-bold mt-4">Service</Text>
-              <Text className="mt-4">{detail?.service}</Text>
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Service</Text>
+              <Text style={{ marginTop: '1rem' }}>{detail?.service}</Text>
 
               <Text></Text>
 
-              <Text className="font-bold mt-4">Address Service</Text>
-              <Text className="mt-4">{detail?.address}</Text>
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Address Service</Text>
+              <Text style={{ marginTop: '1rem' }}>{detail?.address}</Text>
 
-              <Text className="font-bold mt-4">Start Date</Text>
-              <Text className="mt-4">
-                {detail?.dataBooking?.length &&
-                  dateTimeFormatting(
-                    detail?.dataBooking?.length &&
-                      detail?.dataBooking[0]?.time_start
-                  )}
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Start Date</Text>
+              <Text style={{ marginTop: '1rem' }}>
+                {detail?.dataBooking?.length && dateTimeFormatting(detail?.dataBooking[0]?.time_start)}
               </Text>
 
               <Text></Text>
 
-              <Text className="font-bold mt-4">Completion Date:</Text>
-              <Text className="mt-4">
+              <Text style={{ fontWeight: 'bold', marginTop: '1rem' }}>Completion Date:</Text>
+              <Text style={{ marginTop: '1rem' }}>
                 {dateTimeFormatting(
-                  detail?.dataBooking?.length &&
-                    detail?.dataBooking[detail?.dataBooking.length - 1]
-                      ?.time_end
+                  detail?.dataBooking?.length && detail?.dataBooking[detail?.dataBooking.length - 1]?.time_end
                 )}
               </Text>
             </View>
           </View>
-          <View className="mt-6">
-            <Text className="font-bold">Guard</Text>
 
-            <View className="grid grid-cols-2 mt-4 border-solid border-2 border-gray-700 p-1 font-bold">
+          <View
+            className='mt-6'
+            style={{
+              marginTop: '1.5rem',
+            }}
+          >
+            <Text style={{ fontWeight: 'bold' }}>Guard</Text>
+            <View
+              className='grid grid-cols-2 mt-4'
+              style={{ border: '2px solid #718096', padding: '0.25rem', fontWeight: 'bold' }}
+            >
               <Text>Name</Text>
               <Text>Price</Text>
-            </View>
-
-            {detail?.guard?.length > 0 &&
-              detail?.guard.map((g) => (
-                <View className="grid grid-cols-2 border-solid border-1 border-gray-300 p-1">
-                  <Text>
-                    {g.firstname} {g.lastname}
-                  </Text>
-                  <Text>
-                    {amountFormatting(
-                      detail?.total_amount / detail.guard.length
-                    )}{" "}
-                    VND
-                  </Text>
-                </View>
-              ))}
-
-            <View className="grid grid-cols-2 mt-4 p-1">
-              <Text>Total</Text>
-              <Text>{amountFormatting(detail?.total_amount)} VND</Text>
             </View>
           </View>
         </Page>
