@@ -274,15 +274,13 @@ export default function EventDetail() {
                       <br />
                     </div>
 
-                    {trick && (
-                      <div>
-                        {moment(end).isBefore(new Date()) && (
-                          <div className='flex'>
-                            <BaseButton content='Rating' className='bg-blue-500 ml-4 text-sm' onClick={handleRating} />
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    <div>
+                      {moment(end).isBefore(new Date()) && bookingDetail.isinfeedback !==1 && (
+                        <div className='flex'>
+                          <BaseButton content='Rating' className='bg-blue-500 ml-4 text-sm' onClick={handleRating} />
+                        </div>
+                      )}
+                    </div>
 
                     <div>
                       {!moment(end).isBefore(new Date()) && (
